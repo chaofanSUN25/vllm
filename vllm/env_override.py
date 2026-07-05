@@ -3,6 +3,7 @@
 # ruff: noqa: E402
 import importlib.util
 import os
+import sys
 
 
 def _get_torch_cuda_version():
@@ -90,6 +91,40 @@ from vllm.logger import init_logger
 from vllm.utils.torch_utils import is_torch_equal, is_torch_equal_or_newer
 
 logger = init_logger(__name__)
+
+# ===================================================
+# MsFlow Communication Flow Interception
+# ===================================================
+# Initialize MsFlow system when VLLM_ENABLE_MSFLOW=1
+enable_msflow = os.environ.get("VLLM_ENABLE_MSFLOW", "0").strip().lower() in (
+    "1",
+    "true",
+)
+
+if enable_msflow:
+    try:
+        # Import MsFlow modules
+        from vllm.msflow.rmlq import init_rmlq
+        from vllm.msflow.interceptor import setup_interceptors
+        
+        # Initialize RMLQ queue
+        init_rmlq()
+        
+        # Install interceptors
+        setup_interceptors()
+        
+        logger.info("=" * 60)
+        logger.info("🚀 MsFlow Communication Flow Interception ENABLED")
+        logger.info("   - NCCL collective communication will be intercepted")
+        logger.info("   - KV cache P2P transfer will be intercepted")
+        logger.info("   - RMLQ scheduler is running")
+        logger.info("=" * 60)
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize MsFlow: {e}")
+        # Don't crash vLLM if MsFlow fails
+        pass
+
+# ===================================================
 
 # set some common config/environment variables that should be set
 # for all processes created by vllm and all processes
