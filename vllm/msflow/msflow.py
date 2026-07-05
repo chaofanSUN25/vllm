@@ -14,8 +14,15 @@ RLI decreases as layers progress, representing remaining load.
 When RLI is low, slack is tight, triggering priority promotion.
 """
 
+import os
+import time
+
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional
+
+# Configurable ms per layer for Slack estimation
+# Default: 1.0ms per layer, can be overridden by env var
+MSFLOW_MS_PER_LAYER = float(os.environ.get("VLLM_MSFLOW_MS_PER_LAYER", "1.0"))
 
 
 class MsFlowStage:
@@ -109,6 +116,19 @@ class MsFlow:
             Slack time in milliseconds. Negative value means already missed.
         """
         # Estimate remaining time based on RLI (higher RLI = more work left)
-        # This is a simplified estimation - can be improved with profiling
-        estimated_remaining_ms = self.rli * 1.0  # Assume ~1ms per layer
+        # ms_per_layer is configurable via VLLM_MSFLOW_MS_PER_LAYER environment variable
+        estimated_remaining_ms = self.rli * MSFLOW_MS_PER_LAYER
         return deadline_ms - (current_time_ms + estimated_remaining_ms)
+    
+    def get_slack_at_current_time(self, deadline_ms: float) -> float:
+        """
+        Compute slack at current time.
+        
+        Args:
+            deadline_ms: Deadline in milliseconds
+            
+        Returns:
+            Slack time in milliseconds
+        """
+        current_time_ms = time.time() * 1000
+        return self.get_slack(deadline_ms, current_time_ms)

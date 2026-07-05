@@ -14,11 +14,12 @@ This implements a K-level priority queue where:
 The goal is to maximize TTFT (Time To First Token) SLO compliance.
 """
 
+import heapq
 import logging
 import threading
 import time
 from collections import deque
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from vllm.msflow.layer_tracker import LayerContext
 from vllm.msflow.msflow import MsFlow, MsFlowStage
@@ -55,14 +56,19 @@ class RMLQ:
         self.total_layers = total_layers
         
         # Priority queues: P1 is highest (index 0), PK is lowest (index K-1)
-        self.queues: Dict[int, deque[MsFlow]] = {
-            i: deque() for i in range(1, num_priorities + 1)
+        # Use heap for EDF ordering within each priority level
+        self.queues: Dict[int, List[Tuple[float, int, MsFlow]]] = {
+            i: [] for i in range(1, num_priorities + 1)
         }
+        
+        # Counter for tie-breaking in heap (FIFO order)
+        self._heap_counter = 0
         
         # Statistics
         self.stats: Dict[str, int] = {
             "total_enqueued": 0,
             "promotions": 0,
+            "slack_promotions": 0,  # New stat: promotions triggered by slack
         }
         for i in range(1, num_priorities + 1):
             self.stats[f"p{i}_size"] = 0
@@ -85,6 +91,11 @@ class RMLQ:
         
         # Default deadline for TTFT (500ms - typical SLO target)
         self.default_deadline_ms = 500.0
+        
+        # Slack-aware promotion thresholds
+        # When slack drops below these thresholds, trigger emergency promotion
+        self.slack_emergency_threshold_ms = 100.0  # Slack < 100ms: urgent
+        self.slack_critical_threshold_ms = 50.0   # Slack < 50ms: critical (jump to P1)
 
     def start(self) -> None:
         """Start the scheduler thread."""
@@ -115,6 +126,8 @@ class RMLQ:
         - Stage 2 (collective comm): P2 (higher)
         - Stage 3 (P2D transfer): PK (lowest - defer until slack is tight)
         
+        Uses heap-based EDF scheduling within each priority level.
+        
         Args:
             flow: MsFlow object to enqueue
         """
@@ -134,12 +147,22 @@ class RMLQ:
             if flow.timestamp == 0.0:
                 flow.timestamp = time.time()
             
-            self.queues[flow.priority].append(flow)
+            # Compute current slack for EDF ordering
+            current_time_ms = time.time() * 1000
+            slack = flow.get_slack(self.default_deadline_ms, current_time_ms)
+            
+            # Use heap for EDF: (slack, counter, flow)
+            # Lower slack = higher priority within the same queue
+            self._heap_counter += 1
+            heapq.heappush(self.queues[flow.priority], 
+                          (slack, self._heap_counter, flow))
+            
             self.stats["total_enqueued"] += 1
             self._update_stats()
             
         logger.debug(f"📥 Enqueued flow: stage={flow.stage}, layer={flow.layer_idx}, "
-                    f"rli={flow.rli:.1f}, priority=P{flow.priority}, bytes={flow.bytes}")
+                    f"rli={flow.rli:.1f}, priority=P{flow.priority}, "
+                    f"slack={slack:.1f}ms, bytes={flow.bytes}")
 
     def _update_stats(self) -> None:
         """Update queue size statistics."""
@@ -151,6 +174,9 @@ class RMLQ:
         Main scheduler loop.
         Process flows from highest priority to lowest.
         Always process P1 completely before moving to P2, etc.
+        
+        Within each priority level, uses EDF (Earliest Deadline First)
+        based on Slack: flows with smaller slack are processed first.
         """
         while self._running:
             processed = False
@@ -159,7 +185,8 @@ class RMLQ:
             for priority in range(1, self.num_priorities + 1):
                 with self.lock:
                     while self.queues[priority]:
-                        flow = self.queues[priority].popleft()
+                        # Pop flow with smallest slack (EDF)
+                        slack, _, flow = heapq.heappop(self.queues[priority])
                         self._process_flow(flow)
                         self.stats[f"p{priority}_processed"] += 1
                         self._update_stats()
@@ -200,48 +227,86 @@ class RMLQ:
 
     def promote_flows_at_layer_boundary(self, current_layer: int) -> None:
         """
-        Promote flows at layer boundary based on RLI.
+        Promote flows at layer boundary based on RLI and Slack.
         This is the key promotion point - only at layer boundaries.
         
         Promotion logic:
-        - Calculate current RLI = total_layers - current_layer
-        - Check each queue from lowest to highest priority
-        - If flow's RLI <= threshold, promote to next higher priority
-        - Priority only increases, never decreases
+        1. RLI-based promotion: When RLI drops below threshold, promote
+           to next higher priority (gradual promotion)
+        2. Slack-based emergency promotion: When slack is critically low,
+           jump directly to P1 (emergency promotion)
+        3. Priority only increases, never decreases
         
         Args:
             current_layer: Current layer index being entered
         """
         with self.lock:
             current_rli = self.total_layers - current_layer
+            current_time_ms = time.time() * 1000
             
-            # Check queues from lowest to highest priority
-            # This ensures lower priority flows get promoted first
+            # First pass: Slack-based emergency promotions
+            # Flows with critically low slack jump directly to P1
+            for priority in range(self.num_priorities, 1, -1):
+                flows_to_emergency_promote: List[MsFlow] = []
+                
+                # Collect flows from heap (temporarily extract all)
+                temp_list = []
+                while self.queues[priority]:
+                    slack, counter, flow = heapq.heappop(self.queues[priority])
+                    # Recompute slack at current time
+                    current_slack = flow.get_slack(self.default_deadline_ms, current_time_ms)
+                    
+                    if current_slack < self.slack_critical_threshold_ms:
+                        # Emergency: jump to P1
+                        flows_to_emergency_promote.append((current_slack, counter, flow))
+                    else:
+                        temp_list.append((current_slack, counter, flow))
+                
+                # Put back non-emergency flows
+                for item in temp_list:
+                    heapq.heappush(self.queues[priority], item)
+                
+                # Emergency promote to P1
+                for slack_val, counter, flow in flows_to_emergency_promote:
+                    old_priority = flow.priority
+                    if flow.promote(1):
+                        heapq.heappush(self.queues[1], (slack_val, counter, flow))
+                        self.stats["promotions"] += 1
+                        self.stats["slack_promotions"] += 1
+                        logger.debug(f"🚨 Emergency promoted flow: stage={flow.stage}, "
+                                    f"layer={current_layer}, P{old_priority}->P1, "
+                                    f"slack={slack_val:.1f}ms")
+            
+            # Second pass: RLI-based gradual promotions
             for priority in range(self.num_priorities, 1, -1):
                 threshold = self.promotion_thresholds.get(priority)
                 if threshold is None:
                     continue
                 
-                # Collect flows that need promotion
-                flows_to_promote: List[MsFlow] = []
-                for flow in self.queues[priority]:
-                    # RLI is already computed at enqueue time, but we use
-                    # current RLI for promotion decision since we're at
-                    # a layer boundary
-                    if current_rli <= threshold:
-                        flows_to_promote.append(flow)
+                flows_to_promote: List[Tuple[float, int, MsFlow]] = []
+                temp_list = []
                 
-                # Promote flows to next higher priority
-                for flow in flows_to_promote:
+                while self.queues[priority]:
+                    slack, counter, flow = heapq.heappop(self.queues[priority])
+                    if current_rli <= threshold:
+                        flows_to_promote.append((slack, counter, flow))
+                    else:
+                        temp_list.append((slack, counter, flow))
+                
+                # Put back non-promoted flows
+                for item in temp_list:
+                    heapq.heappush(self.queues[priority], item)
+                
+                # Gradual promote to next higher priority
+                for slack_val, counter, flow in flows_to_promote:
                     old_priority = flow.priority
                     if flow.promote(priority - 1):
-                        self.queues[old_priority].remove(flow)
-                        self.queues[priority - 1].append(flow)
+                        heapq.heappush(self.queues[priority - 1], (slack_val, counter, flow))
                         self.stats["promotions"] += 1
                         logger.debug(f"⬆️ Promoted flow: stage={flow.stage}, "
                                     f"layer={current_layer}, "
                                     f"P{old_priority}->P{priority-1}, "
-                                    f"rli={current_rli:.1f}")
+                                    f"rli={current_rli:.1f}, slack={slack_val:.1f}ms")
             
             self._update_stats()
 
