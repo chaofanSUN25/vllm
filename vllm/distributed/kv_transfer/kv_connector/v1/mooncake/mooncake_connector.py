@@ -19,6 +19,7 @@ import zmq.asyncio
 
 from vllm import envs
 from vllm.config import VllmConfig
+from vllm.distributed.comm_hooks import comm_hook_manager
 from vllm.distributed.kv_transfer.kv_connector.utils import (
     EngineId,
     TransferTopology,
@@ -569,6 +570,14 @@ class MooncakeConnector(KVConnectorBase_V1, SupportsHMA):
         return self.connector_worker.get_finished()
 
     def start_load_kv(self, forward_context: "ForwardContext", **kwargs) -> None:
+        # Run KV transfer hooks for start_load_kv
+        should_proceed, _, _ = comm_hook_manager.run_kv_hooks(
+            "start_load_kv", forward_context, **kwargs
+        )
+        if not should_proceed:
+            # Skip loading to simulate drop
+            return
+        
         assert self.connector_worker is not None
         assert isinstance(self._connector_metadata, MooncakeConnectorMetadata)
         self.connector_worker.start_load_kv(self._connector_metadata)
@@ -584,6 +593,13 @@ class MooncakeConnector(KVConnectorBase_V1, SupportsHMA):
         attn_metadata: AttentionMetadata,
         **kwargs,
     ) -> None:
+        # Run KV transfer hooks for save_kv_layer
+        should_proceed, _, _ = comm_hook_manager.run_kv_hooks(
+            "save_kv_layer", layer_name, kv_layer, attn_metadata, **kwargs
+        )
+        if not should_proceed:
+            # Skip saving to simulate drop
+            return
         """MooncakeConnector does not save explicitly."""
         pass
 
@@ -1626,6 +1642,15 @@ class MooncakeConnectorWorker:
         dst_ptrs: list[int],
         lengths: list[int],
     ) -> int:
+        # Run KV transfer hooks for send_blocks
+        should_proceed, _, _ = comm_hook_manager.run_kv_hooks(
+            "send_blocks", remote_session, src_ptrs, dst_ptrs, lengths
+        )
+        if not should_proceed:
+            # Skip sending to simulate drop
+            logger.debug("KV transfer dropped for %s", remote_session)
+            return -1  # Return error code to simulate failure
+        
         start_time = time.perf_counter()
         ret_value = self.engine.batch_transfer_sync_write(
             remote_session, src_ptrs, dst_ptrs, lengths

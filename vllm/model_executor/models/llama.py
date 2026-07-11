@@ -34,6 +34,7 @@ from transformers import LlamaConfig
 from vllm.compilation.decorators import support_torch_compile
 from vllm.config import CacheConfig, VllmConfig
 from vllm.distributed import get_pp_group, get_tensor_model_parallel_world_size
+from vllm.distributed.comm_hooks import track_layer
 from vllm.model_executor.layers.activation import SiluAndMul
 from vllm.model_executor.layers.attention import (
     Attention,
@@ -420,9 +421,12 @@ class LlamaModel(nn.Module, EagleModelMixin):
         for idx, layer in enumerate(
             islice(self.layers, self.start_layer, self.end_layer)
         ):
-            hidden_states, residual = layer(
-                positions, hidden_states, residual, **extra_layer_kwargs
-            )
+            # Track layer context for communication hooks
+            # This enables layer-level drop decisions in NCCL/KV operations
+            with track_layer(layer_index=idx + self.start_layer):
+                hidden_states, residual = layer(
+                    positions, hidden_states, residual, **extra_layer_kwargs
+                )
             self._maybe_add_hidden_state(
                 aux_hidden_states, idx + 1, hidden_states, residual
             )

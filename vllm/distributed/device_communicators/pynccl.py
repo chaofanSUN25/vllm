@@ -10,6 +10,7 @@ import torch.distributed as dist
 from torch.distributed import ProcessGroup, ReduceOp
 
 import vllm.envs as envs
+from vllm.distributed.comm_hooks import comm_hook_manager
 from vllm.distributed.device_communicators.pynccl_wrapper import (
     NCCLLibrary,
     buffer_type,
@@ -183,6 +184,11 @@ class PyNcclCommunicator:
         if out_tensor is None:
             out_tensor = torch.empty_like(in_tensor)
 
+        # Run communication hooks
+        should_proceed, _, metadata = comm_hook_manager.run_nccl_hooks(
+            "all_reduce", in_tensor, out_tensor, op, stream
+        )
+
         if stream is None:
             stream = current_stream()
         self.nccl.ncclAllReduce(
@@ -194,6 +200,13 @@ class PyNcclCommunicator:
             self.comm,
             cudaStream_t(stream.cuda_stream),
         )
+        
+        # For NCCL all_reduce, we NEVER skip the call (to ensure TP consistency)
+        # Instead, we zero out the out_tensor AFTER the call if dropped.
+        # This protects the original in_tensor (which may be a view of paged KV cache)
+        # from being modified, ensuring in-place KV cache updates are not corrupted.
+        if metadata.get("zero_tensor_after_call"):
+            out_tensor.zero_()
         return out_tensor
 
     def all_gather(
@@ -326,6 +339,15 @@ class PyNcclCommunicator:
             f"this nccl communicator is created to work on {self.device}, "
             f"but the input tensor is on {tensor.device}"
         )
+
+        # Run communication hooks
+        should_proceed, _, _ = comm_hook_manager.run_nccl_hooks(
+            "send", tensor, dst, stream
+        )
+        if not should_proceed:
+            # Skip send to simulate drop
+            return
+
         if stream is None:
             stream = current_stream()
         if tensor.dtype in [
@@ -353,6 +375,16 @@ class PyNcclCommunicator:
             f"this nccl communicator is created to work on {self.device}, "
             f"but the input tensor is on {tensor.device}"
         )
+
+        # Run communication hooks
+        should_proceed, _, _ = comm_hook_manager.run_nccl_hooks(
+            "recv", tensor, src, stream
+        )
+        if not should_proceed:
+            # Zero out tensor to simulate drop
+            tensor.zero_()
+            return
+
         if stream is None:
             stream = current_stream()
         if tensor.dtype in [
