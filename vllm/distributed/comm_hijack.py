@@ -792,7 +792,7 @@ def set_seq_group_id(seq_group_id: int) -> None:
     Args:
         seq_group_id: Current seq_group ID
     """
-    _hijack_config.seq_group_id = seq_group_id
+    _hijack_config._seq_group_id = seq_group_id
 
 
 def enable_hijack() -> None:
