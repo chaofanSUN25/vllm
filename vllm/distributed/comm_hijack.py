@@ -651,6 +651,13 @@ def install_hijack(
     # Set random seed
     random.seed(seed)
     
+    # Reset communication frequency counter
+    global _comm_freq_counter, _comm_freq_last_reset
+    with _comm_freq_lock:
+        _comm_freq_counter["tp"] = 0
+        _comm_freq_counter["ep"] = 0
+        _comm_freq_last_reset = time.time()
+    
     # Monkey patch TP communication (top-level)
     if _original_tp_all_reduce is None:
         _original_tp_all_reduce = tensor_model_parallel_all_reduce
