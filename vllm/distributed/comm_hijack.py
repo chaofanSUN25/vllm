@@ -635,6 +635,7 @@ def install_hijack(
     global _original_tp_all_reduce, _original_group_all_reduce
     global _original_group_dispatch, _original_group_combine
     global _original_torch_all_reduce, _original_torch_all_to_all_single
+    global tensor_model_parallel_all_reduce
     
     # Configure hijack
     _hijack_config.enable = True
@@ -692,6 +693,7 @@ def uninstall_hijack() -> None:
     global _original_tp_all_reduce, _original_group_all_reduce
     global _original_group_dispatch, _original_group_combine
     global _original_torch_all_reduce, _original_torch_all_to_all_single
+    global tensor_model_parallel_all_reduce
     
     # Restore TP all_reduce (top-level)
     if _original_tp_all_reduce is not None:
