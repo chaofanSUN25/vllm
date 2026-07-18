@@ -1532,9 +1532,15 @@ class Scheduler(SchedulerInterface):
                 self.encoder_cache_manager.free(request)
                 self.kv_cache_manager.free(request)
                 self.finished_req_ids.add(req_id)
+                request.status = RequestStatus.FINISHED
                 del self.requests[req_id]
-            logger.debug(
-                "Layer drop: freed %d requests: %s",
+            # Remove dropped requests from the running list so the next
+            # scheduling pass does not try to schedule them again.
+            self.running = [
+                r for r in self.running if r.request_id not in dropped_req_set
+            ]
+            logger.warning(
+                "[LAYER_DROP] freed %d requests: %s",
                 len(dropped_req_set),
                 dropped_req_ids,
             )
