@@ -713,6 +713,11 @@ class LayerDropManager:
         query_lens = metadata.query_start_loc[1:] - metadata.query_start_loc[:-1]
         kept_query_lens = query_lens[keep_mask]
 
+        # Save originals before overwriting so we can verify the compacted
+        # slot_mapping is consistent with per-request slicing.
+        orig_query_start_loc = metadata.query_start_loc
+        orig_slot_mapping = metadata.slot_mapping
+
         # Rebuild query_start_loc
         new_query_start_loc = torch.zeros(
             num_kept_reqs + 1,
@@ -730,7 +735,34 @@ class LayerDropManager:
 
         # Block table and slot mapping
         metadata.block_table = metadata.block_table[keep_mask]
-        metadata.slot_mapping = metadata.slot_mapping[keep_indices]
+        metadata.slot_mapping = orig_slot_mapping[keep_indices]
+
+        # Verify compacted slot_mapping by rebuilding it request-by-request.
+        # If this differs from the keep_indices gather, the token order used
+        # by the attention kernel does not match the hidden_states order.
+        kept_req_indices = keep_mask.nonzero(as_tuple=False).flatten()
+        expected_slot_slices = []
+        for old_req_idx in kept_req_indices:
+            s = int(orig_query_start_loc[old_req_idx].item())
+            e = int(orig_query_start_loc[old_req_idx + 1].item())
+            expected_slot_slices.append(orig_slot_mapping[s:e])
+        if expected_slot_slices:
+            expected_slot_mapping = torch.cat(expected_slot_slices)
+            if not torch.equal(metadata.slot_mapping, expected_slot_mapping):
+                logger.error(
+                    "[LAYER_DROP] slot_mapping mismatch after compact: "
+                    "keep_indices=%s, gathered=%s, expected=%s",
+                    keep_indices.tolist(),
+                    metadata.slot_mapping.tolist(),
+                    expected_slot_mapping.tolist(),
+                )
+        if metadata.slot_mapping.numel() != metadata.num_actual_tokens:
+            logger.error(
+                "[LAYER_DROP] slot_mapping length mismatch: "
+                "slot_mapping.numel()=%d, num_actual_tokens=%d",
+                metadata.slot_mapping.numel(),
+                metadata.num_actual_tokens,
+            )
 
         # Causal mask: backend supports both bool and per-request tensor.
         if isinstance(metadata.causal, torch.Tensor):
