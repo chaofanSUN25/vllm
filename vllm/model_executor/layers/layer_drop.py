@@ -89,11 +89,15 @@ class LayerDropManager:
                 are eligible for dropping; decode requests are never dropped.
                 When None, all requests are eligible (legacy behavior).
         """
+        print(f"[LAYER_DROP] precompute called: enabled={self.enabled}, "
+              f"num_reqs={seq_lens.shape[0]}, total_layers={total_layers}, "
+              f"is_prefilling={is_prefilling}")
         if not self.enabled:
             return
         
         num_reqs = seq_lens.shape[0]
         if num_reqs <= 1:
+            print(f"[LAYER_DROP] skipped: num_reqs={num_reqs} <= 1")
             return
         
         # When is_prefilling is provided, skip entirely for decode-only

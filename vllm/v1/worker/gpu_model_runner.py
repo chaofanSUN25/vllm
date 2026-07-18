@@ -4328,6 +4328,9 @@ class GPUModelRunner(
                     is_prefilling = getattr(first_md, "is_prefilling", None)
 
                 # Precompute drop masks for all layers
+                print(f"[RUNNER] precompute_layer_drop_masks: num_reqs={num_reqs}, "
+                      f"enabled={envs.VLLM_LAYER_DROP_ENABLED}, "
+                      f"is_prefilling={is_prefilling}")
                 layer_drop_manager.precompute_layer_drop_masks(
                     seq_lens=seq_lens,
                     total_layers=total_layers,
