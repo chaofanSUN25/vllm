@@ -1239,11 +1239,20 @@ class GPUModelRunner(LoRAModelRunnerMixin):
                 is_prefilling = None
                 if attn_metadata is not None:
                     is_prefilling = getattr(attn_metadata, "is_prefilling", None)
+                # The per-backend attention metadata does not expose
+                # is_prefilling. Derive it from query length: decode requests
+                # always have one new token per step; prefill requests have
+                # more than one (or a chunk).
+                if is_prefilling is None:
+                    query_start_loc = self.input_buffers.query_start_loc[
+                        :num_reqs + 1]
+                    query_lens = query_start_loc[1:] - query_start_loc[:-1]
+                    is_prefilling = query_lens > 1
                 with open("/tmp/layer_drop_debug.txt", "a") as _f:
                     _f.write(
                         f"[MODEL_RUNNER] precompute: num_reqs={num_reqs}, "
                         f"enabled={envs.VLLM_LAYER_DROP_ENABLED}, "
-                        f"is_prefilling={is_prefilling}\n")
+                        f"is_prefilling_any={is_prefilling.any().item()}\n")
                 layer_drop_manager.precompute_layer_drop_masks(
                     seq_lens=seq_lens,
                     total_layers=total_layers,
