@@ -4308,6 +4308,9 @@ class GPUModelRunner(
             # Opt-in via VLLM_LAYER_DROP_ENABLED=1; disabled by default so
             # existing behavior is unchanged unless explicitly requested.
             layer_drop_manager = get_layer_drop_manager()
+            with open("/tmp/layer_drop_debug.txt", "a") as _f:
+                _f.write(f"[RUNNER] reached layer drop branch, "
+                         f"enabled={envs.VLLM_LAYER_DROP_ENABLED}\n")
             if envs.VLLM_LAYER_DROP_ENABLED:
                 layer_drop_manager.enabled = True
                 layer_drop_manager.reset()
