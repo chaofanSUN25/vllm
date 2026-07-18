@@ -4319,7 +4319,7 @@ class GPUModelRunner(
                 seq_lens = self.seq_lens[:num_reqs]
 
                 # Get total number of layers from model config
-                total_layers = self.model_config.get_num_hidden_layers()
+                total_layers = self.model_config.get_total_num_hidden_layers()
 
                 # Extract is_prefilling from attn_metadata so only prefill
                 # requests are eligible for dropping. Decode-only batches

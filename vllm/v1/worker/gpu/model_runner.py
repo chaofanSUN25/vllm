@@ -1235,7 +1235,7 @@ class GPUModelRunner(LoRAModelRunnerMixin):
                 layer_drop_manager.enabled = True
                 layer_drop_manager.reset()
                 seq_lens = self.input_buffers.seq_lens[:num_reqs]
-                total_layers = self.model_config.get_num_hidden_layers()
+                total_layers = self.model_config.get_total_num_hidden_layers()
                 is_prefilling = None
                 if attn_metadata is not None:
                     is_prefilling = getattr(attn_metadata, "is_prefilling", None)
