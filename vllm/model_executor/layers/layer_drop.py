@@ -175,6 +175,15 @@ class LayerDropManager:
             self.final_drop_mask |= drop_mask
             self.layer_drop_masks[layer_idx] = self.final_drop_mask.clone()
 
+        if self.final_drop_mask is not None and self.final_drop_mask.any():
+            dropped_indices = self.final_drop_mask.nonzero(
+                as_tuple=False
+            ).flatten().tolist()
+            logger.warning(
+                "[LAYER_DROP] final dropped request indices: %s",
+                dropped_indices,
+            )
+
     def get_drop_mask_for_layer(
         self,
         layer_idx: int,

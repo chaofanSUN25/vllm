@@ -1440,6 +1440,22 @@ class GPUModelRunner(LoRAModelRunnerMixin):
             self.req_states.prompt_len.np,
         )
 
+        # Collect request IDs dropped by layer drop so the scheduler can
+        # free their KV cache blocks and skip sampling.
+        dropped_req_ids: list[str] = []
+        if envs.VLLM_LAYER_DROP_ENABLED:
+            dropped_indices = get_layer_drop_manager().get_dropped_req_indices()
+            if dropped_indices:
+                dropped_req_ids = [
+                    input_batch.req_ids[i] for i in dropped_indices
+                    if 0 <= i < len(input_batch.req_ids)
+                ]
+                logger.warning(
+                    "[LAYER_DROP] dropped %d requests: %s",
+                    len(dropped_req_ids),
+                    dropped_req_ids,
+                )
+
         # Prepare the model runner output.
         model_runner_output = ModelRunnerOutput(
             req_ids=input_batch.req_ids,
@@ -1448,6 +1464,7 @@ class GPUModelRunner(LoRAModelRunnerMixin):
             req_id_to_index={req_id: i for i, req_id in enumerate(input_batch.req_ids)},
             sampled_token_ids=None,  # type: ignore
             prompt_logprobs_dict=prompt_logprobs_dict,  # type: ignore[arg-type]
+            dropped_req_ids=dropped_req_ids,
         )
         # Start async output copy here so that it can overlap with speculator proposal.
         async_output = AsyncOutput(

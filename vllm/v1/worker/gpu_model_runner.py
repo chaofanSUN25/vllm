@@ -4720,8 +4720,8 @@ class GPUModelRunner(
                         batch_req_ids[i] for i in dropped_indices
                         if 0 <= i < len(batch_req_ids)
                     ]
-                    logger.debug(
-                        "Layer drop dropped %d requests: %s",
+                    logger.warning(
+                        "[LAYER_DROP] dropped %d requests: %s",
                         len(dropped_req_ids),
                         dropped_req_ids,
                     )
