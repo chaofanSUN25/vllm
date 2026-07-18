@@ -6,6 +6,8 @@ This module implements layer-level request dropping to reduce computation
 and communication overhead in tensor parallel inference.
 """
 
+from typing import Any
+
 import torch
 from torch import nn
 
