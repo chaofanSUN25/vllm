@@ -1379,6 +1379,12 @@ environment_variables: dict[str, Callable[[], Any]] = {
     "VLLM_LAYER_DROP_ENABLED": lambda: (
         os.environ.get("VLLM_LAYER_DROP_ENABLED", "0") == "1"
     ),
+    # Maximum fraction of requests that can be dropped across all layers
+    # when layer drop is enabled.  The cumulative number of dropped requests
+    # is capped to this fraction of the batch size.
+    "VLLM_LAYER_DROP_MAX_RATIO": lambda: float(
+        os.environ.get("VLLM_LAYER_DROP_MAX_RATIO", "0.1")
+    ),
     # Strategy to pack the data parallel ranks for Ray.
     # Available options:
     # - "fill":

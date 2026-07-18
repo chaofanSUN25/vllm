@@ -1532,7 +1532,6 @@ class Scheduler(SchedulerInterface):
                 self.encoder_cache_manager.free(request)
                 self.kv_cache_manager.free(request)
                 self.finished_req_ids.add(req_id)
-                request.status = RequestStatus.FINISHED
                 del self.requests[req_id]
             # Remove dropped requests from the running list so the next
             # scheduling pass does not try to schedule them again.

@@ -12,6 +12,7 @@ from typing import Any
 import torch
 from torch import nn
 
+from vllm import envs
 from vllm.distributed import (
     get_tp_group,
     get_tensor_model_parallel_world_size,
@@ -118,12 +119,22 @@ class LayerDropManager:
         
         # Initialize final drop mask (starts as all False)
         self.final_drop_mask = torch.zeros(num_reqs, dtype=torch.bool, device=seq_lens.device)
-        
+
+        # Cap cumulative drops to max_drop_ratio of the batch.
+        max_total_drops = max(1, int(num_reqs * self.max_drop_ratio))
+
         # Precompute drop mask for each layer
         for layer_idx in range(total_layers):
             k = self._calculate_k(num_reqs, layer_idx, total_layers)
+
+            # Cumulative drop budget: once we have dropped enough requests,
+            # stop adding new drops at later layers.
+            already_dropped = int(self.final_drop_mask.sum().item())
+            remaining = max_total_drops - already_dropped
+            k = min(k, remaining)
+
             if k <= 0:
-                self.layer_drop_masks[layer_idx] = torch.zeros(
+                self.layer_drop_masks[layer_idx] = self.final_drop_mask.clone() if already_dropped > 0 else torch.zeros(
                     num_reqs, dtype=torch.bool, device=seq_lens.device
                 )
                 continue
@@ -161,11 +172,6 @@ class LayerDropManager:
             drop_mask = torch.zeros(num_reqs, dtype=torch.bool, device=seq_lens.device)
             drop_mask[top_k_indices] = True
 
-            # DEBUG: force drop request 0 at layer 0 to verify end-to-end path
-            if layer_idx == 0 and num_reqs > 1:
-                logger.warning("[LAYER_DROP] forcing drop of request 0 at layer 0")
-                drop_mask[0] = True
-            
             # Synchronize across TP ranks
             drop_mask = self._sync_drop_mask(drop_mask)
             
@@ -810,7 +816,8 @@ def get_layer_drop_manager() -> LayerDropManager:
     """Get the global layer drop manager instance."""
     global _layer_drop_manager
     if _layer_drop_manager is None:
-        _layer_drop_manager = LayerDropManager()
+        _layer_drop_manager = LayerDropManager(
+            max_drop_ratio=envs.VLLM_LAYER_DROP_MAX_RATIO)
     return _layer_drop_manager
 
 
@@ -821,7 +828,7 @@ def set_layer_drop_manager(manager: LayerDropManager) -> None:
 
 
 def initialize_layer_drop(
-    max_drop_ratio: float = 0.3,
+    max_drop_ratio: float = envs.VLLM_LAYER_DROP_MAX_RATIO,
     length_ratio_threshold: float = 2.0,
     priority_weight: float = 1.0,
     length_weight: float = 1.0,
