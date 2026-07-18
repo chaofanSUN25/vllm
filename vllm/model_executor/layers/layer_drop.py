@@ -489,6 +489,17 @@ class LayerDropManager:
         Returns:
             Updated attention metadata with dropped requests removed.
         """
+        # V1 FlashAttention uses FlashAttentionMetadata, which has a different
+        # field layout than CommonAttentionMetadata. Route to the specialized
+        # updater when we detect that backend.
+        if (
+            hasattr(metadata, "block_table")
+            and not hasattr(metadata, "block_table_tensor")
+        ):
+            return self._update_flash_attention_metadata(
+                metadata, keep_mask, index_map, keep_indices
+            )
+
         # Filter kept requests
         kept_seq_lens = metadata.seq_lens[keep_mask]
         
@@ -654,6 +665,89 @@ class LayerDropManager:
         )
         
         return updated_metadata
+
+    def _update_flash_attention_metadata(
+        self,
+        metadata: Any,
+        keep_mask: torch.Tensor,
+        index_map: torch.Tensor,
+        keep_indices: torch.Tensor,
+    ) -> Any:
+        """In-place update FlashAttentionMetadata after dropping requests.
+
+        FlashAttentionMetadata has a different shape and field set than
+        CommonAttentionMetadata. We update the per-request and per-token
+        fields directly and conservatively disable cascade attention / DCP
+        / scheduler metadata for the compacted batch because recomputing
+        those structures is backend-specific and not needed for correctness.
+        """
+        num_kept_reqs = int(keep_mask.sum().item())
+        if num_kept_reqs == 0:
+            # All requests dropped; leave caller to handle empty batch.
+            return metadata
+
+        # Per-request lengths
+        kept_seq_lens = metadata.seq_lens[keep_mask]
+        query_lens = metadata.query_start_loc[1:] - metadata.query_start_loc[:-1]
+        kept_query_lens = query_lens[keep_mask]
+
+        # Rebuild query_start_loc
+        new_query_start_loc = torch.zeros(
+            num_kept_reqs + 1,
+            dtype=metadata.query_start_loc.dtype,
+            device=metadata.query_start_loc.device,
+        )
+        new_query_start_loc[0] = 0
+        new_query_start_loc[1:] = torch.cumsum(kept_query_lens, dim=0)
+        metadata.query_start_loc = new_query_start_loc
+
+        metadata.seq_lens = kept_seq_lens
+        metadata.num_actual_tokens = int(new_query_start_loc[-1].item())
+        metadata.max_query_len = int(kept_query_lens.max().item())
+        metadata.max_seq_len = int(kept_seq_lens.max().item())
+
+        # Block table and slot mapping
+        metadata.block_table = metadata.block_table[keep_mask]
+        metadata.slot_mapping = metadata.slot_mapping[keep_indices]
+
+        # Causal mask: backend supports both bool and per-request tensor.
+        if isinstance(metadata.causal, torch.Tensor):
+            metadata.causal = metadata.causal[keep_mask]
+
+        # Multimodal PrefixLM ranges: renumber request indices.
+        if metadata.mm_prefix_range_tensor is not None:
+            keep_mask_cpu = keep_mask.cpu()
+            old_to_new = torch.cumsum(keep_mask_cpu, dim=0) - 1
+            kept_old_indices = old_to_new[keep_mask_cpu].long()
+            metadata.mm_prefix_range_tensor = (
+                metadata.mm_prefix_range_tensor[keep_mask]
+            )
+            # The tensor is [num_seqs, max_ranges, 2]; request axis is already
+            # filtered above, no further index rewrite needed.
+            _ = kept_old_indices  # silence unused variable
+
+        # R-SWA prefix lengths
+        if metadata.rswa_prefix_lens is not None:
+            metadata.rswa_prefix_lens = metadata.rswa_prefix_lens[keep_mask]
+
+        # Cascade attention structures depend on the exact prefix shared across
+        # the batch. Dropping requests can change the common prefix, so disable
+        # cascade for the compacted batch to keep correctness.
+        metadata.use_cascade = False
+        metadata.common_prefix_len = 0
+        metadata.cu_prefix_query_lens = None
+        metadata.prefix_kv_lens = None
+        metadata.suffix_kv_lens = None
+
+        # GQA DCP and AOT scheduler metadata are also batch-shape dependent;
+        # clear them to force the backend to recompute or fall back.
+        metadata.max_dcp_context_kv_len = None
+        metadata.dcp_context_kv_lens = None
+        metadata.scheduler_metadata = None
+        metadata.prefix_scheduler_metadata = None
+        metadata.max_num_splits = 0
+
+        return metadata
 
     def update_positions(
         self,
