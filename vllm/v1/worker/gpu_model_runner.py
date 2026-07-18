@@ -4328,10 +4328,10 @@ class GPUModelRunner(
                     is_prefilling = getattr(first_md, "is_prefilling", None)
 
                 # Precompute drop masks for all layers
-                logger.info("[RUNNER] precompute_layer_drop_masks: "
-                            "num_reqs=%s, enabled=%s, is_prefilling=%s",
-                            num_reqs, envs.VLLM_LAYER_DROP_ENABLED,
-                            is_prefilling)
+                logger.warning("[RUNNER] precompute_layer_drop_masks: "
+                               "num_reqs=%s, enabled=%s, is_prefilling=%s",
+                               num_reqs, envs.VLLM_LAYER_DROP_ENABLED,
+                               is_prefilling)
                 layer_drop_manager.precompute_layer_drop_masks(
                     seq_lens=seq_lens,
                     total_layers=total_layers,

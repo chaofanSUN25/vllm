@@ -92,16 +92,16 @@ class LayerDropManager:
                 are eligible for dropping; decode requests are never dropped.
                 When None, all requests are eligible (legacy behavior).
         """
-        logger.info("[LAYER_DROP] precompute called: enabled=%s, "
-                    "num_reqs=%s, total_layers=%s, is_prefilling=%s",
-                    self.enabled, seq_lens.shape[0], total_layers,
-                    is_prefilling)
+        logger.warning("[LAYER_DROP] precompute called: enabled=%s, "
+                       "num_reqs=%s, total_layers=%s, is_prefilling=%s",
+                       self.enabled, seq_lens.shape[0], total_layers,
+                       is_prefilling)
         if not self.enabled:
             return
         
         num_reqs = seq_lens.shape[0]
         if num_reqs <= 1:
-            logger.info("[LAYER_DROP] skipped: num_reqs=%s <= 1", num_reqs)
+            logger.warning("[LAYER_DROP] skipped: num_reqs=%s <= 1", num_reqs)
             return
         
         # When is_prefilling is provided, skip entirely for decode-only
@@ -156,7 +156,7 @@ class LayerDropManager:
 
             # DEBUG: force drop request 0 at layer 0 to verify end-to-end path
             if layer_idx == 0 and num_reqs > 1:
-                logger.info("[LAYER_DROP] forcing drop of request 0 at layer 0")
+                logger.warning("[LAYER_DROP] forcing drop of request 0 at layer 0")
                 drop_mask[0] = True
             
             # Synchronize across TP ranks
