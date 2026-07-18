@@ -6,6 +6,7 @@ This module implements layer-level request dropping to reduce computation
 and communication overhead in tensor parallel inference.
 """
 
+from dataclasses import replace
 from typing import Any
 
 import torch
@@ -675,18 +676,22 @@ class LayerDropManager:
         index_map: torch.Tensor,
         keep_indices: torch.Tensor,
     ) -> Any:
-        """In-place update FlashAttentionMetadata after dropping requests.
+        """Return a compacted copy of FlashAttentionMetadata after dropping.
 
         FlashAttentionMetadata has a different shape and field set than
         CommonAttentionMetadata. We update the per-request and per-token
-        fields directly and conservatively disable cascade attention / DCP
-        / scheduler metadata for the compacted batch because recomputing
+        fields on a shallow copy and conservatively disable cascade attention
+        / DCP / scheduler metadata for the compacted batch because recomputing
         those structures is backend-specific and not needed for correctness.
         """
         num_kept_reqs = int(keep_mask.sum().item())
         if num_kept_reqs == 0:
             # All requests dropped; leave caller to handle empty batch.
             return metadata
+
+        # Work on a copy so the original attention metadata object shared
+        # across layers is not mutated.
+        metadata = replace(metadata)
 
         # Per-request lengths
         kept_seq_lens = metadata.seq_lens[keep_mask]
