@@ -51,7 +51,12 @@ from vllm.v1.core.sched.request_queue import (
     create_request_queue,
 )
 from vllm.v1.core.sched.utils import check_stop, remove_all
-from vllm.v1.engine import EngineCoreEventType, EngineCoreOutput, EngineCoreOutputs
+from vllm.v1.engine import (
+    EngineCoreEventType,
+    EngineCoreOutput,
+    EngineCoreOutputs,
+    FinishReason,
+)
 from vllm.v1.kv_cache_interface import KVCacheConfig
 from vllm.v1.metrics.perf import ModelMetrics, PerfStats
 from vllm.v1.metrics.stats import PrefixCacheStats, SchedulerStats
@@ -1523,6 +1528,7 @@ class Scheduler(SchedulerInterface):
         # those requests are skipped entirely.
         dropped_req_ids = model_runner_output.dropped_req_ids
         dropped_req_set = set(dropped_req_ids) if dropped_req_ids else set()
+        dropped_outputs: dict[int, list[EngineCoreOutput]] = defaultdict(list)
         if dropped_req_set:
             for req_id in dropped_req_ids:
                 request = self.requests.get(req_id)
@@ -1532,6 +1538,15 @@ class Scheduler(SchedulerInterface):
                 self.encoder_cache_manager.free(request)
                 self.kv_cache_manager.free(request)
                 self.finished_req_ids.add(req_id)
+                # Produce an empty final output so the front-end can return
+                # a response instead of hanging on the dropped request.
+                dropped_outputs[request.client_index].append(
+                    EngineCoreOutput(
+                        request_id=req_id,
+                        new_token_ids=[],
+                        finish_reason=FinishReason.LENGTH,
+                    )
+                )
                 del self.requests[req_id]
             # Remove dropped requests from the running list so the next
             # scheduling pass does not try to schedule them again.
@@ -1854,6 +1869,11 @@ class Scheduler(SchedulerInterface):
         if events:
             batch = KVEventBatch(ts=time.time(), events=events)
             self.kv_event_publisher.publish(batch)
+
+        # Add synthetic outputs for dropped requests so the front-end can
+        # finalize them instead of leaving client connections hanging.
+        for client_index, outs in dropped_outputs.items():
+            outputs[client_index].extend(outs)
 
         # Create EngineCoreOutputs for all clients that have requests with
         # outputs in this step.
