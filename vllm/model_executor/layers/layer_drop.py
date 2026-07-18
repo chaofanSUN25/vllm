@@ -13,7 +13,10 @@ from vllm.distributed import (
     get_tp_group,
     get_tensor_model_parallel_world_size,
 )
+from vllm.logger import init_logger
 from vllm.v1.attention.backend import CommonAttentionMetadata
+
+logger = init_logger(__name__)
 
 
 class LayerDropManager:
@@ -89,15 +92,16 @@ class LayerDropManager:
                 are eligible for dropping; decode requests are never dropped.
                 When None, all requests are eligible (legacy behavior).
         """
-        print(f"[LAYER_DROP] precompute called: enabled={self.enabled}, "
-              f"num_reqs={seq_lens.shape[0]}, total_layers={total_layers}, "
-              f"is_prefilling={is_prefilling}")
+        logger.info("[LAYER_DROP] precompute called: enabled=%s, "
+                    "num_reqs=%s, total_layers=%s, is_prefilling=%s",
+                    self.enabled, seq_lens.shape[0], total_layers,
+                    is_prefilling)
         if not self.enabled:
             return
         
         num_reqs = seq_lens.shape[0]
         if num_reqs <= 1:
-            print(f"[LAYER_DROP] skipped: num_reqs={num_reqs} <= 1")
+            logger.info("[LAYER_DROP] skipped: num_reqs=%s <= 1", num_reqs)
             return
         
         # When is_prefilling is provided, skip entirely for decode-only
@@ -149,6 +153,11 @@ class LayerDropManager:
             _, top_k_indices = torch.topk(available_scores, k, largest=True)
             drop_mask = torch.zeros(num_reqs, dtype=torch.bool, device=seq_lens.device)
             drop_mask[top_k_indices] = True
+
+            # DEBUG: force drop request 0 at layer 0 to verify end-to-end path
+            if layer_idx == 0 and num_reqs > 1:
+                logger.info("[LAYER_DROP] forcing drop of request 0 at layer 0")
+                drop_mask[0] = True
             
             # Synchronize across TP ranks
             drop_mask = self._sync_drop_mask(drop_mask)
