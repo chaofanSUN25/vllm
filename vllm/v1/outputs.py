@@ -280,6 +280,12 @@ class ModelRunnerOutput:
     # ``None`` when ``enable_return_routed_experts`` is off.
     routed_experts: RoutedExpertsLists | None = None
 
+    # Request IDs dropped by layer drop during this step's forward pass.
+    # The scheduler must free their KV cache blocks and skip sampling
+    # for them, since their hidden_states were zeroed out. Empty when
+    # layer drop is disabled or no requests were dropped.
+    dropped_req_ids: list[str] = field(default_factory=list)
+
     @staticmethod
     def with_kv_conn_output_only(
         kv_connector_output: KVConnectorOutput | None,

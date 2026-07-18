@@ -1516,6 +1516,29 @@ class Scheduler(SchedulerInterface):
         kv_connector_output = model_runner_output.kv_connector_output
         cudagraph_stats = model_runner_output.cudagraph_stats
 
+        # Layer drop: free KV cache blocks for dropped requests and remove
+        # them from tracking. Their hidden_states were zeroed out during
+        # forward, so any sampled tokens are invalid and must not be
+        # processed downstream. We do this before the per-request loop so
+        # those requests are skipped entirely.
+        dropped_req_ids = model_runner_output.dropped_req_ids
+        dropped_req_set = set(dropped_req_ids) if dropped_req_ids else set()
+        if dropped_req_set:
+            for req_id in dropped_req_ids:
+                request = self.requests.get(req_id)
+                if request is None:
+                    continue
+                self._inflight_prefills.discard(request)
+                self.encoder_cache_manager.free(request)
+                self.kv_cache_manager.free(request)
+                self.finished_req_ids.add(req_id)
+                del self.requests[req_id]
+            logger.debug(
+                "Layer drop: freed %d requests: %s",
+                len(dropped_req_set),
+                dropped_req_ids,
+            )
+
         # Every GPU write enqueued by this and earlier steps has completed, so it is
         # safe to return deferred-free blocks to the pool.
         if self.defer_block_free and scheduler_output.total_num_scheduled_tokens > 0:
@@ -1567,6 +1590,10 @@ class Scheduler(SchedulerInterface):
         stopped_preempted_reqs: set[Request] = set()
         for req_id, num_tokens_scheduled in num_scheduled_tokens.items():
             assert num_tokens_scheduled > 0
+            # Skip requests dropped by layer drop; their KV cache has been
+            # freed and they are no longer in self.requests.
+            if req_id in dropped_req_set:
+                continue
             request = self.requests.get(req_id)
             if request is not None:
                 request.num_in_flight_tokens -= num_tokens_scheduled

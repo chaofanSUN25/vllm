@@ -235,6 +235,8 @@ if TYPE_CHECKING:
     from vllm.v1.spec_decode.ngram_proposer import NgramProposer
     from vllm.v1.worker.encoder_cudagraph import EncoderCudaGraphManager
 
+from vllm.model_executor.layers.layer_drop import get_layer_drop_manager
+
 logger = init_logger(__name__)
 
 AttnMetadataDict: TypeAlias = dict[str, AttentionMetadata]
@@ -4292,8 +4294,7 @@ class GPUModelRunner(
                 )
             )
 
-            (
-                input_ids,
+            (input_ids,
                 inputs_embeds,
                 positions,
                 intermediate_tensors,
@@ -4302,6 +4303,40 @@ class GPUModelRunner(
             ) = self._preprocess(
                 scheduler_output, num_tokens_padded, intermediate_tensors
             )
+
+            # Layer drop: Precompute drop masks for all layers.
+            # Opt-in via VLLM_LAYER_DROP_ENABLED=1; disabled by default so
+            # existing behavior is unchanged unless explicitly requested.
+            layer_drop_manager = get_layer_drop_manager()
+            if envs.VLLM_LAYER_DROP_ENABLED:
+                layer_drop_manager.enabled = True
+                layer_drop_manager.reset()
+
+                # Get sequence lengths for drop decision
+                seq_lens = self.seq_lens[:num_reqs]
+
+                # Get total number of layers from model config
+                total_layers = self.model_config.get_num_hidden_layers()
+
+                # Extract is_prefilling from attn_metadata so only prefill
+                # requests are eligible for dropping. Decode-only batches
+                # skip precompute entirely, keeping the forward path
+                # CUDA-graph compatible.
+                is_prefilling = None
+                if isinstance(attn_metadata, dict) and attn_metadata:
+                    first_md = next(iter(attn_metadata.values()))
+                    is_prefilling = getattr(first_md, "is_prefilling", None)
+
+                # Precompute drop masks for all layers
+                layer_drop_manager.precompute_layer_drop_masks(
+                    seq_lens=seq_lens,
+                    total_layers=total_layers,
+                    is_prefilling=is_prefilling,
+                )
+            else:
+                layer_drop_manager.enabled = False
+                layer_drop_manager.layer_drop_masks.clear()
+                layer_drop_manager.final_drop_mask = None
 
         # Set cudagraph mode to none if calc_kv_scales is true.
         # KV scales calculation involves dynamic operations that are incompatible
@@ -4665,6 +4700,25 @@ class GPUModelRunner(
         self.kv_connector_output = None
 
         with record_function_or_nullcontext("gpu_model_runner: ModelRunnerOutput"):
+            # Collect request IDs dropped by layer drop so the scheduler can
+            # free their KV cache blocks and skip sampling. final_drop_mask
+            # is indexed the same as input_batch.req_ids.
+            dropped_req_ids: list[str] = []
+            if envs.VLLM_LAYER_DROP_ENABLED:
+                layer_drop_manager = get_layer_drop_manager()
+                dropped_indices = layer_drop_manager.get_dropped_req_indices()
+                if dropped_indices:
+                    batch_req_ids = self.input_batch.req_ids
+                    dropped_req_ids = [
+                        batch_req_ids[i] for i in dropped_indices
+                        if 0 <= i < len(batch_req_ids)
+                    ]
+                    logger.debug(
+                        "Layer drop dropped %d requests: %s",
+                        len(dropped_req_ids),
+                        dropped_req_ids,
+                    )
+
             output = ModelRunnerOutput(
                 req_ids=req_ids_output_copy,
                 req_id_to_index=req_id_to_index_output_copy,
@@ -4678,6 +4732,7 @@ class GPUModelRunner(
                 num_nans_in_logits=num_nans_in_logits,
                 cudagraph_stats=cudagraph_stats,
                 routed_experts=None,
+                dropped_req_ids=dropped_req_ids,
             )
 
         if not self.use_async_scheduling:

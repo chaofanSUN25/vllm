@@ -1374,6 +1374,11 @@ environment_variables: dict[str, Callable[[], Any]] = {
     "VLLM_RANDOMIZE_DP_DUMMY_INPUTS": lambda: (
         os.environ.get("VLLM_RANDOMIZE_DP_DUMMY_INPUTS", "0") == "1"
     ),
+    # Enable layer-level request dropping during forward pass to reduce
+    # compute/comm overhead for straggler requests. Opt-in; off by default.
+    "VLLM_LAYER_DROP_ENABLED": lambda: (
+        os.environ.get("VLLM_LAYER_DROP_ENABLED", "0") == "1"
+    ),
     # Strategy to pack the data parallel ranks for Ray.
     # Available options:
     # - "fill":

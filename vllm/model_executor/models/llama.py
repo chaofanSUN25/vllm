@@ -65,6 +65,12 @@ from .interfaces import (
     SupportsPP,
     SupportsQuant,
 )
+from vllm.forward_context import (
+    get_forward_context,
+    is_forward_context_available,
+)
+from vllm.model_executor.layers.layer_drop import get_layer_drop_manager
+
 from .utils import (
     AutoWeightsLoader,
     PPMissingLayer,
@@ -417,11 +423,19 @@ class LlamaModel(nn.Module, EagleModelMixin):
             residual = intermediate_tensors["residual"]
 
         aux_hidden_states = self._maybe_add_hidden_state([], 0, hidden_states, residual)
+        layer_drop_manager = get_layer_drop_manager()
         for idx, layer in enumerate(
             islice(self.layers, self.start_layer, self.end_layer)
         ):
-            hidden_states, residual = layer(
-                positions, hidden_states, residual, **extra_layer_kwargs
+            layer_idx = self.start_layer + idx
+            hidden_states, residual = self._forward_layer_with_drop(
+                layer,
+                layer_idx,
+                positions,
+                hidden_states,
+                residual,
+                layer_drop_manager,
+                **extra_layer_kwargs,
             )
             self._maybe_add_hidden_state(
                 aux_hidden_states, idx + 1, hidden_states, residual
@@ -437,6 +451,86 @@ class LlamaModel(nn.Module, EagleModelMixin):
         if len(aux_hidden_states) > 0:
             return hidden_states, aux_hidden_states
         return hidden_states
+
+    def _forward_layer_with_drop(
+        self,
+        layer: nn.Module,
+        layer_idx: int,
+        positions: torch.Tensor,
+        hidden_states: torch.Tensor,
+        residual: torch.Tensor | None,
+        layer_drop_manager,
+        **extra_layer_kwargs,
+    ) -> tuple[torch.Tensor, torch.Tensor | None]:
+        """Run one decoder layer, applying layer drop when a mask is available.
+
+        When layer drop is enabled for ``layer_idx``, the token axis is
+        compacted to keep-only rows before calling ``layer``; the layer output
+        is then scattered back to the original (un-compacted) layout so that
+        downstream layers and the final norm see a stable tensor shape.
+
+        Falls back to a plain ``layer(...)`` call when drop is disabled, no
+        mask exists for this layer, or the forward context is unavailable.
+        """
+        if not layer_drop_manager.enabled:
+            return layer(positions, hidden_states, residual, **extra_layer_kwargs)
+
+        drop_mask = layer_drop_manager.get_drop_mask_for_layer(layer_idx)
+        if drop_mask is None or not drop_mask.any():
+            return layer(positions, hidden_states, residual, **extra_layer_kwargs)
+
+        if not is_forward_context_available():
+            return layer(positions, hidden_states, residual, **extra_layer_kwargs)
+
+        ctx = get_forward_context()
+        attn_md = ctx.attn_metadata
+        # Only dict-form (v1 standard) is supported; skip for DBO list form.
+        if not isinstance(attn_md, dict) or not attn_md:
+            return layer(positions, hidden_states, residual, **extra_layer_kwargs)
+
+        first_key = next(iter(attn_md))
+        orig_attn_md = attn_md[first_key]
+        query_start_loc = orig_attn_md.query_start_loc
+
+        keep_mask = ~drop_mask
+        (
+            compacted_hs,
+            index_map,
+            keep_indices,
+        ) = layer_drop_manager.compact_hidden_states(
+            hidden_states, keep_mask, query_start_loc
+        )
+        compacted_pos = positions[keep_indices]
+        compacted_residual = (
+            residual[keep_indices] if residual is not None else None
+        )
+
+        new_attn_md = layer_drop_manager.update_metadata(
+            orig_attn_md, keep_mask, index_map, keep_indices
+        )
+        new_attn_md_dict = {k: new_attn_md for k in attn_md}
+        ctx.attn_metadata = new_attn_md_dict
+        try:
+            layer_out, layer_residual = layer(
+                compacted_pos,
+                compacted_hs,
+                compacted_residual,
+                **extra_layer_kwargs,
+            )
+        finally:
+            ctx.attn_metadata = attn_md
+
+        # Scatter compacted outputs back to the original token layout.
+        full_hs = torch.zeros_like(hidden_states)
+        full_hs[keep_indices] = layer_out
+        if layer_residual is not None:
+            full_residual = torch.zeros_like(
+                hidden_states if residual is None else residual
+            )
+            full_residual[keep_indices] = layer_residual
+        else:
+            full_residual = residual
+        return full_hs, full_residual
 
     def load_weights(self, weights: Iterable[tuple[str, torch.Tensor]]) -> set[str]:
         loader = AutoWeightsLoader(self)
