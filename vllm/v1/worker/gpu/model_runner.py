@@ -38,6 +38,7 @@ from vllm.distributed.parallel_state import (
 )
 from vllm.forward_context import BatchDescriptor, set_forward_context
 from vllm.logger import init_logger
+from vllm.model_executor.layers.layer_drop import get_layer_drop_manager
 from vllm.model_executor.layers.mamba.ops.ssu_dispatch import (
     initialize_mamba_ssu_backend,
 )
@@ -1225,6 +1226,33 @@ class GPUModelRunner(LoRAModelRunnerMixin):
                 self.attn_groups,
                 self.kv_cache_config,
             )
+
+        if not dummy_run:
+            # Layer drop: precompute drop masks for all layers.
+            # Opt-in via VLLM_LAYER_DROP_ENABLED=1.
+            layer_drop_manager = get_layer_drop_manager()
+            if envs.VLLM_LAYER_DROP_ENABLED:
+                layer_drop_manager.enabled = True
+                layer_drop_manager.reset()
+                seq_lens = self.input_buffers.seq_lens[:num_reqs]
+                total_layers = self.model_config.get_num_hidden_layers()
+                is_prefilling = None
+                if attn_metadata is not None:
+                    is_prefilling = getattr(attn_metadata, "is_prefilling", None)
+                with open("/tmp/layer_drop_debug.txt", "a") as _f:
+                    _f.write(
+                        f"[MODEL_RUNNER] precompute: num_reqs={num_reqs}, "
+                        f"enabled={envs.VLLM_LAYER_DROP_ENABLED}, "
+                        f"is_prefilling={is_prefilling}\n")
+                layer_drop_manager.precompute_layer_drop_masks(
+                    seq_lens=seq_lens,
+                    total_layers=total_layers,
+                    is_prefilling=is_prefilling,
+                )
+            else:
+                layer_drop_manager.enabled = False
+                layer_drop_manager.layer_drop_masks.clear()
+                layer_drop_manager.final_drop_mask = None
 
         input_ids = input_batch.input_ids
         inputs_embeds = None
