@@ -88,17 +88,11 @@ def send_completion(
         return {"error": str(e)}
 
 
-def compare_prompt(
+def compare_responses(
     prompt: str,
-    baseline_url: str,
-    layer_drop_url: str,
-    model: str,
-    max_tokens: int,
-    temperature: float,
+    base: dict[str, Any],
+    ld: dict[str, Any],
 ) -> dict[str, Any]:
-    base = send_completion(baseline_url, model, prompt, max_tokens, temperature)
-    ld = send_completion(layer_drop_url, model, prompt, max_tokens, temperature)
-
     result: dict[str, Any] = {
         "prompt": prompt[:200],
         "baseline": base,
@@ -112,30 +106,13 @@ def compare_prompt(
     result["exact_match"] = base["text"] == ld["text"]
     result["token_overlap"] = token_overlap(base["text"], ld["text"])
     result["rouge_l"] = rouge_l_score(base["text"], ld["text"])
-
-    # Dropped request characteristics
     result["dropped"] = ld["finish_reason"] == "length" and ld["text"] == ""
     return result
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--baseline-url",
-                        default="http://localhost:8000/v1/completions")
-    parser.add_argument("--layer-drop-url",
-                        default="http://localhost:8001/v1/completions")
-    parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
-    parser.add_argument("--output",
-                        default="results/layer_drop_quality.json")
-    parser.add_argument("--num-prompts", type=int, default=50)
-    parser.add_argument("--max-tokens", type=int, default=64)
-    parser.add_argument("--temperature", type=float, default=0.0)
-    parser.add_argument("--seed", type=int, default=42)
-    args = parser.parse_args()
-
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-
+def build_prompts(num_prompts: int, seed: int) -> list[str]:
+    random.seed(seed)
+    np.random.seed(seed)
     prompts = [
         "Explain the theory of relativity in simple terms.",
         "Write a short poem about artificial intelligence.",
@@ -148,22 +125,30 @@ def main() -> None:
         "Write a Python function to compute factorial.",
         "Compare SQL and NoSQL databases.",
     ]
-    prompts = (prompts * ((args.num_prompts // len(prompts)) + 1)
-               )[:args.num_prompts]
+    return (prompts * ((num_prompts // len(prompts)) + 1))[:num_prompts]
 
-    results: list[dict[str, Any]] = []
-    dropped_count = 0
+
+def collect_responses(
+    prompts: list[str],
+    url: str,
+    model: str,
+    max_tokens: int,
+    temperature: float,
+    label: str,
+) -> list[dict[str, Any]]:
+    responses: list[dict[str, Any]] = []
     for i, prompt in enumerate(prompts):
-        print(f"[{i + 1}/{args.num_prompts}] comparing prompt ...")
-        entry = compare_prompt(prompt, args.baseline_url, args.layer_drop_url,
-                               args.model, args.max_tokens, args.temperature)
-        results.append(entry)
-        if entry.get("dropped"):
-            dropped_count += 1
+        print(f"[{i + 1}/{len(prompts)}] {label}: {prompt[:60]}...")
+        responses.append(
+            send_completion(url, model, prompt, max_tokens, temperature))
+    return responses
 
+
+def compute_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
     valid = [r for r in results if not r.get("error")]
-    summary = {
-        "num_prompts": len(prompts),
+    dropped_count = sum(1 for r in valid if r.get("dropped"))
+    return {
+        "num_prompts": len(results),
         "valid": len(valid),
         "dropped_count": dropped_count,
         "exact_match_rate": float(
@@ -173,10 +158,84 @@ def main() -> None:
         "mean_rouge_l": float(np.mean([r["rouge_l"] for r in valid])),
     }
 
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--mode", choices=["baseline", "layer_drop", "both"], default="both")
+    parser.add_argument("--baseline-url",
+                        default="http://localhost:8000/v1/completions")
+    parser.add_argument("--layer-drop-url",
+                        default="http://localhost:8001/v1/completions")
+    parser.add_argument("--baseline-cache",
+                        default="results/layer_drop_quality_baseline_cache.json")
+    parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
+    parser.add_argument("--output",
+                        default="results/layer_drop_quality.json")
+    parser.add_argument("--num-prompts", type=int, default=50)
+    parser.add_argument("--max-tokens", type=int, default=64)
+    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--seed", type=int, default=42)
+    args = parser.parse_args()
+
+    prompts = build_prompts(args.num_prompts, args.seed)
+
+    if args.mode == "baseline":
+        baseline_responses = collect_responses(
+            prompts, args.baseline_url, args.model, args.max_tokens,
+            args.temperature, "baseline")
+        cache = {
+            "config": {
+                "url": args.baseline_url,
+                "model": args.model,
+                "max_tokens": args.max_tokens,
+                "temperature": args.temperature,
+                "seed": args.seed,
+            },
+            "prompts": prompts,
+            "responses": baseline_responses,
+        }
+        cache_path = Path(args.baseline_cache)
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        with cache_path.open("w") as f:
+            json.dump(cache, f, indent=2, ensure_ascii=False)
+        print(f"Saved baseline responses to {cache_path}")
+        return
+
+    if args.mode == "layer_drop":
+        cache_path = Path(args.baseline_cache)
+        if not cache_path.exists():
+            raise FileNotFoundError(
+                f"Baseline cache not found: {cache_path}. "
+                "Run with --mode baseline first.")
+        with cache_path.open("r") as f:
+            cache = json.load(f)
+        baseline_responses = cache["responses"]
+        layer_drop_responses = collect_responses(
+            prompts, args.layer_drop_url, args.model, args.max_tokens,
+            args.temperature, "layer_drop")
+        results = [
+            compare_responses(p, b, l)
+            for p, b, l in zip(prompts, baseline_responses,
+                               layer_drop_responses)
+        ]
+    else:  # both
+        results = []
+        for i, prompt in enumerate(prompts):
+            print(f"[{i + 1}/{len(prompts)}] comparing prompt ...")
+            base = send_completion(args.baseline_url, args.model, prompt,
+                                   args.max_tokens, args.temperature)
+            ld = send_completion(args.layer_drop_url, args.model, prompt,
+                                 args.max_tokens, args.temperature)
+            results.append(compare_responses(prompt, base, ld))
+
+    summary = compute_summary(results)
     output = {
         "config": {
+            "mode": args.mode,
             "baseline_url": args.baseline_url,
             "layer_drop_url": args.layer_drop_url,
+            "baseline_cache": args.baseline_cache,
             "model": args.model,
             "max_tokens": args.max_tokens,
             "temperature": args.temperature,
