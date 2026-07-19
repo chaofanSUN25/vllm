@@ -1,0 +1,43 @@
+{
+  "config": {
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "num_requests": 64,
+    "long_ratio": 0.2,
+    "short_len": 8,
+    "long_len": 512,
+    "max_tokens": 20,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "url": "http://localhost:8001/v1/completions",
+      "num_prompts": 64,
+      "max_tokens": 20,
+      "success": 64,
+      "failed": 0,
+      "total_duration_s": 1.6084524616599083,
+      "throughput_rps": 39.789798906429965,
+      "ttft_ms": {
+        "n": 64,
+        "mean_ms": 698.4187983034644,
+        "stdev_ms": 95.0066722998263,
+        "p50_ms": 666.3285344839096,
+        "p90_ms": 805.0221586599946,
+        "p99_ms": 815.7800761982799,
+        "min_ms": 297.5381873548031,
+        "max_ms": 817.2099450603127
+      },
+      "e2e_ms": {
+        "n": 64,
+        "mean_ms": 1287.6887749880552,
+        "stdev_ms": 361.3072721130468,
+        "p50_ms": 1499.169412534684,
+        "p90_ms": 1555.1842332817614,
+        "p99_ms": 1571.2133722845465,
+        "min_ms": 607.1323454380035,
+        "max_ms": 1579.3645195662975
+      },
+      "name": "layer_drop"
+    }
+  ]
+}
