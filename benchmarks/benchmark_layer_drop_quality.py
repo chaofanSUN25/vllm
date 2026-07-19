@@ -147,15 +147,18 @@ def collect_responses(
 def compute_summary(results: list[dict[str, Any]]) -> dict[str, Any]:
     valid = [r for r in results if not r.get("error")]
     dropped_count = sum(1 for r in valid if r.get("dropped"))
+    quality_results = [r for r in valid if not r.get("dropped")]
     return {
         "num_prompts": len(results),
         "valid": len(valid),
         "dropped_count": dropped_count,
+        "drop_ratio": dropped_count / len(valid) if valid else 0.0,
+        "quality_sample_count": len(quality_results),
         "exact_match_rate": float(
-            np.mean([r["exact_match"] for r in valid])),
+            np.mean([r["exact_match"] for r in quality_results])),
         "mean_token_overlap": float(
-            np.mean([r["token_overlap"] for r in valid])),
-        "mean_rouge_l": float(np.mean([r["rouge_l"] for r in valid])),
+            np.mean([r["token_overlap"] for r in quality_results])),
+        "mean_rouge_l": float(np.mean([r["rouge_l"] for r in quality_results])),
     }
 
 
