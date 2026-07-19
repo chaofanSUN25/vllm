@@ -8,15 +8,51 @@ composition of dropped requests.
 """
 
 import argparse
+import contextlib
 import json
+import os
 import random
+import tempfile
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import torch
 
+from vllm.distributed.parallel_state import (
+    cleanup_dist_env_and_memory,
+    init_distributed_environment,
+    initialize_model_parallel,
+)
 from vllm.model_executor.layers.layer_drop import LayerDropManager
+
+
+def init_vllm_distributed() -> None:
+    """Initialize a minimal TP group for single-process benchmarks.
+
+    LayerDropManager calls get_tensor_model_parallel_world_size() to
+    synchronize drop masks, so the parallel state must be initialized.
+    """
+    import torch.distributed as dist
+
+    if dist.is_initialized():
+        return
+
+    fd, temp_file = tempfile.mkstemp()
+    os.close(fd)
+    try:
+        backend = "nccl" if torch.cuda.is_available() else "gloo"
+        init_distributed_environment(
+            world_size=1,
+            rank=0,
+            distributed_init_method=f"file://{temp_file}",
+            local_rank=0,
+            backend=backend,
+        )
+        initialize_model_parallel(1, 1)
+    finally:
+        with contextlib.suppress(OSError):
+            os.unlink(temp_file)
 
 
 def set_seed(seed: int) -> None:
@@ -89,6 +125,8 @@ def main() -> None:
     parser.add_argument("--total-layers", type=int, default=24)
     args = parser.parse_args()
 
+    init_vllm_distributed()
+
     set_seed(args.seed)
     device = torch.device(args.device)
 
@@ -134,6 +172,7 @@ def main() -> None:
             "results": results,
         }, f, indent=2)
     print(f"Wrote ablation results to {out}")
+    cleanup_dist_env_and_memory()
 
 
 if __name__ == "__main__":
