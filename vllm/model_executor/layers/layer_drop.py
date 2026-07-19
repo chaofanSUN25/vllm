@@ -6,6 +6,7 @@ This module implements layer-level request dropping to reduce computation
 and communication overhead in tensor parallel inference.
 """
 
+import math
 from dataclasses import replace
 from typing import Any
 
@@ -240,7 +241,7 @@ class LayerDropManager:
         
         # Linearly decrease ratio from max_ratio at layer 0 to 0 at last layer
         ratio = 1.0 - (layer_idx / (total_layers - 1))
-        k = int(num_reqs * self.max_drop_ratio * ratio)
+        k = math.ceil(num_reqs * self.max_drop_ratio * ratio)
         
         # Ensure at least 1 request remains after dropping
         return min(k, num_reqs - 1)
