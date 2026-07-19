@@ -1,0 +1,784 @@
+{
+  "config": {
+    "device": "cuda",
+    "seed": 42,
+    "total_layers": 24,
+    "hidden_size": 4096
+  },
+  "batches": [
+    {
+      "num_reqs": 16,
+      "seq_lens": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32
+      ],
+      "dropped_indices": [
+        1
+      ],
+      "dropped_seq_lens": [
+        32
+      ],
+      "drop_count": 1,
+      "drop_ratio": 0.0625,
+      "decision_ms": 204.53073270618916,
+      "baseline_latency_ms": 503.31648000000007,
+      "drop_latency_ms": 471.85920000000004,
+      "latency_reduction_ms": 31.457280000000026,
+      "speedup": 1.0666666666666667,
+      "per_layer": [
+        {
+          "layer": 0,
+          "cumulative_dropped": 1,
+          "newly_dropped": 1
+        },
+        {
+          "layer": 1,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 2,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 3,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 4,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 5,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 6,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 7,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 8,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 9,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 10,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 11,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 12,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 13,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 14,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 15,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 16,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 17,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 18,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 19,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 20,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 21,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 22,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 23,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        }
+      ]
+    },
+    {
+      "num_reqs": 16,
+      "seq_lens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024
+      ],
+      "dropped_indices": [
+        1
+      ],
+      "dropped_seq_lens": [
+        1024
+      ],
+      "drop_count": 1,
+      "drop_ratio": 0.0625,
+      "decision_ms": 3.7198830395936966,
+      "baseline_latency_ms": 16106.127360000002,
+      "drop_latency_ms": 15099.494400000001,
+      "latency_reduction_ms": 1006.6329600000008,
+      "speedup": 1.0666666666666667,
+      "per_layer": [
+        {
+          "layer": 0,
+          "cumulative_dropped": 1,
+          "newly_dropped": 1
+        },
+        {
+          "layer": 1,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 2,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 3,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 4,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 5,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 6,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 7,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 8,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 9,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 10,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 11,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 12,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 13,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 14,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 15,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 16,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 17,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 18,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 19,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 20,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 21,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 22,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 23,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        }
+      ]
+    },
+    {
+      "num_reqs": 16,
+      "seq_lens": [
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512,
+        512
+      ],
+      "dropped_indices": [
+        11
+      ],
+      "dropped_seq_lens": [
+        512
+      ],
+      "drop_count": 1,
+      "drop_ratio": 0.0625,
+      "decision_ms": 3.5332348197698593,
+      "baseline_latency_ms": 4529.84832,
+      "drop_latency_ms": 4026.53184,
+      "latency_reduction_ms": 503.31647999999996,
+      "speedup": 1.125,
+      "per_layer": [
+        {
+          "layer": 0,
+          "cumulative_dropped": 1,
+          "newly_dropped": 1
+        },
+        {
+          "layer": 1,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 2,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 3,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 4,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 5,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 6,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 7,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 8,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 9,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 10,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 11,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 12,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 13,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 14,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 15,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 16,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 17,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 18,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 19,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 20,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 21,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 22,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 23,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        }
+      ]
+    },
+    {
+      "num_reqs": 16,
+      "seq_lens": [
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        2048
+      ],
+      "dropped_indices": [
+        15
+      ],
+      "dropped_seq_lens": [
+        2048
+      ],
+      "drop_count": 1,
+      "drop_ratio": 0.0625,
+      "decision_ms": 3.878127783536911,
+      "baseline_latency_ms": 2485.12512,
+      "drop_latency_ms": 471.85920000000004,
+      "latency_reduction_ms": 2013.26592,
+      "speedup": 5.266666666666667,
+      "per_layer": [
+        {
+          "layer": 0,
+          "cumulative_dropped": 1,
+          "newly_dropped": 1
+        },
+        {
+          "layer": 1,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 2,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 3,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 4,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 5,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 6,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 7,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 8,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 9,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 10,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 11,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 12,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 13,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 14,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 15,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 16,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 17,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 18,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 19,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 20,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 21,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 22,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 23,
+          "cumulative_dropped": 1,
+          "newly_dropped": 0
+        }
+      ]
+    },
+    {
+      "num_reqs": 8,
+      "seq_lens": [
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024,
+        1536,
+        2048
+      ],
+      "dropped_indices": [],
+      "dropped_seq_lens": [],
+      "drop_count": 0,
+      "drop_ratio": 0.0,
+      "decision_ms": 2.348940819501877,
+      "baseline_latency_ms": 5505.024,
+      "drop_latency_ms": 5505.024,
+      "latency_reduction_ms": 0.0,
+      "speedup": 1.0,
+      "per_layer": [
+        {
+          "layer": 0,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 1,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 2,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 3,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 4,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 5,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 6,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 7,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 8,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 9,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 10,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 11,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 12,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 13,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 14,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 15,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 16,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 17,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 18,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 19,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 20,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 21,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 22,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        },
+        {
+          "layer": 23,
+          "cumulative_dropped": 0,
+          "newly_dropped": 0
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "avg_speedup": 1.905,
+    "max_speedup": 5.266666666666667,
+    "avg_latency_reduction_ms": 710.9345280000001,
+    "avg_drop_ratio": 0.05
+  }
+}
