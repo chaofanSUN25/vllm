@@ -1,11 +1,13 @@
 {
   "config": {
     "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
-    "dataset": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
-    "num_prompts": 100,
+    "dataset": "data/sharegpt/sharegpt_vicuna_unfiltered.jsonl",
+    "num_prompts": 128,
     "min_prompt_len": 16,
     "max_prompt_len": 1024,
     "arrival_rate_rps": 2.0,
+    "batch_size": 32,
+    "slo_ms": 1000.0,
     "max_tokens": 20,
     "seed": 42
   },
@@ -13,25 +15,27 @@
     {
       "url": "http://localhost:8000/v1/completions",
       "arrival_rate_rps": 2.0,
-      "num_prompts": 100,
-      "success": 100,
+      "batch_size": 32,
+      "num_prompts": 128,
+      "success": 128,
       "failed": 0,
-      "total_duration_s": 56.96290814410895,
-      "throughput_rps": 1.75552834744695,
-      "mean_prompt_len": 474.09,
+      "total_duration_s": 6.2711773831397295,
+      "throughput_rps": 20.41084029039464,
+      "mean_prompt_len": 90.7109375,
       "ttft_ms": {
-        "mean": 63.57561130076647,
-        "p50": 64.14585560560226,
-        "p90": 80.16838543117046,
-        "p99": 111.70439022593212
+        "mean": 488.5918586078333,
+        "p50": 468.18135771900415,
+        "p90": 779.5780384913087,
+        "p99": 1102.5699213892221
       },
       "e2e_ms": {
-        "mean": 505.84640990942717,
-        "p50": 509.6493777818978,
-        "p90": 531.9918121211231,
-        "p99": 580.8826927375048
+        "mean": 1224.5619697278016,
+        "p50": 1231.831933837384,
+        "p90": 1529.9171953462064,
+        "p99": 1548.4685927256942
       },
-      "slo_attainment": 1.0,
+      "slo_attainment": 0.2421875,
+      "slo_ms": 1000.0,
       "name": "baseline"
     }
   ]
