@@ -68,7 +68,7 @@ def load_gsm8k(num_prompts: int, seed: int) -> list[dict[str, Any]]:
         ) from e
 
     random.seed(seed)
-    ds = load_dataset("gsm8k", "main", split="test")
+    ds = load_dataset("openai/gsm8k", "main", split="test")
     indices = random.sample(range(len(ds)), min(num_prompts, len(ds)))
     results: list[dict[str, Any]] = []
     for i in indices:
