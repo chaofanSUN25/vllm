@@ -1,0 +1,69 @@
+{
+  "config": {
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "dataset": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+    "num_prompts": 100,
+    "min_prompt_len": 16,
+    "max_prompt_len": 1024,
+    "arrival_rate_rps": 2.0,
+    "max_tokens": 20,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "url": "http://localhost:8000/v1/completions",
+      "arrival_rate_rps": 2.0,
+      "num_prompts": 100,
+      "success": 0,
+      "failed": 100,
+      "total_duration_s": 56.489478818140924,
+      "throughput_rps": 0.0,
+      "mean_prompt_len": 0.0,
+      "ttft_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "e2e_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "slo_attainment": 0,
+      "name": "baseline"
+    },
+    {
+      "url": "http://localhost:8001/v1/completions",
+      "arrival_rate_rps": 2.0,
+      "num_prompts": 100,
+      "success": 100,
+      "failed": 0,
+      "total_duration_s": 56.953597247600555,
+      "throughput_rps": 1.755815344994964,
+      "mean_prompt_len": 474.09,
+      "ttft_ms": {
+        "mean": 67.40638442337513,
+        "p50": 71.92665478214622,
+        "p90": 91.51072185486554,
+        "p99": 121.52515595778827
+      },
+      "e2e_ms": {
+        "mean": 548.3396134898067,
+        "p50": 545.9482185542583,
+        "p90": 600.2389824949205,
+        "p99": 658.0633905995638
+      },
+      "slo_attainment": 1.0,
+      "name": "layer_drop"
+    }
+  ],
+  "comparison": {
+    "ttft_p90_speedup": 0.0,
+    "ttft_p99_speedup": 0.0,
+    "e2e_p90_speedup": 0.0,
+    "e2e_p99_speedup": 0.0,
+    "slo_attainment_gain": 1.0
+  }
+}

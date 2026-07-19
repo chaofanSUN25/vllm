@@ -1,0 +1,872 @@
+{
+  "config": {
+    "mode": "layer_drop",
+    "baseline_url": "http://localhost:8000/v1/completions",
+    "layer_drop_url": "http://localhost:8001/v1/completions",
+    "baseline_cache": "results/layer_drop_quality_baseline_cache.json",
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "max_tokens": 64,
+    "temperature": 0.0,
+    "seed": 42
+  },
+  "summary": {
+    "num_prompts": 50,
+    "valid": 50,
+    "dropped_count": 0,
+    "exact_match_rate": 1.0,
+    "mean_token_overlap": 1.0,
+    "mean_rouge_l": 1.0
+  },
+  "details": [
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    }
+  ]
+}
