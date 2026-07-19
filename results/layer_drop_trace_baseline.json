@@ -1,0 +1,38 @@
+{
+  "config": {
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "dataset": "ShareGPT_V3_unfiltered_cleaned_split.jsonl",
+    "num_prompts": 100,
+    "min_prompt_len": 16,
+    "max_prompt_len": 1024,
+    "arrival_rate_rps": 2.0,
+    "max_tokens": 20,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "url": "http://localhost:8000/v1/completions",
+      "arrival_rate_rps": 2.0,
+      "num_prompts": 100,
+      "success": 100,
+      "failed": 0,
+      "total_duration_s": 56.96290814410895,
+      "throughput_rps": 1.75552834744695,
+      "mean_prompt_len": 474.09,
+      "ttft_ms": {
+        "mean": 63.57561130076647,
+        "p50": 64.14585560560226,
+        "p90": 80.16838543117046,
+        "p99": 111.70439022593212
+      },
+      "e2e_ms": {
+        "mean": 505.84640990942717,
+        "p50": 509.6493777818978,
+        "p90": 531.9918121211231,
+        "p99": 580.8826927375048
+      },
+      "slo_attainment": 1.0,
+      "name": "baseline"
+    }
+  ]
+}
