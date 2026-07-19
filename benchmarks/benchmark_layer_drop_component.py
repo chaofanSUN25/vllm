@@ -20,6 +20,7 @@ from typing import Any
 import numpy as np
 import torch
 
+from vllm.config import VllmConfig, set_current_vllm_config
 from vllm.distributed.parallel_state import (
     cleanup_dist_env_and_memory,
     init_distributed_environment,
@@ -44,14 +45,15 @@ def init_vllm_distributed() -> None:
     os.close(fd)
     try:
         backend = "nccl" if torch.cuda.is_available() else "gloo"
-        init_distributed_environment(
-            world_size=1,
-            rank=0,
-            distributed_init_method=f"file://{temp_file}",
-            local_rank=0,
-            backend=backend,
-        )
-        initialize_model_parallel(1, 1)
+        with set_current_vllm_config(VllmConfig()):
+            init_distributed_environment(
+                world_size=1,
+                rank=0,
+                distributed_init_method=f"file://{temp_file}",
+                local_rank=0,
+                backend=backend,
+            )
+            initialize_model_parallel(1, 1)
     finally:
         with contextlib.suppress(OSError):
             os.unlink(temp_file)
