@@ -11,6 +11,7 @@ new_token_ids.
 import argparse
 import json
 import random
+import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -113,7 +114,7 @@ def compare_responses(
 def build_prompts(num_prompts: int, seed: int) -> list[str]:
     random.seed(seed)
     np.random.seed(seed)
-    prompts = [
+    short_prompts = [
         "Explain the theory of relativity in simple terms.",
         "Write a short poem about artificial intelligence.",
         "Summarize the plot of Romeo and Juliet.",
@@ -125,7 +126,23 @@ def build_prompts(num_prompts: int, seed: int) -> list[str]:
         "Write a Python function to compute factorial.",
         "Compare SQL and NoSQL databases.",
     ]
-    return (prompts * ((num_prompts // len(prompts)) + 1))[:num_prompts]
+    long_prompts = [
+        "In the year 2147, humanity discovered faster-than-light travel. "
+        "Write a detailed report on the first expedition to the Andromeda galaxy, "
+        "including the crew, the ship, the challenges they faced, and the discoveries they made.",
+        "The history of machine learning spans decades. Provide a comprehensive overview "
+        "of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+        "Climate change is one of the most pressing issues of our time. Discuss its causes, "
+        "effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+        "Describe the complete process of training a large language model, from data collection "
+        "and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+        "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, "
+        "and social factors that contributed to its expansion and eventual decline.",
+    ]
+    all_prompts = short_prompts + long_prompts
+    prompts = (all_prompts * ((num_prompts // len(all_prompts)) + 1))[:num_prompts]
+    random.shuffle(prompts)
+    return prompts
 
 
 def collect_responses(
@@ -135,12 +152,28 @@ def collect_responses(
     max_tokens: int,
     temperature: float,
     label: str,
+    concurrency: int,
 ) -> list[dict[str, Any]]:
-    responses: list[dict[str, Any]] = []
+    responses: list[dict[str, Any]] = [None] * len(prompts)
+    threads: list[threading.Thread] = []
+
+    def worker(idx: int, prompt: str) -> None:
+        print(f"[{idx + 1}/{len(prompts)}] {label}: {prompt[:60]}...")
+        responses[idx] = send_completion(url, model, prompt, max_tokens,
+                                         temperature)
+
     for i, prompt in enumerate(prompts):
-        print(f"[{i + 1}/{len(prompts)}] {label}: {prompt[:60]}...")
-        responses.append(
-            send_completion(url, model, prompt, max_tokens, temperature))
+        t = threading.Thread(target=worker, args=(i, prompt))
+        threads.append(t)
+        t.start()
+        if len(threads) >= concurrency:
+            for t in threads:
+                t.join()
+            threads = []
+
+    for t in threads:
+        t.join()
+
     return responses
 
 
@@ -176,6 +209,8 @@ def main() -> None:
     parser.add_argument("--output",
                         default="results/layer_drop_quality.json")
     parser.add_argument("--num-prompts", type=int, default=50)
+    parser.add_argument("--concurrency", type=int, default=50,
+                        help="Number of concurrent requests to send.")
     parser.add_argument("--max-tokens", type=int, default=64)
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--seed", type=int, default=42)
@@ -186,7 +221,7 @@ def main() -> None:
     if args.mode == "baseline":
         baseline_responses = collect_responses(
             prompts, args.baseline_url, args.model, args.max_tokens,
-            args.temperature, "baseline")
+            args.temperature, "baseline", args.concurrency)
         cache = {
             "config": {
                 "url": args.baseline_url,
@@ -216,7 +251,7 @@ def main() -> None:
         baseline_responses = cache["responses"]
         layer_drop_responses = collect_responses(
             prompts, args.layer_drop_url, args.model, args.max_tokens,
-            args.temperature, "layer_drop")
+            args.temperature, "layer_drop", args.concurrency)
         results = [
             compare_responses(p, b, l)
             for p, b, l in zip(prompts, baseline_responses,
