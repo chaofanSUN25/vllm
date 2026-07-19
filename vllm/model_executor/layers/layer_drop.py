@@ -13,10 +13,6 @@ import torch
 from torch import nn
 
 from vllm import envs
-from vllm.distributed import (
-    get_tp_group,
-    get_tensor_model_parallel_world_size,
-)
 from vllm.logger import init_logger
 from vllm.v1.attention.backend import CommonAttentionMetadata
 
@@ -167,14 +163,19 @@ class LayerDropManager:
                 self.layer_drop_masks[layer_idx] = self.final_drop_mask.clone()
                 continue
 
-            # Select top-K requests to drop
-            _, top_k_indices = torch.topk(available_scores, k, largest=True)
-            drop_mask = torch.zeros(num_reqs, dtype=torch.bool, device=seq_lens.device)
+            # Select top-K requests to drop.  Use a deterministic tie-breaker
+            # (request index) so every TP rank makes the same decision without
+            # communication.
+            indices = torch.arange(num_reqs, device=seq_lens.device,
+                                   dtype=torch.float32)
+            sort_scores = available_scores.float() * (num_reqs + 1) + indices
+            _, sorted_indices = torch.sort(sort_scores, descending=True,
+                                           stable=True)
+            top_k_indices = sorted_indices[:k]
+            drop_mask = torch.zeros(num_reqs, dtype=torch.bool,
+                                    device=seq_lens.device)
             drop_mask[top_k_indices] = True
 
-            # Synchronize across TP ranks
-            drop_mask = self._sync_drop_mask(drop_mask)
-            
             # Update final drop mask and store the cumulative mask for this
             # layer so that every later layer skips all already-dropped
             # requests instead of re-processing them.
@@ -310,30 +311,15 @@ class LayerDropManager:
         return scores
 
     def _sync_drop_mask(self, drop_mask: torch.Tensor) -> torch.Tensor:
-        """Synchronize drop mask across TP ranks.
-        
-        Ensures all TP ranks agree on which requests to drop for consistency.
-        
-        Args:
-            drop_mask: Boolean tensor indicating which requests to drop.
-            
-        Returns:
-            Synchronized drop mask (same across all TP ranks).
+        """Drop-mask synchronization is no longer required.
+
+        The drop decision is fully deterministic (scores are computed from the
+        same per-request metadata on every TP rank, and ties are broken by
+        request index), so every rank already agrees on the mask.  Keeping this
+        as a no-op preserves call sites and avoids accidental cross-rank
+        divergence.
         """
-        tp_world_size = get_tensor_model_parallel_world_size()
-        if tp_world_size == 1:
-            return drop_mask
-
-        tp_group = get_tp_group()
-        # Convert boolean to float for all_reduce
-        drop_mask_float = drop_mask.float()
-
-        # All reduce to get the majority vote
-        reduced_mask = tp_group.all_reduce(drop_mask_float)
-
-        # Round to get binary decision
-        synchronized_mask = reduced_mask >= (tp_world_size / 2)
-        return synchronized_mask.to(torch.bool)
+        return drop_mask
 
     def decide_drop(
         self,
@@ -396,20 +382,26 @@ class LayerDropManager:
         boosted_scores[is_straggler] += 100.0  # Large boost for stragglers
         
         # Select top-K requests to drop (k is already clamped to <= num_reqs-1
-        # by _calculate_k, so topk is always safe)
-        _, top_k_indices = torch.topk(boosted_scores, k, largest=True)
-        drop_mask = torch.zeros(num_reqs, dtype=torch.bool, device=seq_lens.device)
+        # by _calculate_k).  Request-index tie-breaker keeps the choice
+        # deterministic across TP ranks so no synchronization is needed.
+        indices = torch.arange(num_reqs, device=seq_lens.device,
+                               dtype=torch.float32)
+        sort_scores = boosted_scores.float() * (num_reqs + 1) + indices
+        _, sorted_indices = torch.sort(sort_scores, descending=True,
+                                       stable=True)
+        top_k_indices = sorted_indices[:k]
+        drop_mask = torch.zeros(num_reqs, dtype=torch.bool,
+                                device=seq_lens.device)
         drop_mask[top_k_indices] = True
-        
+
         # Ensure consistency across already dropped requests
         # (once dropped, stay dropped)
         if req_ids is not None:
             for i in range(num_reqs):
                 if int(req_ids[i].item()) in self.dropped_req_ids:
                     drop_mask[i] = True
-        
-        # Synchronize across TP ranks
-        drop_mask = self._sync_drop_mask(drop_mask)
+
+        # Drop decision is deterministic across ranks; no sync needed.
         
         # Update tracking
         if req_ids is not None:
