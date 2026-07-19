@@ -1,0 +1,75 @@
+{
+  "config": {
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "dataset": "data/sharegpt/sharegpt_vicuna_unfiltered.jsonl",
+    "num_prompts": 128,
+    "min_prompt_len": 16,
+    "max_prompt_len": 1024,
+    "arrival_rate_rps": 2.0,
+    "batch_size": 32,
+    "slo_ms": 1000.0,
+    "max_tokens": 20,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "url": "http://localhost:8000/v1/completions",
+      "arrival_rate_rps": 2.0,
+      "batch_size": 32,
+      "num_prompts": 128,
+      "success": 0,
+      "failed": 128,
+      "total_duration_s": 1.3313728040084243,
+      "throughput_rps": 0.0,
+      "mean_prompt_len": 0.0,
+      "ttft_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "e2e_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "slo_attainment": 0,
+      "slo_ms": 1000.0,
+      "name": "baseline"
+    },
+    {
+      "url": "http://localhost:8001/v1/completions",
+      "arrival_rate_rps": 2.0,
+      "batch_size": 32,
+      "num_prompts": 128,
+      "success": 0,
+      "failed": 128,
+      "total_duration_s": 2.287280675023794,
+      "throughput_rps": 0.0,
+      "mean_prompt_len": 0.0,
+      "ttft_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "e2e_ms": {
+        "mean": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p99": 0.0
+      },
+      "slo_attainment": 0,
+      "slo_ms": 1000.0,
+      "name": "layer_drop"
+    }
+  ],
+  "comparison": {
+    "ttft_p90_speedup": 0.0,
+    "ttft_p99_speedup": 0.0,
+    "e2e_p90_speedup": 0.0,
+    "e2e_p99_speedup": 0.0,
+    "slo_attainment_gain": 0
+  }
+}
