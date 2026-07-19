@@ -118,15 +118,34 @@ def make_metadata(
     )
 
 
+def make_seq_lens(
+    num_reqs: int,
+    max_seq_len: int,
+    device: torch.device,
+    seed: int,
+) -> torch.Tensor:
+    """Generate seq_lens with a heavy tail to trigger straggler drops."""
+    set_seed(seed)
+    short = torch.randint(8, max(16, max_seq_len // 8), (num_reqs,),
+                          device=device).long()
+    # Make roughly 20% of requests stragglers.
+    num_stragglers = max(1, num_reqs // 5)
+    straggler_indices = torch.randperm(num_reqs, device=device)[:num_stragglers]
+    short[straggler_indices] = torch.randint(
+        max_seq_len // 2, max_seq_len, (num_stragglers,),
+        device=device).long()
+    return short
+
+
 def run_drop_count_experiment(
     manager: LayerDropManager,
     num_reqs: int,
     total_layers: int,
     device: torch.device,
     seed: int,
+    max_seq_len: int = 1024,
 ) -> dict[str, Any]:
-    set_seed(seed)
-    seq_lens = torch.randint(8, 1024, (num_reqs,), device=device).long()
+    seq_lens = make_seq_lens(num_reqs, max_seq_len, device, seed)
     priorities = torch.rand(num_reqs, device=device)
     is_prefilling = torch.ones(num_reqs, dtype=torch.bool, device=device)
 
@@ -167,9 +186,9 @@ def run_latency_experiment(
     device: torch.device,
     repetitions: int,
     seed: int,
+    max_seq_len: int = 512,
 ) -> dict[str, Any]:
-    set_seed(seed)
-    seq_lens = torch.randint(16, 512, (num_reqs,), device=device).long()
+    seq_lens = make_seq_lens(num_reqs, max_seq_len, device, seed)
     query_lens = seq_lens  # prefill
     query_start_loc = [0]
     for q in query_lens.tolist():
@@ -231,6 +250,10 @@ def main() -> None:
                         else "cpu")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--repetitions", type=int, default=100)
+    parser.add_argument("--max-drop-ratio", type=float, default=0.3)
+    parser.add_argument("--max-num-reqs", type=int, default=32)
+    parser.add_argument("--max-seq-len", type=int, default=256)
+    parser.add_argument("--hidden-size", type=int, default=2048)
     args = parser.parse_args()
 
     init_vllm_distributed()
@@ -241,26 +264,35 @@ def main() -> None:
             "device": str(device),
             "seed": args.seed,
             "repetitions": args.repetitions,
+            "max_drop_ratio": args.max_drop_ratio,
+            "max_num_reqs": args.max_num_reqs,
+            "max_seq_len": args.max_seq_len,
+            "hidden_size": args.hidden_size,
         },
         "drop_count": [],
         "latency": [],
     }
 
     manager = LayerDropManager(
-        max_drop_ratio=0.1,
+        max_drop_ratio=args.max_drop_ratio,
         length_ratio_threshold=2.0,
         priority_weight=1.0,
         length_weight=1.0,
         enabled=True,
     )
 
-    for num_reqs in [4, 8, 16, 32, 64]:
-        for total_layers in [16, 24, 32]:
+    req_sizes = [4, 8, 16, args.max_num_reqs]
+    layer_sizes = [16, 24, 32]
+    for num_reqs in req_sizes:
+        for total_layers in layer_sizes:
             results["drop_count"].append(run_drop_count_experiment(
-                manager, num_reqs, total_layers, device, args.seed))
+                manager, num_reqs, total_layers, device, args.seed,
+                args.max_seq_len))
             results["latency"].append(run_latency_experiment(
-                manager, num_reqs, total_layers, 4096, device,
-                args.repetitions, args.seed))
+                manager, num_reqs, total_layers, args.hidden_size, device,
+                args.repetitions, args.seed, args.max_seq_len))
+            if device.type == "cuda":
+                torch.cuda.empty_cache()
 
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
