@@ -71,9 +71,9 @@ def send_request(
                         ttft_ms = (time.perf_counter() - t_start) * 1000.0
                         first = False
         e2e_ms = (time.perf_counter() - t_start) * 1000.0
-        results.append({"idx": idx, "ttft_ms": ttft_ms, "e2e_ms": e2e_ms})
+        results[idx] = {"idx": idx, "ttft_ms": ttft_ms, "e2e_ms": e2e_ms}
     except Exception as e:
-        results.append({"idx": idx, "error": str(e)})
+        results[idx] = {"idx": idx, "error": str(e)}
 
 
 def run_serving_experiment(
@@ -82,7 +82,7 @@ def run_serving_experiment(
     prompts: list[str],
     max_tokens: int,
 ) -> dict[str, Any]:
-    results: list[dict[str, Any]] = []
+    results: list[dict[str, Any]] = [None] * len(prompts)
     threads = []
     t0 = time.perf_counter()
     for i, prompt in enumerate(prompts):
@@ -116,17 +116,21 @@ def run_serving_experiment(
 
 
 def make_mixed_prompts(
-    num_short: int,
-    num_long: int,
+    num_requests: int,
     short_len: int = 8,
     long_len: int = 512,
+    long_ratio: float = 0.2,
+    seed: int = 42,
 ) -> list[str]:
+    random.seed(seed)
     short = "hello " * short_len
     long = (
         "In the year 2147, humanity discovered a way to travel faster than light. "
         "The first expedition to the Andromeda galaxy was planned for over a decade "
         "and involved thousands of scientists from every nation on Earth. "
     ) * (long_len // 30)
+    num_long = int(num_requests * long_ratio)
+    num_short = num_requests - num_long
     prompts = [short for _ in range(num_short)] + [long for _ in range(num_long)]
     random.shuffle(prompts)
     return prompts
@@ -139,14 +143,19 @@ def main() -> None:
     parser.add_argument("--layer-drop-url", default=None)
     parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
     parser.add_argument("--output", default="results/layer_drop_serving.json")
-    parser.add_argument("--num-short", type=int, default=18)
-    parser.add_argument("--num-long", type=int, default=2)
+    parser.add_argument("--num-requests", type=int, default=64,
+                        help="Total number of concurrent requests.")
+    parser.add_argument("--long-ratio", type=float, default=0.2,
+                        help="Ratio of long (straggler) prompts.")
+    parser.add_argument("--short-len", type=int, default=8)
+    parser.add_argument("--long-len", type=int, default=512)
     parser.add_argument("--max-tokens", type=int, default=20)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    random.seed(args.seed)
-    prompts = make_mixed_prompts(args.num_short, args.num_long)
+    prompts = make_mixed_prompts(
+        args.num_requests, args.short_len, args.long_len, args.long_ratio,
+        args.seed)
 
     urls = [("baseline", args.baseline_url)]
     if args.layer_drop_url:
@@ -155,8 +164,10 @@ def main() -> None:
     results: dict[str, Any] = {
         "config": {
             "model": args.model,
-            "num_short": args.num_short,
-            "num_long": args.num_long,
+            "num_requests": args.num_requests,
+            "long_ratio": args.long_ratio,
+            "short_len": args.short_len,
+            "long_len": args.long_len,
             "max_tokens": args.max_tokens,
             "seed": args.seed,
         },

@@ -75,14 +75,35 @@ def send_streaming(
                     ttft_ms = (time.perf_counter() - t_start) * 1000.0
                     first = False
         e2e_ms = (time.perf_counter() - t_start) * 1000.0
-        results.append({
+        results[idx] = {
             "idx": idx,
             "prompt_len": len(prompt.split()),
             "ttft_ms": ttft_ms,
             "e2e_ms": e2e_ms,
-        })
+        }
     except Exception as e:
-        results.append({"idx": idx, "error": str(e)})
+        results[idx] = {"idx": idx, "error": str(e)}
+
+
+def send_batch(
+    url: str,
+    model: str,
+    prompts: list[str],
+    max_tokens: int,
+    results: list[dict[str, Any]],
+    offset: int,
+) -> None:
+    threads: list[threading.Thread] = []
+    for i, prompt in enumerate(prompts):
+        idx = offset + i
+        t = threading.Thread(
+            target=send_streaming,
+            args=(url, model, prompt, max_tokens, results, idx),
+        )
+        t.start()
+        threads.append(t)
+    for t in threads:
+        t.join()
 
 
 def run_trace(
@@ -91,36 +112,32 @@ def run_trace(
     prompts: list[str],
     max_tokens: int,
     arrival_rate_rps: float,
+    batch_size: int,
+    slo_ms: float,
 ) -> dict[str, Any]:
-    results: list[dict[str, Any]] = []
-    threads: list[threading.Thread] = []
+    results: list[dict[str, Any]] = [None] * len(prompts)
     t0 = time.perf_counter()
 
-    for i, prompt in enumerate(prompts):
-        delay = random.expovariate(arrival_rate_rps) if arrival_rate_rps > 0 else 0
-        time.sleep(delay)
-        t = threading.Thread(
-            target=send_streaming,
-            args=(url, model, prompt, max_tokens, results, i),
-        )
-        t.start()
-        threads.append(t)
+    for batch_start in range(0, len(prompts), batch_size):
+        batch = prompts[batch_start:batch_start + batch_size]
+        send_batch(url, model, batch, max_tokens, results, batch_start)
+        if arrival_rate_rps > 0 and batch_start + batch_size < len(prompts):
+            delay = random.expovariate(arrival_rate_rps)
+            time.sleep(delay)
 
-    for t in threads:
-        t.join()
     total_s = time.perf_counter() - t0
 
-    ok = [r for r in results if "error" not in r]
+    ok = [r for r in results if r is not None and "error" not in r]
     ttfts = [r["ttft_ms"] for r in ok if r["ttft_ms"] is not None]
     e2es = [r["e2e_ms"] for r in ok]
     prompt_lens = [r["prompt_len"] for r in ok]
 
-    slo_ms = 1000.0
     slo_attainment = sum(1 for v in e2es if v <= slo_ms) / len(e2es) if e2es else 0
 
     return {
         "url": url,
         "arrival_rate_rps": arrival_rate_rps,
+        "batch_size": batch_size,
         "num_prompts": len(prompts),
         "success": len(ok),
         "failed": len(prompts) - len(ok),
@@ -140,6 +157,7 @@ def run_trace(
             "p99": percentile(e2es, 99),
         },
         "slo_attainment": slo_attainment,
+        "slo_ms": slo_ms,
     }
 
 
@@ -154,7 +172,11 @@ def main() -> None:
     parser.add_argument("--num-prompts", type=int, default=100)
     parser.add_argument("--min-prompt-len", type=int, default=16)
     parser.add_argument("--max-prompt-len", type=int, default=1024)
-    parser.add_argument("--arrival-rate-rps", type=float, default=2.0)
+    parser.add_argument("--arrival-rate-rps", type=float, default=2.0,
+                        help="Average batches per second between batch dispatches.")
+    parser.add_argument("--batch-size", type=int, default=32,
+                        help="Number of concurrent requests within each batch.")
+    parser.add_argument("--slo-ms", type=float, default=1000.0)
     parser.add_argument("--max-tokens", type=int, default=20)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -168,11 +190,15 @@ def main() -> None:
                                           args.max_prompt_len)
     else:
         print(f"Dataset {dataset_path} not found, using synthetic prompts.")
-        prompts = [
-            "hello " * random.randint(args.min_prompt_len,
-                                      args.max_prompt_len)
-            for _ in range(args.num_prompts)
-        ]
+        random.seed(args.seed)
+        prompts = []
+        for _ in range(args.num_prompts):
+            if random.random() < 0.2:
+                length = random.randint(max(args.min_prompt_len, 256),
+                                        args.max_prompt_len)
+            else:
+                length = random.randint(args.min_prompt_len, 128)
+            prompts.append("hello " * length)
 
     if len(prompts) < args.num_prompts:
         prompts = (prompts * ((args.num_prompts // len(prompts)) + 1)
@@ -192,6 +218,8 @@ def main() -> None:
             "min_prompt_len": args.min_prompt_len,
             "max_prompt_len": args.max_prompt_len,
             "arrival_rate_rps": args.arrival_rate_rps,
+            "batch_size": args.batch_size,
+            "slo_ms": args.slo_ms,
             "max_tokens": args.max_tokens,
             "seed": args.seed,
         },
@@ -201,7 +229,7 @@ def main() -> None:
     for name, url in urls:
         print(f"Running trace benchmark for {name} ...")
         exp = run_trace(url, args.model, prompts, args.max_tokens,
-                        args.arrival_rate_rps)
+                        args.arrival_rate_rps, args.batch_size, args.slo_ms)
         exp["name"] = name
         output["experiments"].append(exp)
 

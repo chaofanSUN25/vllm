@@ -111,7 +111,7 @@ def compare_responses(
     return result
 
 
-def build_prompts(num_prompts: int, seed: int) -> list[str]:
+def build_synthetic_prompts(num_prompts: int, seed: int) -> list[str]:
     random.seed(seed)
     np.random.seed(seed)
     short_prompts = [
@@ -143,6 +143,10 @@ def build_prompts(num_prompts: int, seed: int) -> list[str]:
     prompts = (all_prompts * ((num_prompts // len(all_prompts)) + 1))[:num_prompts]
     random.shuffle(prompts)
     return prompts
+
+
+def build_prompts(args: argparse.Namespace) -> list[str]:
+    return build_synthetic_prompts(args.num_prompts, args.seed)
 
 
 def collect_responses(
@@ -216,7 +220,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    prompts = build_prompts(args.num_prompts, args.seed)
+    prompts = build_prompts(args)
 
     if args.mode == "baseline":
         baseline_responses = collect_responses(
