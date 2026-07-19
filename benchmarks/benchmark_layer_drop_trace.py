@@ -206,7 +206,13 @@ def main() -> None:
     else:
         prompts = random.sample(prompts, args.num_prompts)
 
-    urls = [("baseline", args.baseline_url)]
+    if not args.baseline_url and not args.layer_drop_url:
+        parser.error("At least one of --baseline-url or --layer-drop-url "
+                     "must be provided.")
+
+    urls = []
+    if args.baseline_url:
+        urls.append(("baseline", args.baseline_url))
     if args.layer_drop_url:
         urls.append(("layer_drop", args.layer_drop_url))
 

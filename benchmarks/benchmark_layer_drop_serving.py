@@ -138,8 +138,7 @@ def make_mixed_prompts(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--baseline-url",
-                        default="http://localhost:8000/v1/completions")
+    parser.add_argument("--baseline-url", default=None)
     parser.add_argument("--layer-drop-url", default=None)
     parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
     parser.add_argument("--output", default="results/layer_drop_serving.json")
@@ -157,7 +156,13 @@ def main() -> None:
         args.num_requests, args.short_len, args.long_len, args.long_ratio,
         args.seed)
 
-    urls = [("baseline", args.baseline_url)]
+    if not args.baseline_url and not args.layer_drop_url:
+        parser.error("At least one of --baseline-url or --layer-drop-url "
+                     "must be provided.")
+
+    urls = []
+    if args.baseline_url:
+        urls.append(("baseline", args.baseline_url))
     if args.layer_drop_url:
         urls.append(("layer_drop", args.layer_drop_url))
 
