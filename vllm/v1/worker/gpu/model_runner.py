@@ -1248,11 +1248,11 @@ class GPUModelRunner(LoRAModelRunnerMixin):
                         :num_reqs + 1]
                     query_lens = query_start_loc[1:] - query_start_loc[:-1]
                     is_prefilling = query_lens > 1
-                with open("/tmp/layer_drop_debug.txt", "a") as _f:
-                    _f.write(
-                        f"[MODEL_RUNNER] precompute: num_reqs={num_reqs}, "
-                        f"enabled={envs.VLLM_LAYER_DROP_ENABLED}, "
-                        f"is_prefilling_any={is_prefilling.any().item()}\n")
+                # with open("/tmp/layer_drop_debug.txt", "a") as _f:
+                #     _f.write(
+                #         f"[MODEL_RUNNER] precompute: num_reqs={num_reqs}, "
+                #         f"enabled={envs.VLLM_LAYER_DROP_ENABLED}, "
+                #         f"is_prefilling_any={is_prefilling.any().item()}\n")
                 layer_drop_manager.precompute_layer_drop_masks(
                     seq_lens=seq_lens,
                     total_layers=total_layers,

@@ -92,14 +92,14 @@ class LayerDropManager:
                 are eligible for dropping; decode requests are never dropped.
                 When None, all requests are eligible (legacy behavior).
         """
-        with open("/tmp/layer_drop_debug.txt", "a") as _f:
-            _f.write(f"[LAYER_DROP] precompute called: enabled={self.enabled}, "
-                     f"num_reqs={seq_lens.shape[0]}, total_layers={total_layers}, "
-                     f"is_prefilling={is_prefilling}\n")
-        logger.warning("[LAYER_DROP] precompute called: enabled=%s, "
-                       "num_reqs=%s, total_layers=%s, is_prefilling=%s",
-                       self.enabled, seq_lens.shape[0], total_layers,
-                       is_prefilling)
+        # with open("/tmp/layer_drop_debug.txt", "a") as _f:
+        #     _f.write(f"[LAYER_DROP] precompute called: enabled={self.enabled}, "
+        #              f"num_reqs={seq_lens.shape[0]}, total_layers={total_layers}, "
+        #              f"is_prefilling={is_prefilling}\n")
+        # logger.warning("[LAYER_DROP] precompute called: enabled=%s, "
+        #                "num_reqs=%s, total_layers=%s, is_prefilling=%s",
+        #                self.enabled, seq_lens.shape[0], total_layers,
+        #                is_prefilling)
         if not self.enabled:
             return
         
