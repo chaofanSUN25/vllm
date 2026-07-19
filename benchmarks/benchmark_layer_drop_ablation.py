@@ -21,7 +21,6 @@ import torch
 
 from vllm.config import VllmConfig, set_current_vllm_config
 from vllm.distributed.parallel_state import (
-    cleanup_dist_env_and_memory,
     init_distributed_environment,
     initialize_model_parallel,
 )
@@ -174,7 +173,6 @@ def main() -> None:
             "results": results,
         }, f, indent=2)
     print(f"Wrote ablation results to {out}")
-    cleanup_dist_env_and_memory()
 
 
 if __name__ == "__main__":
