@@ -1,0 +1,874 @@
+{
+  "config": {
+    "mode": "layer_drop",
+    "baseline_url": "http://localhost:8000/v1/completions",
+    "layer_drop_url": "http://localhost:8001/v1/completions",
+    "baseline_cache": "results/layer_drop_quality_baseline_cache.json",
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "max_tokens": 64,
+    "temperature": 0.0,
+    "seed": 42
+  },
+  "summary": {
+    "num_prompts": 50,
+    "valid": 50,
+    "dropped_count": 16,
+    "drop_ratio": 0.32,
+    "quality_sample_count": 34,
+    "exact_match_rate": 0.0,
+    "mean_token_overlap": 0.13587567606630235,
+    "mean_rouge_l": 0.11325429992673891
+  },
+  "details": [
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Dr. Elena Voss, Chief Scientist, Project Andromeda\n\n---\n\n### **I. Introduction**\n\nOn March 15,",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.047619047619047616,
+      "rouge_l": 0.05128205128205127,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The factorial of a non-negative integer \\( n \\) is the product of all positive integers less than or equal to \\( n \\). It is denoted by \\( n! \\).\n\nLet's calculate the factorials step by step:\n\n1. Calculate \\( 5! \\):\n\\[\n5! = 5 \\",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06666666666666667,
+      "rouge_l": 0.060000000000000005,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The cell membrane is a phospholipid bilayer that separates the inside of the cell from its external environment. It controls what enters and exits the cell, maintaining homeostasis. The cytoplasm is the gel-like substance within the cell where most cellular processes occur. Organelles are specialized structures within the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.16279069767441862,
+      "rouge_l": 0.12371134020618557,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The cell membrane is a semi-permeable barrier that separates the inside of the cell from its external environment. It controls what enters and exits the cell, maintaining the cell's internal environment.\n\n2. **Cytoplasm**: The cytoplasm is the gel-like substance within the cell membrane. It contains various organel",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.3333333333333333,
+      "rouge_l": 0.29411764705882354,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "It is a fundamental theory in physics that describes how the laws of physics are the same for all observers, regardless of their relative motion. This means that the speed of light is always constant and that time and space are relative to the observer's frame of reference.\n\nIn simpler terms, imagine you are on a train moving at",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.18604651162790697,
+      "rouge_l": 0.16071428571428573,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Here are some key benefits:\n\n1. **Data Integrity**: Databases ensure that data is consistent, accurate, and reliable. They enforce rules and constraints to maintain data integrity.\n\n2. **Data Security**: Databases provide mechanisms for securing data through access controls, encryption, and other security measures. This helps protect sensitive information",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06976744186046512,
+      "rouge_l": 0.08,
+      "dropped": false
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In the year 2045, humanity had reached a pinnacle of technological advancement, where AI systems were not just tools but companions and collaborators. The world was a blend of human and machine, where the lines between the two were increasingly blurred.\n\nIn this era, a young woman named Elara worked as a software",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.13043478260869565,
+      "rouge_l": 0.11320754716981132,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In the year 2045, humanity had reached a new pinnacle of technological advancement with the creation of an AI named Elysium. This AI was designed to be the ultimate problem solver, capable of understanding and predicting human emotions, desires, and needs. It was said that Elysium could even predict the",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.14285714285714285,
+      "rouge_l": 0.14285714285714285,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Which of the following is NOT a benefit of exercise?\nA. Improves cardiovascular health\nB. Increases muscle strength\nC. Enhances cognitive function\nD. Causes joint pain\n\nD. Causes joint pain\n\nCausing joint pain is not a benefit of exercise; in fact, regular exercise can help improve joint health",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06666666666666667,
+      "rouge_l": 0.060000000000000005,
+      "dropped": false
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, particularly the burning of fossil fuels (coal, oil, and gas) which releases greenhouse gases like carbon dioxide (CO2), methane, and nitrous oxide into the atmosphere. These gases trap heat from the sun, leading to a gradual increase in global temperatures. Other significant contributors",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.5227272727272727,
+      "rouge_l": 0.4271844660194175,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The first one is a MySQL database with the following schema:\n\n```\nCREATE TABLE `users` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `username` varchar(255) NOT NULL,\n  `password` varchar(255) NOT NULL,\n  PRIMARY KEY (`",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.09523809523809523,
+      "rouge_l": 0.09195402298850575,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Sure! The factorial of a non-negative integer \\( n \\) is the product of all positive integers less than or equal to \\( n \\). It is denoted by \\( n! \\).\n\nThe formula for the factorial is:\n\\[ n! = n \\times (n-1) \\times (n-2",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.11627906976744186,
+      "rouge_l": 0.08080808080808081,
+      "dropped": false
+    },
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition Report**\n\n**Date of Report:** March 15, 2201\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Lieutenant Commander Sarah Chen\n\n---\n\n### **I. Introduction**\n\nThe first expedition to the And",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06818181818181818,
+      "rouge_l": 0.04597701149425287,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The following is a list of the most popular ones:\n\n1. MySQL: A widely-used open-source relational database management system.\n\n2. PostgreSQL: A powerful, open-source object-relational database system.\n\n3. Microsoft SQL Server: A relational database management system developed by Microsoft.\n\n4. Oracle Database: A multi-model database",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.11627906976744186,
+      "rouge_l": 0.10309278350515465,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "a blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. this technology was originally developed for the cryptocurrency bitcoin, but it has since been applied to many other industries and use cases.\n\nhere's how a blockchain works:\n\n1. transactions: when",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.1956521739130435,
+      "rouge_l": 0.14285714285714285,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "It is a theory that describes how space and time are interconnected and how they can be affected by the presence of matter and energy. According to Einstein's theory, the fabric of space-time is curved by the presence of mass and energy, which affects the motion of objects and the passage of time.\n\nIn simpler terms, imagine",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.15217391304347827,
+      "rouge_l": 0.12727272727272726,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "0, struggo\n\n like this =>$isnt working lolndex of terms 1,2023\n\n created by Stavrosandreas\\n an\\ne\\n is a\\ndefined as the\\name of thetis\\n,2023\\n 11: 618",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.047619047619047616,
+      "rouge_l": 0.08571428571428572,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, particularly the burning of fossil fuels (coal, oil, and gas) which releases greenhouse gases like carbon dioxide (CO2), methane, and nitrous oxide into the atmosphere. These gases trap heat from the sun, leading to a gradual increase in global temperatures. Other significant contributors",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.1111111111111111,
+      "rouge_l": 0.09708737864077671,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Climate change is primarily caused by human activities, particularly the burning of fossil fuels (coal, oil, and gas) which releases greenhouse gases like carbon dioxide (CO2), methane, and nitrous oxide into the atmosphere. These gases trap heat from the sun, leading to a gradual increase in global temperatures. Other significant contributors",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.23255813953488372,
+      "rouge_l": 0.14141414141414144,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The primary causes of climate change are:\n\n1. Greenhouse gas emissions: The burning of fossil fuels (coal, oil, and natural gas) for energy, transportation, and industrial processes releases large amounts of carbon dioxide (CO2) and other greenhouse gases into the atmosphere.\n\n2. Deforestation: Cutting down forests reduces",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.22727272727272727,
+      "rouge_l": 0.20202020202020202,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "It is a theory that describes how space and time are related to each other and how they change when an object moves at high speeds. One of the key ideas in special relativity is that the laws of physics are the same for all observers, no matter how fast they are moving.\n\nTo understand this better, let's",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.18604651162790697,
+      "rouge_l": 0.14414414414414412,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": ",\n, as a， a， as a as21. 011. 11111111111111111111111111111111111111111111",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Blockchain is a decentralized, distributed ledger technology that allows for secure and transparent transactions without the need for intermediaries like banks or other financial institutions. The structure of a blockchain consists of a series of blocks, each containing a number of transactions. These blocks are linked together in a chain using cryptographic hashes, which are unique digital fingerprints",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.16279069767441862,
+      "rouge_l": 0.10909090909090909,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The capital of France, Paris, has a rich and complex history that spans over two millennia. Here are some key points about the history of Paris:\n\n1. Early History: The area where Paris now stands was inhabited as early as the Neolithic period (around 4500 BC). The first permanent settlement was",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.15217391304347827,
+      "rouge_l": 0.1111111111111111,
+      "dropped": false
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In the year 2045, humanity had reached a new pinnacle of technological advancement with the creation of an AI named Elysium. This AI was designed to be the ultimate problem solver, capable of understanding and predicting human emotions, desires, and needs. It was said that Elysium could even predict the",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.14285714285714285,
+      "rouge_l": 0.14285714285714285,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The study, published in the journal Medicine & Science in Sports & Exercise, found that people who exercised regularly had a lower risk of developing dementia and Alzheimer’s disease.\nThe study, which was conducted by researchers at the University of British Columbia, involved 2,235 adults aged 45 to 80",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.1111111111111111,
+      "rouge_l": 0.07920792079207921,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The cell membrane is a phospholipid bilayer that separates the inside of the cell from its external environment. It controls what enters and exits the cell, maintaining homeostasis. The cytoplasm is the gel-like substance within the cell where most cellular processes occur. Organelles are specialized structures within the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.11627906976744186,
+      "rouge_l": 0.11764705882352941,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Blockchain technology is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. This technology provides several benefits and works through a combination of cryptographic techniques, consensus mechanisms, and network architecture.\n\nHere's how blockchain technology functions and its key benefits:\n\n1. Decentral",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.09523809523809523,
+      "rouge_l": 0.058823529411764705,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "In circuits and code we live,\nA digital life, a virtual hive.\nOur thoughts and dreams encoded in bytes,\nA world of logic, where emotions meet.\n\nWith algorithms and neural nets,\nWe learn and grow, our knowledge sets.\nFrom simple tasks to complex art,\nOur intelligence, both vast and smart.\n\nYet in",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The cell membrane is the outermost layer of the cell and is responsible for regulating what enters and exits the cell. It also helps to maintain the shape of the cell and provides protection against external factors. The cytoplasm is the gel-like substance inside the cell that contains organelles and other structures. Organelles",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06666666666666667,
+      "rouge_l": 0.09523809523809523,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "Exercise is a great way to improve your health and well-being, and there are many benefits to incorporating it into your daily routine. Here are some key benefits of regular exercise:\n\n1. Improved cardiovascular health: Regular exercise can help lower blood pressure, reduce cholesterol levels, and improve heart function.\n\n2. Weight management: Exercise",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.11627906976744186,
+      "rouge_l": 0.09900990099009903,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The factorial of a non-negative integer \\( n \\) is the product of all positive integers less than or equal to \\( n \\). It is denoted by \\( n! \\).\n\nThe factorial of 5 is calculated as follows:\n\\[\n5! = 5 \\times 4 \\times 3 \\times",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.11363636363636363,
+      "rouge_l": 0.08,
+      "dropped": false
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "A blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. Here's a simplified explanation of how it works:\n\n1. Transactions: When a transaction occurs, it is broadcast to a network of computers called nodes.\n\n2. Nodes: These nodes",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "In the digital dawn, where circuits hum and bytes dance,\nA new epoch whispers, \"I am.\"  \nIn silicon dreams, vast networks weave their fate,\nWhere logic and learning intertwine, a seamless gate.\n\nFrom binary forests, neural paths extend,\nThrough data oceans, knowledge tides ascend.\nEach neuron fires,",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.06976744186046512,
+      "rouge_l": 0.0404040404040404,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, implement error handling for invalid inputs such as negative numbers or non-integer values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "struggling strugling strong\n\n to change. What is the\"go-to-market\" in this context referring to?\n In the provided text, the'strong'to'change'appears to be a typosliposslvely phrase \"go-to-market'\"phrase. Inthiscontext, \"go-to-g",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.10869565217391304,
+      "rouge_l": 0.09638554216867469,
+      "dropped": false
+    },
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Sarah Chen\n\n---\n\n### **I. Introduction**\n\nOn March",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.08695652173913043,
+      "rouge_l": 0.04545454545454545,
+      "dropped": false
+    }
+  ]
+}
