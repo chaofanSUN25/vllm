@@ -1,0 +1,78 @@
+{
+  "config": {
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "num_requests": 64,
+    "long_ratio": 0.2,
+    "short_len": 8,
+    "long_len": 512,
+    "max_tokens": 20,
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "url": "http://localhost:8000/v1/completions",
+      "num_prompts": 64,
+      "max_tokens": 20,
+      "success": 0,
+      "failed": 64,
+      "total_duration_s": 0.15107393637299538,
+      "throughput_rps": 0.0,
+      "ttft_ms": {
+        "n": 0,
+        "mean_ms": 0.0,
+        "stdev_ms": 0.0,
+        "p50_ms": 0.0,
+        "p90_ms": 0.0,
+        "p99_ms": 0.0,
+        "min_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "e2e_ms": {
+        "n": 0,
+        "mean_ms": 0.0,
+        "stdev_ms": 0.0,
+        "p50_ms": 0.0,
+        "p90_ms": 0.0,
+        "p99_ms": 0.0,
+        "min_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "name": "baseline"
+    },
+    {
+      "url": "http://localhost:8001/v1/completions",
+      "num_prompts": 64,
+      "max_tokens": 20,
+      "success": 64,
+      "failed": 0,
+      "total_duration_s": 1.8158838097006083,
+      "throughput_rps": 35.24454574577209,
+      "ttft_ms": {
+        "n": 64,
+        "mean_ms": 823.2998267194489,
+        "stdev_ms": 82.77189257031215,
+        "p50_ms": 824.6941836550832,
+        "p90_ms": 881.800552085042,
+        "p99_ms": 989.2049255594611,
+        "min_ms": 309.8731404170394,
+        "max_ms": 993.5345379635692
+      },
+      "e2e_ms": {
+        "n": 64,
+        "mean_ms": 1587.8728347888682,
+        "stdev_ms": 322.69524052529147,
+        "p50_ms": 1718.131324276328,
+        "p90_ms": 1785.9903233125806,
+        "p99_ms": 1798.138727536425,
+        "min_ms": 801.1868325993419,
+        "max_ms": 1801.033436320722
+      },
+      "name": "layer_drop"
+    }
+  ],
+  "comparison": {
+    "ttft_speedup": 0.0,
+    "e2e_speedup": 0.0,
+    "throughput_ratio": 0.0
+  }
+}

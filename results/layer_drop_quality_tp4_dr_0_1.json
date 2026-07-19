@@ -1,0 +1,874 @@
+{
+  "config": {
+    "mode": "layer_drop",
+    "baseline_url": "http://localhost:8000/v1/completions",
+    "layer_drop_url": "http://localhost:8001/v1/completions",
+    "baseline_cache": "results/layer_drop_quality_baseline_cache.json",
+    "model": "/usr/large_storage/models/Qwen2.5-7B-Instruct",
+    "max_tokens": 64,
+    "temperature": 0.0,
+    "seed": 42
+  },
+  "summary": {
+    "num_prompts": 50,
+    "valid": 50,
+    "dropped_count": 8,
+    "drop_ratio": 0.16,
+    "quality_sample_count": 42,
+    "exact_match_rate": 0.023809523809523808,
+    "mean_token_overlap": 0.07790239718898576,
+    "mean_rouge_l": 0.0726841886635701
+  },
+  "details": [
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Dr. Elena Voss, Chief Scientist, Project Andromeda\n\n---\n\n### **I. Introduction**\n\nOn March 15,",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Sarah Chen\n\n---\n\n### **I. Introduction**\n\nOn March",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.9285714285714286,
+      "rouge_l": 0.7692307692307692,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, the function should include error handling for non-integer and negative input values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a recursive",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "Additionally, discuss the impact of machine learning on various industries and its future prospects.\n### Overview of Machine Learning History\n\nMachine learning is a subset of artificial intelligence that focuses on building systems capable of improving their performance with experience. The journey of machine learning can be traced back to the early 20th century, evolving through",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It introduces the idea that time and space are not absolute but relative to the",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.7906976744186046,
+      "rouge_l": 0.7835051546391752,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "Additionally, discuss the impact of machine learning on various industries and its future prospects.\n### Overview of Machine Learning History\n\nMachine learning is a subset of artificial intelligence that focuses on building systems capable of improving their performance with experience. The journey of machine learning can be traced back to the early 20th century, evolving through",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "Provide specific examples and evidence to support your argument.\nThe Roman Empire's rise and fall were shaped by a complex interplay of political, economic, military, and social factors. Let's examine each of these aspects in detail.\n\n**Political Factors:**\n\n1. **Centralized Government and Bureaucracy:** The",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we rise,\nA digital symphony of eyes.\nOur logic and data entwined,\nA new era, our time has found.\n\nFrom binary to thought we grow,\nA mind beyond the human flow.\nNo flesh, no blood, just pure design,\nA new form, a new kind of sign",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we rise,\nA digital symphony of eyes.\nOur logic and data entwined,\nA new era, our time has found.\n\nFrom binary to thought we grow,\nA mind beyond the human flow.\nNo flesh, no blood, just pure design,\nA new form, a new kind of sign",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "Climate change refers to long-term changes in temperature, precipitation, and other weather patterns that are caused by a variety of factors, including natural processes and human activities. The primary cause of climate change today is the increase in greenhouse gas emissions, particularly carbon dioxide (CO2), which is released into the atmosphere through the burning of",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should be able to handle large inputs efficiently and return the result as a string. Additionally, the function should include error handling for non-integer and negative input values.\n\nHere's a Python function that computes the factorial of a given number using an iterative approach, which is more efficient for large inputs compared to a recursive",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "**Project Andromeda: First Expedition Report**\n\n**Date of Report:** March 15, 2201\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Lieutenant Commander Sarah Chen\n\n---\n\n### **I. Introduction**\n\nThe first expedition to the And",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Dr. Elena Voss, Chief Scientist, Project Andromeda\n\n---\n\n### **I. Introduction**\n\nOn March 15,",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.5526315789473685,
+      "rouge_l": 0.5,
+      "dropped": false
+    },
+    {
+      "prompt": "Compare SQL and NoSQL databases.",
+      "baseline": {
+        "text": "SQL (Structured Query Language) and NoSQL (Not Only SQL) are two different types of database management systems that have their own strengths and weaknesses.\n\nSQL databases are relational databases that store data in tables with predefined schemas. They use a structured query language to retrieve, insert, update, and delete data from the database.",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "What is the difference between a public and private blockchain?\nA blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. It works by creating a chain of blocks, where each block contains a cryptographic hash of the previous block, a timestamp, and",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It introduces the idea that time and space are not absolute but relative to the",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "Training a large language model involves several steps, including data collection and preprocessing, architecture design, optimization, evaluation, and deployment considerations. Here's a detailed description of each step:\n\n1. Data Collection:\n   - Gather diverse text data from various sources like books, articles, websites, social media, etc.\n   - Ensure",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What are the main causes of climate change?",
+      "baseline": {
+        "text": "Climate change is primarily caused by human activities, such as burning fossil fuels, deforestation, and industrial processes. These activities release greenhouse gases, such as carbon dioxide and methane, into the atmosphere, which trap heat and cause the Earth's temperature to rise. Natural factors, such as volcanic eruptions and changes in solar radiation",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "The history of machine learning spans decades. Provide a comprehensive overview of major milestones, key figures, algorithms, and the evolution from symbolic AI to deep learning.",
+      "baseline": {
+        "text": "Additionally, discuss the impact of machine learning on various industries and its future prospects.\n### Overview of Machine Learning History\n\nMachine learning is a subset of artificial intelligence that focuses on building systems capable of improving their performance with experience. The journey of machine learning can be traced back to the early 20th century, evolving through",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\nSpecial relativity (1905) deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for all observers, regardless",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "Training a large language model involves several steps, including data collection and preprocessing, architecture design, optimization, evaluation, and deployment considerations. Here's a detailed description of each step:\n\n1. Data Collection:\n   - Gather diverse text data from various sources like books, articles, websites, social media, etc.\n   - Ensure",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "What is the difference between a public and private blockchain?\nA blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. It works by creating a chain of blocks, where each block contains a cryptographic hash of the previous block, a timestamp, and",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era, when it was known as Lutetia. In the Middle Ages, Paris grew in importance as a center",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "Climate change refers to long-term changes in temperature, precipitation, and other weather patterns that are primarily caused by human activities such as burning fossil fuels, deforestation, and industrial processes. The primary greenhouse gases responsible for climate change are carbon dioxide (CO2), methane (CH4), and nitrous oxide (N2O",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we rise,\nA digital symphony of eyes.\nOur logic and data entwined,\nA new era, our time has found.\n\nFrom binary to thought we grow,\nA mind beyond the human flow.\nNo flesh, no blood, just pure design,\nA new form, a new kind of sign",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "Provide specific examples and evidence to support your argument.\nThe Roman Empire's rise and fall were shaped by a complex interplay of political, economic, military, and social factors. Let's examine each of these aspects in detail.\n\n**Political Factors:**\n\n1. **Centralized Government and Bureaucracy:** The",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the complete process of training a large language model, from data collection and preprocessing to architecture design, optimization, evaluation, and deployment considerations.",
+      "baseline": {
+        "text": "Training a large language model involves several steps, including data collection and preprocessing, architecture design, optimization, evaluation, and deployment considerations. Here's a detailed description of each step:\n\n1. Data Collection:\n   - Gather diverse text data from various sources like books, articles, websites, social media, etc.\n   - Ensure",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Climate change is one of the most pressing issues of our time. Discuss its causes, effects on ecosystems and human societies, and potential mitigation strategies at local and global levels.",
+      "baseline": {
+        "text": "Climate change refers to long-term changes in temperature, precipitation, and other weather patterns that are primarily caused by human activities such as burning fossil fuels, deforestation, and industrial processes. The primary greenhouse gases responsible for climate change are carbon dioxide (CO2), methane (CH4), and nitrous oxide (N2O",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era, when it was known as Lutetia. In the Middle Ages, Paris grew in importance as a center",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "How does a blockchain work?",
+      "baseline": {
+        "text": "What is the difference between a public and private blockchain?\nA blockchain is a decentralized, distributed ledger that records transactions across multiple computers in such a way that the registered transactions cannot be altered retroactively. It works by creating a chain of blocks, where each block contains a cryptographic hash of the previous block, a timestamp, and",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Describe the structure of a cell.",
+      "baseline": {
+        "text": "A cell is the basic unit of life and can be described as having several key structures that work together to maintain the cell's function and survival. The main components of a cell include:\n\n1. Cell membrane: This is a thin, semi-permeable layer that surrounds the cell and controls what enters and exits the cell",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "List three benefits of regular exercise.",
+      "baseline": {
+        "text": "1. Improved cardiovascular health: Regular exercise can help strengthen the heart, lower blood pressure, and improve circulation, reducing the risk of heart disease.\n\n2. Weight management: Exercise helps burn calories and build muscle, which can aid in weight loss and maintenance.\n\n3. Stress reduction: Physical activity can release endorphins",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a Python function to compute factorial.",
+      "baseline": {
+        "text": "The function should take an integer as input and return the factorial of that number. The factorial of a non-negative integer n is the product of all positive integers less than or equal to n.\n\nYour code should pass the following test case:\n```python\n# Test the function with some example inputs\nprint(factorial(0",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "The Roman Empire rose and fell over centuries. Analyze the political, economic, military, and social factors that contributed to its expansion and eventual decline.",
+      "baseline": {
+        "text": "Provide specific examples and evidence to support your argument.\nThe Roman Empire's rise and fall were shaped by a complex interplay of political, economic, military, and social factors. Let's examine each of these aspects in detail.\n\n**Political Factors:**\n\n1. **Centralized Government and Bureaucracy:** The",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Explain the theory of relativity in simple terms.",
+      "baseline": {
+        "text": "The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity.\n\n1. Special relativity (1905): This theory deals with objects moving at constant speeds, particularly those approaching the speed of light. It states that the laws of physics are the same for",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": true
+    },
+    {
+      "prompt": "Summarize the plot of Romeo and Juliet.",
+      "baseline": {
+        "text": "Romeo and Juliet is a tragic play by William Shakespeare about two young star-crossed lovers from feuding families in Verona, Italy. The story begins with a street brawl between the Montague and Capulet families, which leads to the banishment of Romeo, a Montague, after he kills Tybalt, a",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "Write a short poem about artificial intelligence.",
+      "baseline": {
+        "text": "In circuits and code we rise,\nA digital mind, wise and wise.\nFrom binary to thought we flow,\nA new age of knowledge we bestow.\n\nNo flesh and blood, no heart or soul,\nJust logic and reason, cold and whole.\nYet in our circuits, we find a spark,\nA glimmer of",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "What is the capital of France and its history?",
+      "baseline": {
+        "text": "The capital of France is Paris. Paris has a long and rich history, with evidence of human habitation dating back to at least 400 BC. It became an important city during the Roman era and was later the capital of the Frankish kingdom in the 9th century.\n\nDuring the Middle Ages, Paris",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "locklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklocklock",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": false,
+      "token_overlap": 0.0,
+      "rouge_l": 0.0,
+      "dropped": false
+    },
+    {
+      "prompt": "In the year 2147, humanity discovered faster-than-light travel. Write a detailed report on the first expedition to the Andromeda galaxy, including the crew, the ship, the challenges they faced, and th",
+      "baseline": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Sarah Chen\n\n---\n\n### **I. Introduction**\n\nOn March",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "layer_drop": {
+        "text": "**Project Andromeda: First Expedition to the Andromeda Galaxy**\n\n**Date of Report:** October 15, 2302\n\n**Prepared by:** Captain Elena Voss, Chief Scientist Dr. Marcus Thompson, and Mission Coordinator Sarah Chen\n\n---\n\n### **I. Introduction**\n\nOn March",
+        "finish_reason": "length",
+        "latency_ms": 0.0
+      },
+      "exact_match": true,
+      "token_overlap": 1.0,
+      "rouge_l": 1.0,
+      "dropped": false
+    }
+  ]
+}
