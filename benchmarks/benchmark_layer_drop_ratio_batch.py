@@ -14,8 +14,8 @@ import argparse
 import json
 import random
 import statistics
+import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
@@ -54,15 +54,12 @@ def send_request(
     model: str,
     prompt: str,
     max_tokens: int,
-    timeout: int,
+    results: list[dict[str, Any]],
     idx: int,
-    prompt_type: str,
-) -> dict[str, Any]:
+) -> None:
+    """Send a single streaming request and store result in results[idx]."""
     t_start = time.perf_counter()
     ttft_ms = None
-    error = None
-    num_tokens = 0
-    
     try:
         with requests.post(
             url,
@@ -73,29 +70,19 @@ def send_request(
                 "stream": True,
             },
             stream=True,
-            timeout=timeout,
+            timeout=300,
         ) as r:
             r.raise_for_status()
             first = True
             for line in r.iter_lines():
                 if line:
-                    num_tokens += 1
                     if first:
                         ttft_ms = (time.perf_counter() - t_start) * 1000.0
                         first = False
         e2e_ms = (time.perf_counter() - t_start) * 1000.0
+        results[idx] = {"idx": idx, "ttft_ms": ttft_ms, "e2e_ms": e2e_ms}
     except Exception as e:
-        e2e_ms = (time.perf_counter() - t_start) * 1000.0
-        error = str(e)
-    
-    return {
-        "idx": idx,
-        "prompt_type": prompt_type,
-        "ttft_ms": ttft_ms,
-        "e2e_ms": e2e_ms,
-        "num_tokens": num_tokens,
-        "error": error,
-    }
+        results[idx] = {"idx": idx, "error": str(e)}
 
 
 def run_batch_experiment(
@@ -108,25 +95,37 @@ def run_batch_experiment(
     slo_ttft_ms: int,
     slo_e2e_ms: int,
 ) -> dict[str, Any]:
-    """Run experiment for a single batch size."""
-    results: list[dict[str, Any]] = []
+    """Run experiment for a single batch size.
+    
+    Sends requests in waves of exactly batch_size, ensuring the server
+    processes them as proper batches. This is critical for layer drop
+    to be triggered correctly.
+    """
+    results: list[dict[str, Any]] = [None] * len(prompts)
     t0 = time.perf_counter()
     
-    with ThreadPoolExecutor(max_workers=batch_size) as executor:
-        futures = []
-        for i, (prompt, prompt_type) in enumerate(prompts):
-            future = executor.submit(
-                send_request, url, model, prompt, max_tokens, timeout, i, prompt_type
-            )
-            futures.append(future)
+    # Send requests in waves of batch_size
+    for wave_start in range(0, len(prompts), batch_size):
+        wave = prompts[wave_start:wave_start + batch_size]
         
-        for future in as_completed(futures):
-            results.append(future.result())
+        # Submit all requests in this wave concurrently
+        with ThreadPoolExecutor(max_workers=len(wave)) as executor:
+            futures = []
+            for i, (prompt, prompt_type) in enumerate(wave):
+                global_idx = wave_start + i
+                future = executor.submit(
+                    send_request, url, model, prompt, max_tokens, timeout, 
+                    global_idx, prompt_type
+                )
+                futures.append((global_idx, future))
+            
+            # Wait for all in wave to complete
+            for global_idx, future in futures:
+                results[global_idx] = future.result()
     
     total_duration_s = time.perf_counter() - t0
     
-    # Sort results by request index
-    results.sort(key=lambda x: x["idx"])
+    # Results are already in order due to wave-based sending
     
     ok = [r for r in results if r["error"] is None]
     failed = [r for r in results if r["error"] is not None]
@@ -167,7 +166,7 @@ def make_mixed_prompts(
     long_len: int = 512,
     long_ratio: float = 0.3,
     seed: int = 42,
-) -> list[tuple[str, str]]:
+) -> list[str]:
     random.seed(seed)
     short = "hello " * short_len
     long = (
@@ -178,12 +177,7 @@ def make_mixed_prompts(
     num_long = int(num_requests * long_ratio)
     num_short = num_requests - num_long
     
-    prompts = []
-    for _ in range(num_short):
-        prompts.append((short, "short"))
-    for _ in range(num_long):
-        prompts.append((long, "long"))
-    
+    prompts = [short for _ in range(num_short)] + [long for _ in range(num_long)]
     random.shuffle(prompts)
     return prompts
 
@@ -199,9 +193,9 @@ def main() -> None:
                         help="Drop ratio (metadata tag, server-determined)")
     
     # Benchmark parameters
-    parser.add_argument("--num-requests", type=int, default=256,
+    parser.add_argument("--num-requests", type=int, default=128,
                         help="Total requests per batch size")
-    parser.add_argument("--max-tokens", type=int, default=128)
+    parser.add_argument("--max-tokens", type=int, default=20)
     parser.add_argument("--long-ratio", type=float, default=0.3)
     parser.add_argument("--short-len", type=int, default=8)
     parser.add_argument("--long-len", type=int, default=512)
@@ -213,8 +207,10 @@ def main() -> None:
     args = parser.parse_args()
     
     # Generate prompts (same for all batch sizes)
+    # Ensure we have enough prompts for the largest batch size
+    num_prompts_needed = max(BATCH_SIZES) * 4  # 4 waves per batch size
     prompts = make_mixed_prompts(
-        args.num_requests, args.short_len, args.long_len, args.long_ratio, args.seed
+        num_prompts_needed, args.short_len, args.long_len, args.long_ratio, args.seed
     )
     
     print(f"Starting batch-size sensitivity benchmark")
@@ -247,19 +243,24 @@ def main() -> None:
     
     for batch_size in BATCH_SIZES:
         print(f"\n--- Testing batch_size={batch_size} ---")
+        # Use enough prompts for multiple waves of this batch size
+        num_waves = max(4, args.num_requests // batch_size)
+        num_prompts = batch_size * num_waves
+        batch_prompts = prompts[:num_prompts]
+        
         exp = run_batch_experiment(
             url=args.url,
             model=args.model,
-            prompts=prompts,
+            prompts=batch_prompts,
             max_tokens=args.max_tokens,
             batch_size=batch_size,
-            timeout=args.timeout,
             slo_ttft_ms=args.slo_ttft_ms,
             slo_e2e_ms=args.slo_e2e_ms,
         )
         
         results["experiments"].append(exp)
         
+        print(f"  Requests: {exp['num_prompts']} (waves: {num_waves})")
         print(f"  Throughput: {exp['throughput_rps']:.2f} rps")
         print(f"  TTFT: mean={exp['ttft_ms']['mean_ms']:.2f}ms, p90={exp['ttft_ms']['p90_ms']:.2f}ms")
         print(f"  E2E: mean={exp['e2e_ms']['mean_ms']:.2f}ms, p90={exp['e2e_ms']['p90_ms']:.2f}ms")
