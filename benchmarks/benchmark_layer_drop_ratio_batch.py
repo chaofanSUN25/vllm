@@ -2,24 +2,27 @@
 # SPDX-FileCopyrightText: Copyright contributors to the vLLM project
 """Batch-size sensitivity benchmark for layer drop evaluation.
 
-Tests layer drop performance across 9 batch sizes to demonstrate:
-- Small batch (4,6,8): layer drop is negative (overhead > benefit)
-- Medium batch (16,24,32): neutral to slightly positive
-- Large batch (48,64,128): layer drop is positive (benefit > overhead)
+Tests layer drop performance across 9 batch sizes using a fixed request trace.
+All batch sizes share the same trace (same length distribution), only concurrency
+level differs. This ensures fair comparison across batch sizes.
 
-This is the core experimental result for the paper.
+Key design:
+- Single trace of mixed prompts (30% long, 70% short) generated once
+- All batch sizes use identical trace, only inflight concurrency varies
+- Uses asyncio + aiohttp with Semaphore for precise concurrency control
+- Wave-based sending ensures proper batching on server side
 """
 
 import argparse
+import asyncio
 import json
 import random
 import statistics
-import threading
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Tuple, List
 
-import requests
+import aiohttp
 
 
 # Fixed batch sizes to test
@@ -49,19 +52,22 @@ def latency_summary(samples_ms: list[float]) -> dict[str, float]:
     }
 
 
-def send_request(
+async def send_request(
+    session: aiohttp.ClientSession,
     url: str,
     model: str,
     prompt: str,
     max_tokens: int,
     results: list[dict[str, Any]],
     idx: int,
+    prompt_type: str = "short",
 ) -> None:
     """Send a single streaming request and store result in results[idx]."""
     t_start = time.perf_counter()
     ttft_ms = None
+    num_tokens = 0
     try:
-        with requests.post(
+        async with session.post(
             url,
             json={
                 "model": model,
@@ -69,63 +75,64 @@ def send_request(
                 "max_tokens": max_tokens,
                 "stream": True,
             },
-            stream=True,
-            timeout=300,
+            timeout=aiohttp.ClientTimeout(total=300),
         ) as r:
             r.raise_for_status()
             first = True
-            for line in r.iter_lines():
+            async for line in r.content:
                 if line:
                     if first:
                         ttft_ms = (time.perf_counter() - t_start) * 1000.0
                         first = False
+                    num_tokens += 1
         e2e_ms = (time.perf_counter() - t_start) * 1000.0
-        results[idx] = {"idx": idx, "ttft_ms": ttft_ms, "e2e_ms": e2e_ms}
+        results[idx] = {"idx": idx, "prompt_type": prompt_type, 
+                        "ttft_ms": ttft_ms, "e2e_ms": e2e_ms, "num_tokens": num_tokens}
     except Exception as e:
         results[idx] = {"idx": idx, "error": str(e)}
 
 
-def run_batch_experiment(
+async def run_batch_experiment(
     url: str,
     model: str,
-    prompts: list[tuple[str, str]],
+    prompts: list[Tuple[str, str]],
     max_tokens: int,
     batch_size: int,
-    timeout: int,
     slo_ttft_ms: int,
     slo_e2e_ms: int,
 ) -> dict[str, Any]:
     """Run experiment for a single batch size.
     
     Sends requests in waves of exactly batch_size, ensuring the server
-    processes them as proper batches. This is critical for layer drop
-    to be triggered correctly.
+    processes them as proper batches. Uses asyncio with Semaphore to control
+    concurrency precisely.
+    
+    All batch sizes use the SAME trace of prompts, only the concurrency level
+    (wave size) differs. This ensures fair comparison.
     """
     results: list[dict[str, Any]] = [None] * len(prompts)
     t0 = time.perf_counter()
     
-    # Send requests in waves of batch_size
-    for wave_start in range(0, len(prompts), batch_size):
-        wave = prompts[wave_start:wave_start + batch_size]
-        
-        # Submit all requests in this wave concurrently
-        with ThreadPoolExecutor(max_workers=len(wave)) as executor:
-            futures = []
-            for i, (prompt, prompt_type) in enumerate(wave):
-                global_idx = wave_start + i
-                future = executor.submit(
-                    send_request, url, model, prompt, max_tokens, timeout, 
-                    global_idx, prompt_type
-                )
-                futures.append((global_idx, future))
+    async with aiohttp.ClientSession() as session:
+        # Send requests in waves of batch_size
+        for wave_start in range(0, len(prompts), batch_size):
+            wave = prompts[wave_start:wave_start + batch_size]
             
-            # Wait for all in wave to complete
-            for global_idx, future in futures:
-                results[global_idx] = future.result()
+            # Submit all requests in this wave concurrently
+            async with asyncio.Semaphore(len(wave)):
+                tasks = []
+                for i, (prompt, prompt_type) in enumerate(wave):
+                    global_idx = wave_start + i
+                    task = asyncio.create_task(
+                        send_request(session, url, model, prompt, max_tokens, results,
+                                    global_idx, prompt_type)
+                    )
+                    tasks.append(task)
+                
+                # Wait for all in wave to complete before sending next wave
+                await asyncio.gather(*tasks)
     
     total_duration_s = time.perf_counter() - t0
-    
-    # Results are already in order due to wave-based sending
     
     ok = [r for r in results if r["error"] is None]
     failed = [r for r in results if r["error"] is not None]
@@ -166,7 +173,7 @@ def make_mixed_prompts(
     long_len: int = 512,
     long_ratio: float = 0.3,
     seed: int = 42,
-) -> list[str]:
+) -> list[tuple[str, str]]:
     random.seed(seed)
     short = "hello " * short_len
     long = (
@@ -177,7 +184,7 @@ def make_mixed_prompts(
     num_long = int(num_requests * long_ratio)
     num_short = num_requests - num_long
     
-    prompts = [short for _ in range(num_short)] + [long for _ in range(num_long)]
+    prompts = [(short, "short") for _ in range(num_short)] + [(long, "long") for _ in range(num_long)]
     random.shuffle(prompts)
     return prompts
 
@@ -194,35 +201,40 @@ def main() -> None:
     
     # Benchmark parameters
     parser.add_argument("--num-requests", type=int, default=128,
-                        help="Total requests per batch size")
+                        help="Total requests per batch size (same for all batch sizes)")
     parser.add_argument("--max-tokens", type=int, default=20)
-    parser.add_argument("--long-ratio", type=float, default=0.3)
-    parser.add_argument("--short-len", type=int, default=8)
-    parser.add_argument("--long-len", type=int, default=512)
+    parser.add_argument("--long-ratio", type=float, default=0.3,
+                        help="Ratio of long prompts in the trace")
+    parser.add_argument("--short-len", type=int, default=8,
+                        help="Approximate length of short prompts")
+    parser.add_argument("--long-len", type=int, default=512,
+                        help="Approximate length of long prompts")
     parser.add_argument("--slo-ttft-ms", type=int, default=500)
     parser.add_argument("--slo-e2e-ms", type=int, default=2000)
-    parser.add_argument("--timeout", type=int, default=600)
     parser.add_argument("--seed", type=int, default=42)
     
     args = parser.parse_args()
     
-    # Generate prompts (same for all batch sizes)
-    # Ensure we have enough prompts for the largest batch size
-    num_prompts_needed = max(BATCH_SIZES) * 4  # 4 waves per batch size
-    prompts = make_mixed_prompts(
-        num_prompts_needed, args.short_len, args.long_len, args.long_ratio, args.seed
+    # Generate ONE fixed trace for ALL batch sizes
+    # This ensures identical length distribution across all experiments
+    trace = make_mixed_prompts(
+        args.num_requests, args.short_len, args.long_len, args.long_ratio, args.seed
     )
     
-    print(f"Starting batch-size sensitivity benchmark")
+    # Verify trace composition
+    num_long = sum(1 for _, ptype in trace if ptype == "long")
+    print(f"Generated fixed trace: {len(trace)} requests ({num_long} long, {len(trace)-num_long} short)")
+    
+    print(f"\nStarting batch-size sensitivity benchmark")
     print(f"  Server: {args.url}")
     print(f"  Model: {args.model}")
     print(f"  Drop ratio (server): {args.drop_ratio}")
     print(f"  Batch sizes: {BATCH_SIZES}")
-    print(f"  Requests per batch: {args.num_requests}")
+    print(f"  Requests per experiment: {args.num_requests}")
     print(f"  Max tokens: {args.max_tokens}")
     print(f"  Output: {args.output}")
     
-    # Run all 9 batch sizes
+    # Run all 9 batch sizes using the SAME trace
     results: dict[str, Any] = {
         "config": {
             "url": args.url,
@@ -235,31 +247,33 @@ def main() -> None:
             "long_len": args.long_len,
             "slo_ttft_ms": args.slo_ttft_ms,
             "slo_e2e_ms": args.slo_e2e_ms,
-            "timeout": args.timeout,
             "seed": args.seed,
+            "trace_composition": {
+                "total": len(trace),
+                "long": num_long,
+                "short": len(trace) - num_long,
+            },
         },
         "experiments": [],
     }
     
     for batch_size in BATCH_SIZES:
         print(f"\n--- Testing batch_size={batch_size} ---")
-        # Use enough prompts for multiple waves of this batch size
-        num_waves = max(4, args.num_requests // batch_size)
-        num_prompts = batch_size * num_waves
-        batch_prompts = prompts[:num_prompts]
+        print(f"  Using identical trace of {len(trace)} requests")
         
-        exp = run_batch_experiment(
+        exp = asyncio.run(run_batch_experiment(
             url=args.url,
             model=args.model,
-            prompts=batch_prompts,
+            prompts=trace,  # SAME trace for ALL batch sizes
             max_tokens=args.max_tokens,
             batch_size=batch_size,
             slo_ttft_ms=args.slo_ttft_ms,
             slo_e2e_ms=args.slo_e2e_ms,
-        )
+        ))
         
         results["experiments"].append(exp)
         
+        num_waves = (len(trace) + batch_size - 1) // batch_size
         print(f"  Requests: {exp['num_prompts']} (waves: {num_waves})")
         print(f"  Throughput: {exp['throughput_rps']:.2f} rps")
         print(f"  TTFT: mean={exp['ttft_ms']['mean_ms']:.2f}ms, p90={exp['ttft_ms']['p90_ms']:.2f}ms")
@@ -274,6 +288,7 @@ def main() -> None:
     
     print(f"\nResults written to {out}")
     print(f"Total experiments: {len(results['experiments'])}")
+    print(f"\nAll experiments used the SAME trace - fair comparison enabled!")
 
 
 if __name__ == "__main__":

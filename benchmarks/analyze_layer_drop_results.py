@@ -2,6 +2,7 @@
 """
 Layer Drop Benchmark Result Analysis Script
 Analyzes and compares baseline vs layer drop results across different batch sizes.
+Outputs comparison tables to markdown file.
 """
 
 import json
@@ -9,6 +10,7 @@ import argparse
 from typing import Dict, List, Any
 from dataclasses import dataclass
 from pathlib import Path
+from datetime import datetime
 
 
 @dataclass
@@ -64,6 +66,135 @@ def compute_diff(baseline: float, ld: float) -> float:
     if baseline == 0:
         return 0.0
     return ((ld - baseline) / baseline) * 100
+
+
+def format_diff(diff: float, is_higher_better: bool) -> str:
+    """Format percentage difference with color-like indicators"""
+    if is_higher_better:
+        if diff > 0:
+            return f"+{diff:.2f}%"
+        elif diff < 0:
+            return f"{diff:.2f}%"
+        else:
+            return "0.00%"
+    else:
+        if diff < 0:
+            return f"{diff:.2f}%"
+        elif diff > 0:
+            return f"+{diff:.2f}%"
+        else:
+            return "0.00%"
+
+
+def generate_md_report(baseline_results: Dict[int, ExperimentResult],
+                       ld_results: Dict[int, ExperimentResult],
+                       output_path: Path) -> None:
+    """Generate markdown report with comparison tables"""
+    batch_sizes = sorted(set(baseline_results.keys()) | set(ld_results.keys()))
+    
+    md = []
+    md.append("# Layer Drop Benchmark Results Comparison")
+    md.append(f"\n*Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*")
+    md.append("\n## Configuration")
+    md.append("| Parameter | Baseline | Layer Drop |")
+    md.append("|-----------|----------|------------|")
+    md.append("| Drop Ratio | 0.0 | 0.3 |")
+    md.append("| TP Size | 2 | 2 |")
+    md.append("| Model | Qwen2.5-0.5B-Instruct | Qwen2.5-0.5B-Instruct |")
+    
+    # Throughput Table
+    md.append("\n## Throughput (RPS)")
+    md.append("| Batch Size | Baseline | LayerDrop | Diff | Winner |")
+    md.append("|------------|----------|-----------|------|--------|")
+    for bs in batch_sizes:
+        base = baseline_results.get(bs)
+        ld = ld_results.get(bs)
+        if not base or not ld:
+            continue
+        diff = compute_diff(base.throughput_rps, ld.throughput_rps)
+        winner = "LD" if diff > 0 else "Base" if diff < 0 else "Tie"
+        md.append(f"| {bs} | {base.throughput_rps:.2f} | {ld.throughput_rps:.2f} | {format_diff(diff, True)} | {winner} |")
+    
+    # TTFT p99 Table
+    md.append("\n## TTFT p99 (ms)")
+    md.append("| Batch Size | Baseline | LayerDrop | Diff | Winner |")
+    md.append("|------------|----------|-----------|------|--------|")
+    for bs in batch_sizes:
+        base = baseline_results.get(bs)
+        ld = ld_results.get(bs)
+        if not base or not ld:
+            continue
+        diff = compute_diff(base.ttft_p99, ld.ttft_p99)
+        winner = "LD" if diff < 0 else "Base" if diff > 0 else "Tie"
+        md.append(f"| {bs} | {base.ttft_p99:.2f} | {ld.ttft_p99:.2f} | {format_diff(diff, False)} | {winner} |")
+    
+    # E2E p99 Table
+    md.append("\n## E2E p99 (ms)")
+    md.append("| Batch Size | Baseline | LayerDrop | Diff | Winner |")
+    md.append("|------------|----------|-----------|------|--------|")
+    for bs in batch_sizes:
+        base = baseline_results.get(bs)
+        ld = ld_results.get(bs)
+        if not base or not ld:
+            continue
+        diff = compute_diff(base.e2e_p99, ld.e2e_p99)
+        winner = "LD" if diff < 0 else "Base" if diff > 0 else "Tie"
+        md.append(f"| {bs} | {base.e2e_p99:.2f} | {ld.e2e_p99:.2f} | {format_diff(diff, False)} | {winner} |")
+    
+    # Summary Statistics
+    md.append("\n## Summary Statistics")
+    ld_wins = 0
+    base_wins = 0
+    ties = 0
+    
+    for bs in batch_sizes:
+        base = baseline_results.get(bs)
+        ld = ld_results.get(bs)
+        if not base or not ld:
+            continue
+        for b_val, l_val, is_higher in [
+            (base.throughput_rps, ld.throughput_rps, True),
+            (base.ttft_p99, ld.ttft_p99, False),
+            (base.e2e_p99, ld.e2e_p99, False),
+        ]:
+            diff = compute_diff(b_val, l_val)
+            if is_higher:
+                if diff > 0:
+                    ld_wins += 1
+                elif diff < 0:
+                    base_wins += 1
+                else:
+                    ties += 1
+            else:
+                if diff < 0:
+                    ld_wins += 1
+                elif diff > 0:
+                    base_wins += 1
+                else:
+                    ties += 1
+    
+    md.append(f"\n- LayerDrop wins: {ld_wins}")
+    md.append(f"- Baseline wins: {base_wins}")
+    md.append(f"- Ties: {ties}")
+    
+    # Best Performing Batch Sizes
+    md.append("\n## Best Performing Batch Sizes")
+    for name, results, label in [
+        ("Baseline", baseline_results, "Base"),
+        ("LayerDrop", ld_results, "LD"),
+    ]:
+        best_throughput = max(results.values(), key=lambda x: x.throughput_rps)
+        best_e2e_p99 = min(results.values(), key=lambda x: x.e2e_p99)
+        md.append(f"\n### {name}")
+        md.append(f"- Best Throughput: batch_size={best_throughput.batch_size}, {best_throughput.throughput_rps:.2f} RPS")
+        md.append(f"- Best E2E p99: batch_size={best_e2e_p99.batch_size}, {best_e2e_p99.e2e_p99:.2f} ms")
+    
+    # Write to file
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, 'w') as f:
+        f.write('\n'.join(md))
+    
+    print(f"\nMarkdown report written to: {output_path}")
 
 
 def print_summary(baseline_results: Dict[int, ExperimentResult], 
@@ -181,11 +312,14 @@ def main():
     parser = argparse.ArgumentParser(description='Analyze layer drop benchmark results')
     parser.add_argument('--baseline', type=str, required=True, help='Path to baseline results JSON')
     parser.add_argument('--layer-drop', type=str, required=True, help='Path to layer drop results JSON')
+    parser.add_argument('--output', type=str, default='results/layer_drop_comparison.md', 
+                        help='Output markdown file path')
     
     args = parser.parse_args()
     
     baseline_path = Path(args.baseline)
     ld_path = Path(args.layer_drop)
+    output_path = Path(args.output)
     
     if not baseline_path.exists():
         print(f"Error: Baseline file not found: {baseline_path}")
@@ -205,6 +339,7 @@ def main():
     print(f"Found {len(ld_results)} layer drop experiments")
     
     print_summary(baseline_results, ld_results)
+    generate_md_report(baseline_results, ld_results, output_path)
 
 
 if __name__ == "__main__":
