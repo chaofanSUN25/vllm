@@ -241,7 +241,7 @@ class LayerDropManager:
         
         # Linearly decrease ratio from max_ratio at layer 0 to 0 at last layer
         ratio = 1.0 - (layer_idx / (total_layers - 1))
-        k = math.int(num_reqs * self.max_drop_ratio * ratio)
+        k = int(num_reqs * self.max_drop_ratio * ratio)
         
         # Ensure at least 1 request remains after dropping
         return min(k, num_reqs - 1)
