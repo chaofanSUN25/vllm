@@ -730,25 +730,6 @@ class LayerDropManager:
         metadata.block_table = metadata.block_table[keep_mask]
         metadata.slot_mapping = orig_slot_mapping[keep_indices]
 
-        # Verify compacted slot_mapping by rebuilding it request-by-request.
-        # If this differs from the keep_indices gather, the token order used
-        # by the attention kernel does not match the hidden_states order.
-        kept_req_indices = keep_mask.nonzero(as_tuple=False).flatten()
-        expected_slot_slices = []
-        for old_req_idx in kept_req_indices:
-            s = int(orig_query_start_loc[old_req_idx].item())
-            e = int(orig_query_start_loc[old_req_idx + 1].item())
-            expected_slot_slices.append(orig_slot_mapping[s:e])
-        if expected_slot_slices:
-            expected_slot_mapping = torch.cat(expected_slot_slices)
-            if not torch.equal(metadata.slot_mapping, expected_slot_mapping):
-                logger.error(
-                    "[LAYER_DROP] slot_mapping mismatch after compact: "
-                    "keep_indices=%s, gathered=%s, expected=%s",
-                    keep_indices.tolist(),
-                    metadata.slot_mapping.tolist(),
-                    expected_slot_mapping.tolist(),
-                )
         if metadata.slot_mapping.numel() != metadata.num_actual_tokens:
             logger.error(
                 "[LAYER_DROP] slot_mapping length mismatch: "
