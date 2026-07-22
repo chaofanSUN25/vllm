@@ -169,7 +169,10 @@ class LayerDropManager:
             # communication.
             indices = torch.arange(num_reqs, device=seq_lens.device,
                                    dtype=torch.float32)
-            sort_scores = available_scores.float() * (num_reqs + 1) + indices
+            # Keep the request index as a deterministic tie-breaker while
+            # ensuring the actual drop score dominates the sort order.
+            sort_scores = (available_scores.float() * (num_reqs + 1)
+                           + indices / (num_reqs + 1))
             _, sorted_indices = torch.sort(sort_scores, descending=True,
                                            stable=True)
             top_k_indices = sorted_indices[:k]
@@ -387,7 +390,10 @@ class LayerDropManager:
         # deterministic across TP ranks so no synchronization is needed.
         indices = torch.arange(num_reqs, device=seq_lens.device,
                                dtype=torch.float32)
-        sort_scores = boosted_scores.float() * (num_reqs + 1) + indices
+        # Keep the request index as a deterministic tie-breaker while
+        # ensuring the actual drop score dominates the sort order.
+        sort_scores = (boosted_scores.float() * (num_reqs + 1)
+                       + indices / (num_reqs + 1))
         _, sorted_indices = torch.sort(sort_scores, descending=True,
                                        stable=True)
         top_k_indices = sorted_indices[:k]
@@ -526,24 +532,32 @@ class LayerDropManager:
         if num_kept_reqs > 0:
             new_query_start_loc[0] = 0
             new_query_start_loc[1:] = torch.cumsum(kept_query_lens, dim=0)
-        
+
+        # Coalesce scalar reads into a single GPU->CPU sync.
+        if num_kept_reqs > 0:
+            scalar_values = torch.stack([
+                new_query_start_loc[-1].float(),
+                kept_query_lens.max().float(),
+                kept_seq_lens.max().float(),
+            ]).cpu()
+            new_num_actual_tokens = int(scalar_values[0].item())
+            new_max_query_len = int(scalar_values[1].item())
+            new_max_seq_len = int(scalar_values[2].item())
+        else:
+            new_num_actual_tokens = 0
+            new_max_query_len = 0
+            new_max_seq_len = 0
+
         # Update CPU version
         new_query_start_loc_cpu = new_query_start_loc.cpu()
-        
+
         # Filter block_table
         kept_block_table = metadata.block_table_tensor[keep_mask]
-        
+
         # Update slot_mapping: gather slots for kept tokens only.
         # keep_indices has length num_kept_tokens, matching the compacted
         # token axis. Using index_map here would be wrong (length num_tokens).
         new_slot_mapping = metadata.slot_mapping[keep_indices]
-        
-        # Compute new num_actual_tokens
-        new_num_actual_tokens = int(new_query_start_loc[-1].item()) if num_kept_reqs > 0 else 0
-        
-        # Compute new max_query_len and max_seq_len
-        new_max_query_len = int(kept_query_lens.max().item()) if num_kept_reqs > 0 else 0
-        new_max_seq_len = int(kept_seq_lens.max().item()) if num_kept_reqs > 0 else 0
         
         # Update causal mask if it's a tensor
         if isinstance(metadata.causal, torch.Tensor):
@@ -706,9 +720,7 @@ class LayerDropManager:
         query_lens = metadata.query_start_loc[1:] - metadata.query_start_loc[:-1]
         kept_query_lens = query_lens[keep_mask]
 
-        # Save originals before overwriting so we can verify the compacted
-        # slot_mapping is consistent with per-request slicing.
-        orig_query_start_loc = metadata.query_start_loc
+        # Save original slot_mapping for the gather below.
         orig_slot_mapping = metadata.slot_mapping
 
         # Rebuild query_start_loc
@@ -722,9 +734,15 @@ class LayerDropManager:
         metadata.query_start_loc = new_query_start_loc
 
         metadata.seq_lens = kept_seq_lens
-        metadata.num_actual_tokens = int(new_query_start_loc[-1].item())
-        metadata.max_query_len = int(kept_query_lens.max().item())
-        metadata.max_seq_len = int(kept_seq_lens.max().item())
+        # Coalesce scalar reads into a single GPU->CPU sync.
+        scalar_values = torch.stack([
+            new_query_start_loc[-1],
+            kept_query_lens.max(),
+            kept_seq_lens.max(),
+        ]).cpu()
+        metadata.num_actual_tokens = int(scalar_values[0].item())
+        metadata.max_query_len = int(scalar_values[1].item())
+        metadata.max_seq_len = int(scalar_values[2].item())
 
         # Block table and slot mapping
         metadata.block_table = metadata.block_table[keep_mask]
@@ -794,24 +812,29 @@ class LayerDropManager:
         Returns:
             Updated positions tensor with dropped requests removed.
         """
-        num_reqs = keep_mask.shape[0]
-        
-        # Build indices of tokens to keep
-        indices_to_keep = []
-        for i in range(num_reqs):
-            if keep_mask[i]:
-                start = query_start_loc[i].item()
-                end = query_start_loc[i + 1].item()
-                indices_to_keep.extend(range(start, end))
-        
-        if not indices_to_keep:
-            return torch.empty(0, dtype=positions.dtype, device=positions.device)
-        
-        indices_to_keep_tensor = torch.tensor(
-            indices_to_keep, dtype=torch.int64, device=positions.device
-        )
-        
-        return positions[indices_to_keep_tensor]
+        num_tokens = positions.shape[0]
+        device = positions.device
+
+        # Build a token-level keep mask from request-level keep_mask using
+        # the same scatter_add + cumsum trick as compact_hidden_states.
+        req_lens = query_start_loc[1:] - query_start_loc[:-1]
+        kept_req_lens = req_lens[keep_mask]
+        kept_starts = query_start_loc[:-1][keep_mask]
+
+        num_kept_tokens = int(kept_req_lens.sum().item())
+        if num_kept_tokens == 0:
+            return torch.empty(0, dtype=positions.dtype, device=device)
+
+        starts = kept_starts.long()
+        ends = starts + kept_req_lens.long()
+        delta = torch.zeros(num_tokens + 1, dtype=torch.int64, device=device)
+        ones = torch.ones(starts.shape[0], dtype=torch.int64, device=device)
+        delta.scatter_add_(0, starts, ones)
+        delta.scatter_add_(0, ends, -ones)
+        token_keep_mask = delta[:-1].cumsum(0).bool()
+
+        keep_indices = token_keep_mask.nonzero(as_tuple=False).flatten()
+        return positions[keep_indices]
 
 
 # Global layer drop manager instance
