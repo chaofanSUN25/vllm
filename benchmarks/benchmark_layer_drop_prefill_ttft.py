@@ -35,7 +35,7 @@ from typing import Any
 import aiohttp
 
 
-BATCH_SIZES = [4, 8, 16, 32, 64, 128]
+BATCH_SIZES = [64, 128]
 
 SHORT_LEN = 128
 LONG_MIN = 2048
