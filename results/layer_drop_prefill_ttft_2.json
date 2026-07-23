@@ -1,0 +1,4729 @@
+{
+  "config": {
+    "model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "max_tokens": 1,
+    "short_len": 128,
+    "long_min": 2048,
+    "long_max": 4096,
+    "long_ratio": 0.2,
+    "batch_sizes": [
+      4,
+      8,
+      16,
+      32,
+      64,
+      128
+    ],
+    "seed": 42
+  },
+  "experiments": [
+    {
+      "name": "baseline",
+      "url": "http://localhost:8000/v1/completions",
+      "batch_results": [
+        {
+          "batch_size": 4,
+          "num_prompts": 4,
+          "num_long": 1,
+          "num_short": 3,
+          "success": 4,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.10190715361386538,
+          "ttft_ms": {
+            "n": 4,
+            "mean_ms": 99.03550520539284,
+            "stdev_ms": 1.193639640194745,
+            "p50_ms": 98.54840207844973,
+            "p90_ms": 100.19553871825337,
+            "p99_ms": 100.7225135806948,
+            "min_ms": 98.26415032148361,
+            "max_ms": 100.78106634318829
+          },
+          "ttft_short_ms": {
+            "n": 3,
+            "mean_ms": 99.29150808602571,
+            "stdev_ms": 1.3205826504283529,
+            "p50_ms": 98.82930759340525,
+            "p90_ms": 100.39071459323168,
+            "p99_ms": 100.74203116819263,
+            "min_ms": 98.26415032148361,
+            "max_ms": 100.78106634318829
+          },
+          "ttft_long_ms": {
+            "n": 1,
+            "mean_ms": 98.2674965634942,
+            "stdev_ms": 0.0,
+            "p50_ms": 98.2674965634942,
+            "p90_ms": 98.2674965634942,
+            "p99_ms": 98.2674965634942,
+            "min_ms": 98.2674965634942,
+            "max_ms": 98.2674965634942
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 100.78106634318829,
+              "e2e_ms": 100.8261302486062,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 98.82930759340525,
+              "e2e_ms": 98.86784572154284,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 2360,
+              "prompt_type": "long",
+              "ttft_ms": 98.2674965634942,
+              "e2e_ms": 98.3795402571559,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 98.26415032148361,
+              "e2e_ms": 98.32512214779854,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 8,
+          "num_prompts": 8,
+          "num_long": 2,
+          "num_short": 6,
+          "success": 8,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.11706778034567833,
+          "ttft_ms": {
+            "n": 8,
+            "mean_ms": 109.43992261309177,
+            "stdev_ms": 12.864886119399035,
+            "p50_ms": 114.02004770934582,
+            "p90_ms": 114.8179030045867,
+            "p99_ms": 114.82755007222295,
+            "min_ms": 77.64644362032413,
+            "max_ms": 114.82862196862698
+          },
+          "ttft_short_ms": {
+            "n": 6,
+            "mean_ms": 108.04907931014895,
+            "stdev_ms": 14.912275716315538,
+            "p50_ms": 114.09726087003946,
+            "p90_ms": 114.82096556574106,
+            "p99_ms": 114.82785632833838,
+            "min_ms": 77.64644362032413,
+            "max_ms": 114.82862196862698
+          },
+          "ttft_long_ms": {
+            "n": 2,
+            "mean_ms": 113.6124525219202,
+            "stdev_ms": 0.4801527033042964,
+            "p50_ms": 113.6124525219202,
+            "p90_ms": 113.88406790792942,
+            "p99_ms": 113.9451813697815,
+            "min_ms": 113.27293328940868,
+            "max_ms": 113.95197175443172
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 114.82862196862698,
+              "e2e_ms": 114.87256456166506,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 114.81330916285515,
+              "e2e_ms": 114.87204860895872,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 4085,
+              "prompt_type": "long",
+              "ttft_ms": 113.95197175443172,
+              "e2e_ms": 113.97564224898815,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 114.08812366425991,
+              "e2e_ms": 114.16017729789019,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 114.10639807581902,
+              "e2e_ms": 114.1642453148961,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 3138,
+              "prompt_type": "long",
+              "ttft_ms": 113.27293328940868,
+              "e2e_ms": 113.32085356116295,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 112.81157936900854,
+              "e2e_ms": 112.85083647817373,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 77.64644362032413,
+              "e2e_ms": 77.69338972866535,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 16,
+          "num_prompts": 16,
+          "num_long": 3,
+          "num_short": 13,
+          "success": 16,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.13741434644907713,
+          "ttft_ms": {
+            "n": 16,
+            "mean_ms": 130.13803405920044,
+            "stdev_ms": 8.000298647296043,
+            "p50_ms": 131.88689621165395,
+            "p90_ms": 133.28261813148856,
+            "p99_ms": 134.66382110491395,
+            "min_ms": 100.51069315522909,
+            "max_ms": 134.89240873605013
+          },
+          "ttft_short_ms": {
+            "n": 13,
+            "mean_ms": 129.74157019589956,
+            "stdev_ms": 8.873254645205687,
+            "p50_ms": 131.86224456876516,
+            "p90_ms": 133.3341419696808,
+            "p99_ms": 134.70953863114119,
+            "min_ms": 100.51069315522909,
+            "max_ms": 134.89240873605013
+          },
+          "ttft_long_ms": {
+            "n": 3,
+            "mean_ms": 131.85604413350424,
+            "stdev_ms": 1.4761162090023392,
+            "p50_ms": 132.54788145422935,
+            "p90_ms": 132.7969178557396,
+            "p99_ms": 132.8529510460794,
+            "min_ms": 130.1610739901662,
+            "max_ms": 132.85917695611715
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 134.89240873605013,
+              "e2e_ms": 134.93700977414846,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 133.00652988255024,
+              "e2e_ms": 133.0976877361536,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 133.19674506783485,
+              "e2e_ms": 133.25438369065523,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 100.51069315522909,
+              "e2e_ms": 100.56981164962053,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 2855,
+              "prompt_type": "long",
+              "ttft_ms": 132.54788145422935,
+              "e2e_ms": 132.59077724069357,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 133.36849119514227,
+              "e2e_ms": 133.40861815959215,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 2871,
+              "prompt_type": "long",
+              "ttft_ms": 132.85917695611715,
+              "e2e_ms": 132.90366530418396,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 132.86306336522102,
+              "e2e_ms": 132.90255423635244,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.08196016401052,
+              "e2e_ms": 131.14053662866354,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.91154785454273,
+              "e2e_ms": 131.95936102420092,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.86224456876516,
+              "e2e_ms": 131.90568797290325,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 130.58413937687874,
+              "e2e_ms": 130.63045125454664,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.6353902220726,
+              "e2e_ms": 131.67585153132677,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 130.3503205999732,
+              "e2e_ms": 130.3937155753374,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.3768783584237,
+              "e2e_ms": 131.41893222928047,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 2890,
+              "prompt_type": "long",
+              "ttft_ms": 130.1610739901662,
+              "e2e_ms": 130.2239764481783,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 32,
+          "num_prompts": 32,
+          "num_long": 6,
+          "num_short": 26,
+          "success": 32,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.17006174102425575,
+          "ttft_ms": {
+            "n": 32,
+            "mean_ms": 151.97513785096817,
+            "stdev_ms": 15.051773592579753,
+            "p50_ms": 155.2331978455186,
+            "p90_ms": 164.214573148638,
+            "p99_ms": 165.35694936290383,
+            "min_ms": 100.88279657065868,
+            "max_ms": 165.73585756123066
+          },
+          "ttft_short_ms": {
+            "n": 26,
+            "mean_ms": 154.24860283159293,
+            "stdev_ms": 12.004825569026458,
+            "p50_ms": 156.99750185012817,
+            "p90_ms": 164.3130909651518,
+            "p99_ms": 165.43028643354774,
+            "min_ms": 124.62785746902227,
+            "max_ms": 165.73585756123066
+          },
+          "ttft_long_ms": {
+            "n": 6,
+            "mean_ms": 142.12345626826087,
+            "stdev_ms": 23.25346475116473,
+            "p50_ms": 150.67449770867825,
+            "p90_ms": 160.6147475540638,
+            "p99_ms": 162.03300077468157,
+            "min_ms": 100.88279657065868,
+            "max_ms": 162.19058446586132
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 165.73585756123066,
+              "e2e_ms": 165.79721216112375,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 155.08763678371906,
+              "e2e_ms": 155.11824376881123,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 155.37875890731812,
+              "e2e_ms": 155.40061611682177,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 163.9270931482315,
+              "e2e_ms": 163.95668033510447,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 154.52061779797077,
+              "e2e_ms": 154.54442240297794,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 163.70947565883398,
+              "e2e_ms": 163.7503793463111,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 164.2465153709054,
+              "e2e_ms": 164.2967015504837,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 164.51357305049896,
+              "e2e_ms": 164.55662716180086,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 164.37966655939817,
+              "e2e_ms": 164.41961098462343,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 162.69486490637064,
+              "e2e_ms": 162.74130903184414,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 162.71361708641052,
+              "e2e_ms": 162.75569330900908,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 2542,
+              "prompt_type": "long",
+              "ttft_ms": 129.2794505134225,
+              "e2e_ms": 129.3100630864501,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 163.30704931169748,
+              "e2e_ms": 163.34989666938782,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 153.0484464019537,
+              "e2e_ms": 153.07545475661755,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 162.32573054730892,
+              "e2e_ms": 162.36726846545935,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 2792,
+              "prompt_type": "long",
+              "ttft_ms": 162.19058446586132,
+              "e2e_ms": 162.23202738910913,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 16,
+              "prompt_len": 3355,
+              "prompt_type": "long",
+              "ttft_ms": 151.85660775750875,
+              "e2e_ms": 151.87930595129728,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 150.81669762730598,
+              "e2e_ms": 150.86455550044775,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 18,
+              "prompt_len": 2513,
+              "prompt_type": "long",
+              "ttft_ms": 100.88279657065868,
+              "e2e_ms": 100.95096938312054,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 150.92578530311584,
+              "e2e_ms": 150.94719175249338,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 126.36419665068388,
+              "e2e_ms": 126.39015074819326,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 149.8450767248869,
+              "e2e_ms": 149.87232349812984,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 22,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 150.00791940838099,
+              "e2e_ms": 150.03938507288694,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 23,
+              "prompt_len": 2935,
+              "prompt_type": "long",
+              "ttft_ms": 149.49238765984774,
+              "e2e_ms": 149.51607771217823,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 24,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 158.61624479293823,
+              "e2e_ms": 158.6553594097495,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 159.79145653545856,
+              "e2e_ms": 159.83230341225863,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 159.92133505642414,
+              "e2e_ms": 159.9597679451108,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 149.65019561350346,
+              "e2e_ms": 149.671564809978,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 125.25217980146408,
+              "e2e_ms": 125.27513783425093,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 149.05582554638386,
+              "e2e_ms": 149.07943829894066,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 30,
+              "prompt_len": 3314,
+              "prompt_type": "long",
+              "ttft_ms": 159.03891064226627,
+              "e2e_ms": 159.0846311300993,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.62785746902227,
+              "e2e_ms": 124.67954400926828,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 64,
+          "num_prompts": 64,
+          "num_long": 13,
+          "num_short": 51,
+          "success": 64,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.2784868227317929,
+          "ttft_ms": {
+            "n": 64,
+            "mean_ms": 199.38021508278325,
+            "stdev_ms": 25.150145167280336,
+            "p50_ms": 194.79195261374116,
+            "p90_ms": 227.7390083298087,
+            "p99_ms": 269.9854056816548,
+            "min_ms": 142.2631684690714,
+            "max_ms": 272.21548184752464
+          },
+          "ttft_short_ms": {
+            "n": 51,
+            "mean_ms": 196.16094450740252,
+            "stdev_ms": 18.453512990356,
+            "p50_ms": 194.78286523371935,
+            "p90_ms": 223.31972979009151,
+            "p99_ms": 230.29296472668648,
+            "min_ms": 173.9774728193879,
+            "max_ms": 230.6122574955225
+          },
+          "ttft_long_ms": {
+            "n": 13,
+            "mean_ms": 212.00966118619993,
+            "stdev_ms": 41.049445557886756,
+            "p50_ms": 194.80103999376297,
+            "p90_ms": 267.7828399464488,
+            "p99_ms": 271.790705434978,
+            "min_ms": 142.2631684690714,
+            "max_ms": 272.21548184752464
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 4010,
+              "prompt_type": "long",
+              "ttft_ms": 272.21548184752464,
+              "e2e_ms": 272.29201048612595,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 184.85858477652073,
+              "e2e_ms": 184.89309586584568,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 201.33008621633053,
+              "e2e_ms": 201.37169118970633,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 183.76035057008266,
+              "e2e_ms": 183.79619624465704,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 2280,
+              "prompt_type": "long",
+              "ttft_ms": 184.38769225031137,
+              "e2e_ms": 184.42272581160069,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 230.6122574955225,
+              "e2e_ms": 230.6485828012228,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 2116,
+              "prompt_type": "long",
+              "ttft_ms": 248.6391393467784,
+              "e2e_ms": 248.71896486729383,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 229.97367195785046,
+              "e2e_ms": 230.01539893448353,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 215.93870595097542,
+              "e2e_ms": 215.97062330693007,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 181.97214882820845,
+              "e2e_ms": 182.0068871602416,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 182.41222202777863,
+              "e2e_ms": 182.44696967303753,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 213.97072542458773,
+              "e2e_ms": 214.0279682353139,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 2960,
+              "prompt_type": "long",
+              "ttft_ms": 268.675678409636,
+              "e2e_ms": 268.7235837802291,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 214.19495157897472,
+              "e2e_ms": 214.2385309562087,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 3836,
+              "prompt_type": "long",
+              "ttft_ms": 227.81258076429367,
+              "e2e_ms": 227.87707205861807,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 179.9839874729514,
+              "e2e_ms": 180.04081584513187,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 16,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 227.56733931601048,
+              "e2e_ms": 227.60456427931786,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 178.18157840520144,
+              "e2e_ms": 178.2641727477312,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 18,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 179.74336072802544,
+              "e2e_ms": 179.77982014417648,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 226.697132922709,
+              "e2e_ms": 226.74565948545933,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 180.20861875265837,
+              "e2e_ms": 180.24484626948833,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 212.92536053806543,
+              "e2e_ms": 212.95428182929754,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 22,
+              "prompt_len": 3894,
+              "prompt_type": "long",
+              "ttft_ms": 212.80598547309637,
+              "e2e_ms": 212.83650305122137,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 23,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 179.324590601027,
+              "e2e_ms": 179.35870494693518,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 24,
+              "prompt_len": 4071,
+              "prompt_type": "long",
+              "ttft_ms": 142.2631684690714,
+              "e2e_ms": 142.35584996640682,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 179.32580690830946,
+              "e2e_ms": 179.3596800416708,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 211.0172612592578,
+              "e2e_ms": 211.08111646026373,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 178.57786919921637,
+              "e2e_ms": 178.61137446016073,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 177.02149786055088,
+              "e2e_ms": 177.0601086318493,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 178.54677233844995,
+              "e2e_ms": 178.58086060732603,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 30,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 195.45651506632566,
+              "e2e_ms": 195.5004995688796,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 195.21302822977304,
+              "e2e_ms": 195.2692996710539,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 32,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 176.44662130624056,
+              "e2e_ms": 176.49664171040058,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 33,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 224.62156601250172,
+              "e2e_ms": 224.7010786086321,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 34,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 210.52817162126303,
+              "e2e_ms": 210.56211460381746,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 35,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 211.20467223227024,
+              "e2e_ms": 211.23939752578735,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 36,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 178.7241119891405,
+              "e2e_ms": 178.75854019075632,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 37,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 210.3804675862193,
+              "e2e_ms": 210.41174978017807,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 38,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 177.4444291368127,
+              "e2e_ms": 177.48893052339554,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 39,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 178.09806298464537,
+              "e2e_ms": 178.1538911163807,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 40,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 177.38155368715525,
+              "e2e_ms": 177.41969414055347,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 41,
+              "prompt_len": 2816,
+              "prompt_type": "long",
+              "ttft_ms": 177.7907181531191,
+              "e2e_ms": 177.82501596957445,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 42,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 177.94584203511477,
+              "e2e_ms": 177.98021249473095,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 43,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 194.78286523371935,
+              "e2e_ms": 194.83858905732632,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 44,
+              "prompt_len": 3998,
+              "prompt_type": "long",
+              "ttft_ms": 194.80103999376297,
+              "e2e_ms": 194.8477290570736,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 45,
+              "prompt_len": 2309,
+              "prompt_type": "long",
+              "ttft_ms": 264.21148609369993,
+              "e2e_ms": 264.2641877755523,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 46,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 176.6791259869933,
+              "e2e_ms": 176.71516072005033,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 47,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 210.39589773863554,
+              "e2e_ms": 210.42343974113464,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 48,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 209.38126649707556,
+              "e2e_ms": 209.41108651459217,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 49,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 210.30504070222378,
+              "e2e_ms": 210.3319652378559,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 50,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 210.03974974155426,
+              "e2e_ms": 210.0691283121705,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 51,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 209.87271331250668,
+              "e2e_ms": 209.9028117954731,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 52,
+              "prompt_len": 3109,
+              "prompt_type": "long",
+              "ttft_ms": 176.79589614272118,
+              "e2e_ms": 176.83171946555376,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 53,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 174.8073799535632,
+              "e2e_ms": 174.84431061893702,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 54,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 209.6380377188325,
+              "e2e_ms": 209.66719929128885,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 55,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 174.52722880989313,
+              "e2e_ms": 174.56952575594187,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 56,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 223.31972979009151,
+              "e2e_ms": 223.3582492917776,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 57,
+              "prompt_len": 3206,
+              "prompt_type": "long",
+              "ttft_ms": 192.85695161670446,
+              "e2e_ms": 192.94895697385073,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 58,
+              "prompt_len": 3538,
+              "prompt_type": "long",
+              "ttft_ms": 192.8697768598795,
+              "e2e_ms": 192.9167779162526,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 59,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 175.73507595807314,
+              "e2e_ms": 175.76820217072964,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 60,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 173.9774728193879,
+              "e2e_ms": 174.01743307709694,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 61,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 193.13687086105347,
+              "e2e_ms": 193.17981880158186,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 62,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 207.99023006111383,
+              "e2e_ms": 208.02187360823154,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 63,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 208.029561676085,
+              "e2e_ms": 208.05753394961357,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 128,
+          "num_prompts": 128,
+          "num_long": 26,
+          "num_short": 102,
+          "success": 128,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.5194601463153958,
+          "ttft_ms": {
+            "n": 128,
+            "mean_ms": 351.00467469601426,
+            "stdev_ms": 107.66037439289656,
+            "p50_ms": 406.025062315166,
+            "p90_ms": 450.35124365240335,
+            "p99_ms": 501.0580576490611,
+            "min_ms": 131.0641337186098,
+            "max_ms": 501.57772563397884
+          },
+          "ttft_short_ms": {
+            "n": 102,
+            "mean_ms": 353.1635214994643,
+            "stdev_ms": 108.17363614609744,
+            "p50_ms": 406.67328191921115,
+            "p90_ms": 450.3247934393585,
+            "p99_ms": 499.82543180696644,
+            "min_ms": 131.0641337186098,
+            "max_ms": 501.3332460075617
+          },
+          "ttft_long_ms": {
+            "n": 26,
+            "mean_ms": 342.53535262094096,
+            "stdev_ms": 107.29969244121077,
+            "p50_ms": 402.58399583399296,
+            "p90_ms": 449.2081799544394,
+            "p99_ms": 488.9541510492563,
+            "min_ms": 163.8653976842761,
+            "max_ms": 501.57772563397884
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 451.4542240649462,
+              "e2e_ms": 451.4741702005267,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 406.4442478120327,
+              "e2e_ms": 406.5336585044861,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.91496128588915,
+              "e2e_ms": 450.93271415680647,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 203.60031723976135,
+              "e2e_ms": 203.6521304398775,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 407.740393653512,
+              "e2e_ms": 407.78408478945494,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 424.5975324884057,
+              "e2e_ms": 424.64277893304825,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 407.33541641384363,
+              "e2e_ms": 407.39191602915525,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 221.84353042393923,
+              "e2e_ms": 221.87698632478714,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 3336,
+              "prompt_type": "long",
+              "ttft_ms": 283.91425497829914,
+              "e2e_ms": 283.9976046234369,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.36138501018286,
+              "e2e_ms": 450.378630310297,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 198.769124224782,
+              "e2e_ms": 198.85219354182482,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 407.6768262311816,
+              "e2e_ms": 407.7178668230772,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.1258581876755,
+              "e2e_ms": 450.1433279365301,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 220.17162386327982,
+              "e2e_ms": 220.2420048415661,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 221.11735213547945,
+              "e2e_ms": 221.1519293487072,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 3337,
+              "prompt_type": "long",
+              "ttft_ms": 423.7484373152256,
+              "e2e_ms": 423.7954029813409,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 16,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 200.85487328469753,
+              "e2e_ms": 200.91353729367256,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 221.49414289742708,
+              "e2e_ms": 221.51826415210962,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 18,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 200.3878690302372,
+              "e2e_ms": 200.4601014778018,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 200.82306116819382,
+              "e2e_ms": 200.87737496942282,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 198.27040378004313,
+              "e2e_ms": 198.33245500922203,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 202.7881247922778,
+              "e2e_ms": 202.83739361912012,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 22,
+              "prompt_len": 2057,
+              "prompt_type": "long",
+              "ttft_ms": 220.8492485806346,
+              "e2e_ms": 220.88672686368227,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 23,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 219.5453504100442,
+              "e2e_ms": 219.66727450489998,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 24,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 423.0099320411682,
+              "e2e_ms": 423.05330000817776,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 202.1872941404581,
+              "e2e_ms": 202.23584864288568,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 233.2122828811407,
+              "e2e_ms": 233.24082791805267,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 406.01490903645754,
+              "e2e_ms": 406.057165004313,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 406.9023160263896,
+              "e2e_ms": 406.95504378527403,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 448.7483324483037,
+              "e2e_ms": 448.76493513584137,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 30,
+              "prompt_len": 3294,
+              "prompt_type": "long",
+              "ttft_ms": 406.24295361340046,
+              "e2e_ms": 406.2826903536916,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 405.7362927123904,
+              "e2e_ms": 405.77595960348845,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 32,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 405.4582333192229,
+              "e2e_ms": 405.50153236836195,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 33,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 405.16203735023737,
+              "e2e_ms": 405.21074272692204,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 34,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 406.03521559387445,
+              "e2e_ms": 406.07448760420084,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 35,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 200.0247361138463,
+              "e2e_ms": 200.07631089538336,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 36,
+              "prompt_len": 2546,
+              "prompt_type": "long",
+              "ttft_ms": 447.47425336390734,
+              "e2e_ms": 447.49176874756813,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 37,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 231.67138453572989,
+              "e2e_ms": 231.73162061721087,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 38,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 447.07068521529436,
+              "e2e_ms": 447.08819873631,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 39,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 323.52752052247524,
+              "e2e_ms": 323.5623314976692,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 40,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 323.39159306138754,
+              "e2e_ms": 323.43392353504896,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 41,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 322.9784043505788,
+              "e2e_ms": 323.0153750628233,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 42,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 446.77050691097975,
+              "e2e_ms": 446.7879654839635,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 43,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 231.6673854365945,
+              "e2e_ms": 231.70550633221865,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 44,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 446.90961483865976,
+              "e2e_ms": 446.9261150807142,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 45,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 196.58806920051575,
+              "e2e_ms": 196.64470944553614,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 46,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 446.4758448302746,
+              "e2e_ms": 446.49330619722605,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 47,
+              "prompt_len": 3369,
+              "prompt_type": "long",
+              "ttft_ms": 421.3006403297186,
+              "e2e_ms": 421.3433563709259,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 48,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 421.29622492939234,
+              "e2e_ms": 421.33654281497,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 49,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 447.13015016168356,
+              "e2e_ms": 447.1469633281231,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 50,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 446.22380286455154,
+              "e2e_ms": 446.2413629516959,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 51,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 446.06384821236134,
+              "e2e_ms": 446.08114287257195,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 52,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 403.86147052049637,
+              "e2e_ms": 403.904695995152,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 53,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 198.83165415376425,
+              "e2e_ms": 198.88209085911512,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 54,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 445.98116260021925,
+              "e2e_ms": 445.99872175604105,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 55,
+              "prompt_len": 2539,
+              "prompt_type": "long",
+              "ttft_ms": 404.09834403544664,
+              "e2e_ms": 404.13901023566723,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 56,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 445.8207078278065,
+              "e2e_ms": 445.8376094698906,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 57,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 230.56835867464542,
+              "e2e_ms": 230.59993889182806,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 58,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 404.5154079794884,
+              "e2e_ms": 404.5609552413225,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 59,
+              "prompt_len": 3135,
+              "prompt_type": "long",
+              "ttft_ms": 217.08399150520563,
+              "e2e_ms": 217.14619174599648,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 60,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 419.0866034477949,
+              "e2e_ms": 419.14375964552164,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 61,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 419.1157054156065,
+              "e2e_ms": 419.1613523289561,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 62,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 230.02471588551998,
+              "e2e_ms": 230.07230926305056,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 63,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 403.48784253001213,
+              "e2e_ms": 403.526546433568,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 64,
+              "prompt_len": 2073,
+              "prompt_type": "long",
+              "ttft_ms": 404.0257800370455,
+              "e2e_ms": 404.0682902559638,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 65,
+              "prompt_len": 2795,
+              "prompt_type": "long",
+              "ttft_ms": 198.60562775284052,
+              "e2e_ms": 198.65672383457422,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 66,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 196.97693083435297,
+              "e2e_ms": 197.03183881938457,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 67,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 418.10817644000053,
+              "e2e_ms": 418.1962087750435,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 68,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 418.35455130785704,
+              "e2e_ms": 418.396002613008,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 69,
+              "prompt_len": 2109,
+              "prompt_type": "long",
+              "ttft_ms": 419.2296816036105,
+              "e2e_ms": 419.27036549896,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 70,
+              "prompt_len": 3059,
+              "prompt_type": "long",
+              "ttft_ms": 229.26167398691177,
+              "e2e_ms": 229.2917212471366,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 71,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 214.50694557279348,
+              "e2e_ms": 214.59709852933884,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 72,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 216.51318948715925,
+              "e2e_ms": 216.54062066227198,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 73,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 216.39437321573496,
+              "e2e_ms": 216.42476227134466,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 74,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 216.5092509239912,
+              "e2e_ms": 216.53267368674278,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 75,
+              "prompt_len": 3382,
+              "prompt_type": "long",
+              "ttft_ms": 216.39967430382967,
+              "e2e_ms": 216.423898935318,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 76,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 418.14439836889505,
+              "e2e_ms": 418.2033631950617,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 77,
+              "prompt_len": 3461,
+              "prompt_type": "long",
+              "ttft_ms": 417.5903666764498,
+              "e2e_ms": 417.6304442808032,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 78,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 401.06611978262663,
+              "e2e_ms": 401.1116810142994,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 79,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 193.61674040555954,
+              "e2e_ms": 193.67104768753052,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 80,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 197.77201861143112,
+              "e2e_ms": 197.82002363353968,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 81,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 400.4696849733591,
+              "e2e_ms": 400.547337718308,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 82,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 196.2001184001565,
+              "e2e_ms": 196.24798372387886,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 83,
+              "prompt_len": 4091,
+              "prompt_type": "long",
+              "ttft_ms": 401.14221163094044,
+              "e2e_ms": 401.18866320699453,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 84,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 197.75659777224064,
+              "e2e_ms": 197.80519139021635,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 85,
+              "prompt_len": 2774,
+              "prompt_type": "long",
+              "ttft_ms": 349.24826957285404,
+              "e2e_ms": 349.3081405758858,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 86,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 401.1585935950279,
+              "e2e_ms": 401.19612216949463,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 87,
+              "prompt_len": 3948,
+              "prompt_type": "long",
+              "ttft_ms": 197.24102597683668,
+              "e2e_ms": 197.2907856106758,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 88,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 166.1159535869956,
+              "e2e_ms": 166.17188043892384,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 89,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 442.13458709418774,
+              "e2e_ms": 442.1529471874237,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 90,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 442.8813001140952,
+              "e2e_ms": 442.89986602962017,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 91,
+              "prompt_len": 2770,
+              "prompt_type": "long",
+              "ttft_ms": 318.27273685485125,
+              "e2e_ms": 318.3062085881829,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 92,
+              "prompt_len": 3931,
+              "prompt_type": "long",
+              "ttft_ms": 318.18334106355906,
+              "e2e_ms": 318.2159662246704,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 93,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 318.3565428480506,
+              "e2e_ms": 318.387052975595,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 94,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 317.7458420395851,
+              "e2e_ms": 317.78839603066444,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 95,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 317.5678290426731,
+              "e2e_ms": 317.6353806629777,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 96,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 131.0641337186098,
+              "e2e_ms": 131.12960197031498,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 97,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 164.9241354316473,
+              "e2e_ms": 164.98717106878757,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 98,
+              "prompt_len": 2760,
+              "prompt_type": "long",
+              "ttft_ms": 163.8653976842761,
+              "e2e_ms": 163.95104303956032,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 99,
+              "prompt_len": 2425,
+              "prompt_type": "long",
+              "ttft_ms": 164.12263549864292,
+              "e2e_ms": 164.1870904713869,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 100,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.2648489922285,
+              "e2e_ms": 440.28702937066555,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 101,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.0881752371788,
+              "e2e_ms": 440.1260847225785,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 102,
+              "prompt_len": 3644,
+              "prompt_type": "long",
+              "ttft_ms": 440.08494447916746,
+              "e2e_ms": 440.1088450103998,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 103,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.05682598799467,
+              "e2e_ms": 440.0766585022211,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 104,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 441.0129925236106,
+              "e2e_ms": 441.0301083698869,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 105,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 439.87223971635103,
+              "e2e_ms": 439.89192973822355,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 106,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.3428537771106,
+              "e2e_ms": 440.37178438156843,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 107,
+              "prompt_len": 2941,
+              "prompt_type": "long",
+              "ttft_ms": 440.33041782677174,
+              "e2e_ms": 440.3524789959192,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 108,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.2221776545048,
+              "e2e_ms": 440.2411291375756,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 109,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.3504114598036,
+              "e2e_ms": 440.3674602508545,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 110,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.31971227377653,
+              "e2e_ms": 440.3365096077323,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 111,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.35386200994253,
+              "e2e_ms": 440.3702365234494,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 112,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.31787291169167,
+              "e2e_ms": 440.3355224058032,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 113,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.5618803575635,
+              "e2e_ms": 440.5865743756294,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 114,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 440.54150953888893,
+              "e2e_ms": 440.5615283176303,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 115,
+              "prompt_len": 3040,
+              "prompt_type": "long",
+              "ttft_ms": 450.94210654497147,
+              "e2e_ms": 450.9704811498523,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 116,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.8936069905758,
+              "e2e_ms": 450.9183056652546,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 117,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 451.0871060192585,
+              "e2e_ms": 451.1226527392864,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 118,
+              "prompt_len": 3482,
+              "prompt_type": "long",
+              "ttft_ms": 451.08342729508877,
+              "e2e_ms": 451.11145079135895,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 119,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.8642964065075,
+              "e2e_ms": 450.89041721075773,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 120,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.34689735621214,
+              "e2e_ms": 450.37341583520174,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 121,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.68534929305315,
+              "e2e_ms": 450.7101885974407,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 122,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 450.70782490074635,
+              "e2e_ms": 450.7310874760151,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 123,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 449.96251445263624,
+              "e2e_ms": 450.0147830694914,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 124,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 449.97408147901297,
+              "e2e_ms": 450.0069562345743,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 125,
+              "prompt_len": 3359,
+              "prompt_type": "long",
+              "ttft_ms": 501.57772563397884,
+              "e2e_ms": 501.6102083027363,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 126,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 501.3332460075617,
+              "e2e_ms": 501.3866163790226,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 127,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 500.31402986496687,
+              "e2e_ms": 500.3428850322962,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "layer_drop",
+      "url": "http://localhost:8001/v1/completions",
+      "batch_results": [
+        {
+          "batch_size": 4,
+          "num_prompts": 4,
+          "num_long": 1,
+          "num_short": 3,
+          "success": 4,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.31421149242669344,
+          "ttft_ms": {
+            "n": 4,
+            "mean_ms": 304.2408125475049,
+            "stdev_ms": 16.01544086427868,
+            "p50_ms": 311.8774248287082,
+            "p90_ms": 312.8373478539288,
+            "p99_ms": 312.9519833717495,
+            "min_ms": 280.2436798810959,
+            "max_ms": 312.9647206515074
+          },
+          "ttft_short_ms": {
+            "n": 3,
+            "mean_ms": 301.4743685101469,
+            "stdev_ms": 18.407124801141826,
+            "p50_ms": 311.21470499783754,
+            "p90_ms": 312.6147175207734,
+            "p99_ms": 312.929720338434,
+            "min_ms": 280.2436798810959,
+            "max_ms": 312.9647206515074
+          },
+          "ttft_long_ms": {
+            "n": 1,
+            "mean_ms": 312.5401446595788,
+            "stdev_ms": 0.0,
+            "p50_ms": 312.5401446595788,
+            "p90_ms": 312.5401446595788,
+            "p99_ms": 312.5401446595788,
+            "min_ms": 312.5401446595788,
+            "max_ms": 312.5401446595788
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 312.9647206515074,
+              "e2e_ms": 313.052773475647,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 311.21470499783754,
+              "e2e_ms": 311.3065240904689,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 2360,
+              "prompt_type": "long",
+              "ttft_ms": 312.5401446595788,
+              "e2e_ms": 312.5960696488619,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 280.2436798810959,
+              "e2e_ms": 280.3409043699503,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 8,
+          "num_prompts": 8,
+          "num_long": 2,
+          "num_short": 6,
+          "success": 8,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.1362506039440632,
+          "ttft_ms": {
+            "n": 8,
+            "mean_ms": 133.0438571749255,
+            "stdev_ms": 0.8031557749070498,
+            "p50_ms": 132.64639768749475,
+            "p90_ms": 133.95395493134856,
+            "p99_ms": 134.55226029269397,
+            "min_ms": 132.34097883105278,
+            "max_ms": 134.6187386661768
+          },
+          "ttft_short_ms": {
+            "n": 6,
+            "mean_ms": 133.0900496492783,
+            "stdev_ms": 0.8749095336568314,
+            "p50_ms": 132.64639768749475,
+            "p90_ms": 134.1438931412995,
+            "p99_ms": 134.57125411368906,
+            "min_ms": 132.38842319697142,
+            "max_ms": 134.6187386661768
+          },
+          "ttft_long_ms": {
+            "n": 2,
+            "mean_ms": 132.90527975186706,
+            "stdev_ms": 0.7980420154751747,
+            "p50_ms": 132.90527975186706,
+            "p90_ms": 133.35672048851848,
+            "p99_ms": 133.45829465426505,
+            "min_ms": 132.34097883105278,
+            "max_ms": 133.46958067268133
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 134.6187386661768,
+              "e2e_ms": 134.67564526945353,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 133.66904761642218,
+              "e2e_ms": 133.71082860976458,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 4085,
+              "prompt_type": "long",
+              "ttft_ms": 133.46958067268133,
+              "e2e_ms": 133.51318519562483,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 132.57129304111004,
+              "e2e_ms": 132.6720742508769,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 132.63738434761763,
+              "e2e_ms": 132.68267549574375,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 3138,
+              "prompt_type": "long",
+              "ttft_ms": 132.34097883105278,
+              "e2e_ms": 132.39863235503435,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 132.65541102737188,
+              "e2e_ms": 132.6971799135208,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 132.38842319697142,
+              "e2e_ms": 132.43629690259695,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 16,
+          "num_prompts": 16,
+          "num_long": 3,
+          "num_short": 13,
+          "success": 16,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.12947477493435144,
+          "ttft_ms": {
+            "n": 16,
+            "mean_ms": 123.26938030309975,
+            "stdev_ms": 7.579144208518541,
+            "p50_ms": 124.92906907573342,
+            "p90_ms": 126.53730623424053,
+            "p99_ms": 126.91876459866762,
+            "min_ms": 95.0647909194231,
+            "max_ms": 126.94370746612549
+          },
+          "ttft_short_ms": {
+            "n": 13,
+            "mean_ms": 125.16064175332968,
+            "stdev_ms": 1.0432305268326734,
+            "p50_ms": 124.93397202342749,
+            "p90_ms": 126.68137550354004,
+            "p99_ms": 126.9237531721592,
+            "min_ms": 123.79076983779669,
+            "max_ms": 126.94370746612549
+          },
+          "ttft_long_ms": {
+            "n": 3,
+            "mean_ms": 115.07391401877005,
+            "stdev_ms": 17.329095960465242,
+            "p50_ms": 124.92416612803936,
+            "p90_ms": 125.17106123268604,
+            "p99_ms": 125.22661263123155,
+            "min_ms": 95.0647909194231,
+            "max_ms": 125.23278500884771
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 126.77742168307304,
+              "e2e_ms": 126.8120976164937,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 126.94370746612549,
+              "e2e_ms": 126.97844672948122,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 126.13514252007008,
+              "e2e_ms": 126.16807408630848,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 126.29719078540802,
+              "e2e_ms": 126.34259276092052,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 2855,
+              "prompt_type": "long",
+              "ttft_ms": 125.23278500884771,
+              "e2e_ms": 125.30448939651251,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.97884593904018,
+              "e2e_ms": 125.02431496977806,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 2871,
+              "prompt_type": "long",
+              "ttft_ms": 124.92416612803936,
+              "e2e_ms": 124.95863530784845,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.7363081201911,
+              "e2e_ms": 124.76996146142483,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.49750863015652,
+              "e2e_ms": 124.53252077102661,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 125.15931017696857,
+              "e2e_ms": 125.1894598826766,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.93397202342749,
+              "e2e_ms": 124.96497575193644,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 123.79076983779669,
+              "e2e_ms": 123.82847163826227,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.47309214621782,
+              "e2e_ms": 124.50651172548532,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.35338087379932,
+              "e2e_ms": 124.38533455133438,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 124.01169259101152,
+              "e2e_ms": 124.04938507825136,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 2890,
+              "prompt_type": "long",
+              "ttft_ms": 95.0647909194231,
+              "e2e_ms": 95.12915648519993,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 32,
+          "num_prompts": 32,
+          "num_long": 6,
+          "num_short": 26,
+          "success": 32,
+          "failed": 0,
+          "success_rate_pct": 100.0,
+          "total_duration_s": 0.2581722168251872,
+          "ttft_ms": {
+            "n": 32,
+            "mean_ms": 251.02974465698935,
+            "stdev_ms": 2.08735933583458,
+            "p50_ms": 250.72662811726332,
+            "p90_ms": 253.81871024146676,
+            "p99_ms": 254.42825572565198,
+            "min_ms": 247.80977424234152,
+            "max_ms": 254.53658029437065
+          },
+          "ttft_short_ms": {
+            "n": 26,
+            "mean_ms": 251.2357930581157,
+            "stdev_ms": 2.2119476736760064,
+            "p50_ms": 251.29336398094893,
+            "p90_ms": 253.8679870776832,
+            "p99_ms": 254.44922177121043,
+            "min_ms": 247.80977424234152,
+            "max_ms": 254.53658029437065
+          },
+          "ttft_long_ms": {
+            "n": 6,
+            "mean_ms": 250.13686825210848,
+            "stdev_ms": 1.1716741822383097,
+            "p50_ms": 250.3256262280047,
+            "p90_ms": 251.20072904974222,
+            "p99_ms": 251.87897253781557,
+            "min_ms": 248.54371696710587,
+            "max_ms": 251.95433292537928
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.83150856941938,
+              "e2e_ms": 253.86065524071455,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.63974086940289,
+              "e2e_ms": 253.6955727264285,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 254.53658029437065,
+              "e2e_ms": 254.56527806818485,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 252.73084361106157,
+              "e2e_ms": 252.76112649589777,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.90446558594704,
+              "e2e_ms": 253.9349775761366,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 254.18714620172977,
+              "e2e_ms": 254.215182736516,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 252.16717272996902,
+              "e2e_ms": 252.1971520036459,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.28255258500576,
+              "e2e_ms": 253.32676619291306,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.70352528989315,
+              "e2e_ms": 253.73238325119019,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 253.42463701963425,
+              "e2e_ms": 253.45291756093502,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 251.42639596015215,
+              "e2e_ms": 251.46479718387127,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 11,
+              "prompt_len": 2542,
+              "prompt_type": "long",
+              "ttft_ms": 251.95433292537928,
+              "e2e_ms": 251.98150519281626,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 251.41707062721252,
+              "e2e_ms": 251.44613068550825,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 252.80470866709948,
+              "e2e_ms": 252.83236242830753,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 250.73865614831448,
+              "e2e_ms": 250.7676426321268,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 15,
+              "prompt_len": 2792,
+              "prompt_type": "long",
+              "ttft_ms": 250.43373089283705,
+              "e2e_ms": 250.46435557305813,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 16,
+              "prompt_len": 3355,
+              "prompt_type": "long",
+              "ttft_ms": 250.44712517410517,
+              "e2e_ms": 250.47609582543373,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 251.16965733468533,
+              "e2e_ms": 251.19928736239672,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 18,
+              "prompt_len": 2513,
+              "prompt_type": "long",
+              "ttft_ms": 250.21752156317234,
+              "e2e_ms": 250.24467892944813,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 248.20642732083797,
+              "e2e_ms": 248.28146491199732,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 250.71460008621216,
+              "e2e_ms": 250.74461195617914,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 249.3855357170105,
+              "e2e_ms": 249.41386189311743,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 22,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 249.48532041162252,
+              "e2e_ms": 249.5130905881524,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 23,
+              "prompt_len": 2935,
+              "prompt_type": "long",
+              "ttft_ms": 248.54371696710587,
+              "e2e_ms": 248.59953485429287,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 24,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 248.6802088096738,
+              "e2e_ms": 248.71063325554132,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 248.28103370964527,
+              "e2e_ms": 248.31473268568516,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 249.88729413598776,
+              "e2e_ms": 249.91634394973516,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 248.0607545003295,
+              "e2e_ms": 248.09143599122763,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 249.30719379335642,
+              "e2e_ms": 249.3404010310769,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 249.34781529009342,
+              "e2e_ms": 249.3768846616149,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 30,
+              "prompt_len": 3314,
+              "prompt_type": "long",
+              "ttft_ms": 249.22478199005127,
+              "e2e_ms": 249.25556872040033,
+              "num_tokens": 4,
+              "success": true
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "ttft_ms": 247.80977424234152,
+              "e2e_ms": 247.83809203654528,
+              "num_tokens": 4,
+              "success": true
+            }
+          ]
+        },
+        {
+          "batch_size": 64,
+          "num_prompts": 64,
+          "num_long": 13,
+          "num_short": 51,
+          "success": 0,
+          "failed": 64,
+          "success_rate_pct": 0.0,
+          "total_duration_s": 0.08121095784008503,
+          "ttft_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "ttft_short_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "ttft_long_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 4010,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 4,
+              "prompt_len": 2280,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 6,
+              "prompt_len": 2116,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 8,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 12,
+              "prompt_len": 2960,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 14,
+              "prompt_len": 3836,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 15,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 16,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 18,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 22,
+              "prompt_len": 3894,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 23,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 24,
+              "prompt_len": 4071,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 30,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 32,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 33,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 34,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 35,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 36,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 37,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 38,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 39,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 40,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 41,
+              "prompt_len": 2816,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 42,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 43,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 44,
+              "prompt_len": 3998,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 45,
+              "prompt_len": 2309,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 46,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 47,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 48,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 49,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 50,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 51,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 52,
+              "prompt_len": 3109,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 53,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 54,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 55,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 56,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 57,
+              "prompt_len": 3206,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 58,
+              "prompt_len": 3538,
+              "prompt_type": "long",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 59,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 60,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 61,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 62,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            },
+            {
+              "idx": 63,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "500, message='Internal Server Error', url='http://localhost:8001/v1/completions'",
+              "success": false
+            }
+          ]
+        },
+        {
+          "batch_size": 128,
+          "num_prompts": 128,
+          "num_long": 26,
+          "num_short": 102,
+          "success": 0,
+          "failed": 128,
+          "success_rate_pct": 0.0,
+          "total_duration_s": 0.06455986015498638,
+          "ttft_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "ttft_short_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "ttft_long_ms": {
+            "n": 0,
+            "mean_ms": 0.0,
+            "stdev_ms": 0.0,
+            "p50_ms": 0.0,
+            "p90_ms": 0.0,
+            "p99_ms": 0.0,
+            "min_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "per_request": [
+            {
+              "idx": 0,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 1,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 2,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 3,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 4,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 5,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 6,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 7,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 8,
+              "prompt_len": 3336,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 9,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 10,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 11,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 12,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 13,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 14,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 15,
+              "prompt_len": 3337,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 16,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 17,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 18,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 19,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 20,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 21,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 22,
+              "prompt_len": 2057,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 23,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 24,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 25,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 26,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 27,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 28,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 29,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 30,
+              "prompt_len": 3294,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 31,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 32,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 33,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 34,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 35,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 36,
+              "prompt_len": 2546,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 37,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 38,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 39,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 40,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 41,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 42,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 43,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 44,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 45,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 46,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 47,
+              "prompt_len": 3369,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 48,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 49,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 50,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 51,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 52,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 53,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 54,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 55,
+              "prompt_len": 2539,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 56,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 57,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 58,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 59,
+              "prompt_len": 3135,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 60,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 61,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 62,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 63,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 64,
+              "prompt_len": 2073,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 65,
+              "prompt_len": 2795,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 66,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 67,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 68,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 69,
+              "prompt_len": 2109,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 70,
+              "prompt_len": 3059,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 71,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 72,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 73,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 74,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 75,
+              "prompt_len": 3382,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 76,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 77,
+              "prompt_len": 3461,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 78,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 79,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 80,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 81,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 82,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 83,
+              "prompt_len": 4091,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 84,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 85,
+              "prompt_len": 2774,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 86,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 87,
+              "prompt_len": 3948,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 88,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 89,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 90,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 91,
+              "prompt_len": 2770,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 92,
+              "prompt_len": 3931,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 93,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 94,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 95,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 96,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 97,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 98,
+              "prompt_len": 2760,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 99,
+              "prompt_len": 2425,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 100,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 101,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 102,
+              "prompt_len": 3644,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 103,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 104,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 105,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 106,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 107,
+              "prompt_len": 2941,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 108,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 109,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 110,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 111,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 112,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 113,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 114,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 115,
+              "prompt_len": 3040,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 116,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 117,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 118,
+              "prompt_len": 3482,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 119,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 120,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 121,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 122,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 123,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 124,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 125,
+              "prompt_len": 3359,
+              "prompt_type": "long",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            },
+            {
+              "idx": 126,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+              "success": false
+            },
+            {
+              "idx": 127,
+              "prompt_len": 128,
+              "prompt_type": "short",
+              "error": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('127.0.0.1', 8001), [Errno 111] Connect call failed ('::1', 8001, 0, 0)]",
+              "success": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "speedups": [
+      {
+        "batch_size": 4,
+        "p50_speedup": 0.3159844035924539,
+        "p90_speedup": 0.32027997745664644,
+        "p99_speedup": 0.3218465417458259
+      },
+      {
+        "batch_size": 8,
+        "p50_speedup": 0.8595789233415049,
+        "p90_speedup": 0.8571445543614662,
+        "p99_speedup": 0.8534048392976565
+      },
+      {
+        "batch_size": 16,
+        "p50_speedup": 1.0556942206277276,
+        "p90_speedup": 1.0533069029046769,
+        "p99_speedup": 1.0610237306574575
+      },
+      {
+        "batch_size": 32,
+        "p50_speedup": 0.6191332728046618,
+        "p90_speedup": 0.6469758395368681,
+        "p99_speedup": 0.6499158235837098
+      },
+      {
+        "batch_size": 64,
+        "p50_speedup": 0.0,
+        "p90_speedup": 0.0,
+        "p99_speedup": 0.0
+      },
+      {
+        "batch_size": 128,
+        "p50_speedup": 0.0,
+        "p90_speedup": 0.0,
+        "p99_speedup": 0.0
+      }
+    ]
+  }
+}
