@@ -17,6 +17,10 @@ Metrics:
   - Success rate (requests that did not error or get truncated)
   - Per-request prompt length for diagnosis
   - Optional baseline vs layer-drop comparison when both URLs are given.
+
+Design fix: each batch size gets its own trace with a guaranteed, fixed
+number of long requests. This makes cross-batch-size comparisons fair:
+only the batch size varies, never the presence/absence of stragglers.
 """
 
 import argparse
@@ -31,7 +35,7 @@ from typing import Any
 import aiohttp
 
 
-BATCH_SIZES = [4, 8, 16, 32]
+BATCH_SIZES = [4, 8, 16, 32, 64, 128]
 
 SHORT_LEN = 128
 LONG_MIN = 2048
@@ -66,7 +70,6 @@ def latency_summary(samples_ms: list[float]) -> dict[str, float]:
 
 def make_prompt(length: int) -> str:
     """Return a synthetic prompt of roughly `length` tokens."""
-    # Each "hello " is one token in most tokenizers.
     base = "hello "
     repeats = max(1, length)
     return base * repeats
@@ -80,21 +83,25 @@ def make_mixed_prompts(
     long_ratio: float = LONG_RATIO,
     seed: int = 42,
 ) -> list[tuple[str, int, str]]:
-    random.seed(seed)
-    num_long = max(1, int(num_requests * long_ratio)) if num_requests >= 5 else 0
+    """Generate a trace for exactly num_requests with a fixed straggler ratio.
+
+    Each batch size gets its own trace. Long requests are placed at fixed
+    positions before shuffling so that every batch has a guaranteed number of
+    stragglers and cross-batch-size comparisons only vary the batch size.
+    """
+    rng = random.Random(seed + num_requests)
+    num_long = max(1, round(num_requests * long_ratio))
+    num_long = min(num_long, num_requests)
     num_short = num_requests - num_long
-    if num_short < 0:
-        num_short = 0
-        num_long = num_requests
 
     prompts: list[tuple[str, int, str]] = []
+    for _ in range(num_long):
+        length = rng.randint(long_min, long_max)
+        prompts.append((make_prompt(length), length, "long"))
     for _ in range(num_short):
         prompts.append((make_prompt(short_len), short_len, "short"))
-    for _ in range(num_long):
-        length = random.randint(long_min, long_max)
-        prompts.append((make_prompt(length), length, "long"))
 
-    random.shuffle(prompts)
+    rng.shuffle(prompts)
     return prompts
 
 
@@ -111,7 +118,6 @@ async def send_request(
 ) -> None:
     t_start = time.perf_counter()
     ttft_ms: float | None = None
-    finish_reason: str | None = None
     num_tokens = 0
     try:
         async with session.post(
@@ -160,8 +166,6 @@ async def run_one_batch_size(
     max_tokens: int,
     batch_size: int,
 ) -> dict[str, Any]:
-    # Slice the shared trace to exactly batch_size.
-    batch = prompts[:batch_size]
     results: list[dict[str, Any]] = [None] * batch_size
 
     t0 = time.perf_counter()
@@ -180,7 +184,7 @@ async def run_one_batch_size(
                     i,
                 )
             )
-            for i, (prompt, prompt_len, prompt_type) in enumerate(batch)
+            for i, (prompt, prompt_len, prompt_type) in enumerate(prompts)
         ]
         await asyncio.gather(*tasks)
     total_duration_s = time.perf_counter() - t0
@@ -202,10 +206,12 @@ async def run_one_batch_size(
 
     return {
         "batch_size": batch_size,
-        "num_prompts": len(batch),
+        "num_prompts": len(prompts),
+        "num_long": sum(1 for _, _, t in prompts if t == "long"),
+        "num_short": sum(1 for _, _, t in prompts if t == "short"),
         "success": len(ok),
         "failed": len(failed),
-        "success_rate_pct": len(ok) / len(batch) * 100 if batch else 0.0,
+        "success_rate_pct": len(ok) / len(prompts) * 100 if prompts else 0.0,
         "total_duration_s": total_duration_s,
         "ttft_ms": latency_summary(ttfts),
         "ttft_short_ms": latency_summary(short_ttfts),
@@ -218,13 +224,16 @@ async def benchmark_url(
     name: str,
     url: str,
     model: str,
-    trace: list[tuple[str, int, str]],
     max_tokens: int,
+    batch_sizes: list[int],
 ) -> dict[str, Any]:
     print(f"\n=== Running {name} on {url} ===")
     results = []
-    for bs in BATCH_SIZES:
-        print(f"  batch_size={bs} ...")
+    for bs in batch_sizes:
+        # Generate an independent, fixed-distribution trace for this batch size.
+        trace = make_mixed_prompts(bs)
+        num_long = sum(1 for _, _, t in trace if t == "long")
+        print(f"  batch_size={bs} ({num_long} long, {bs - num_long} short) ...")
         exp = await run_one_batch_size(url, model, trace, max_tokens, bs)
         results.append(exp)
         print(
@@ -275,19 +284,9 @@ async def main() -> None:
         parser.error("At least one of --baseline-url or --layer-drop-url "
                      "must be provided.")
 
-    # Single trace used by all batch sizes, exactly like the ratio_batch script.
-    max_bs = max(args.batch_sizes)
-    trace = make_mixed_prompts(
-        max_bs,
-        args.short_len,
-        args.long_min,
-        args.long_max,
-        args.long_ratio,
-        args.seed,
-    )
     print(
-        f"Generated trace: {len(trace)} requests "
-        f"({int(args.long_ratio * 100)}% long, seed={args.seed})"
+        f"Will generate per-batch-size traces with "
+        f"{int(args.long_ratio * 100)}% long requests (seed offset per bs)"
     )
 
     output: dict[str, Any] = {
@@ -306,12 +305,14 @@ async def main() -> None:
 
     if args.baseline_url:
         exp = await benchmark_url(
-            "baseline", args.baseline_url, args.model, trace, args.max_tokens
+            "baseline", args.baseline_url, args.model, args.max_tokens,
+            args.batch_sizes,
         )
         output["experiments"].append(exp)
     if args.layer_drop_url:
         exp = await benchmark_url(
-            "layer_drop", args.layer_drop_url, args.model, trace, args.max_tokens
+            "layer_drop", args.layer_drop_url, args.model, args.max_tokens,
+            args.batch_sizes,
         )
         output["experiments"].append(exp)
 
